@@ -1,5 +1,6 @@
 package com.dsproject.joongo.controller;
 
+import com.example.project.dto.loginRequest;
 import com.dsproject.joongo.domain.User;
 import com.dsproject.joongo.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -53,5 +54,45 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         userService.deleteUserById(id);
         return ResponseEntity.ok("User deleted successfully!");
+    }
+    
+}
+
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthenticationController {
+
+    private final JwtTokenProvider jwtTokenProvider; // JWT 생성 및 검증
+    private final UserService userService;          // 사용자 인증 로직
+
+    public AuthenticationController(JwtTokenProvider jwtTokenProvider, UserService userService) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userService = userService;
+    }
+
+    // 로그인 처리
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        User user = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("success", false, "message", "Invalid credentials"));
+        }
+
+        // JWT 토큰 생성
+        String token = jwtTokenProvider.createToken(user.getEmail());
+        return ResponseEntity.ok(Map.of("success", true, "token", token));
+    }
+
+    // 토큰 검증 (React에서 호출 가능)
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyToken(@RequestHeader("Authorization") String token) {
+        if (jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.ok(Map.of("valid", true));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("valid", false));
+        }
     }
 }
