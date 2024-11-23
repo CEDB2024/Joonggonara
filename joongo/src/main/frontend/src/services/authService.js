@@ -9,10 +9,29 @@ const login = async (credentials) => {
 };
 
 // 회원가입 요청
-const register = async (userData) => {
-  const response = await axios.post(`${API_URL}/register`, userData);
-  return response.data;
+const register = async (formData) => {
+  try {
+    console.log("Sending registration data:", formData); // 요청 데이터 출력
+    const response = await axios.post(`${API_URL}/register`, formData);
+    console.log("Registration successful:", response.data); // 성공 응답 출력
+    return response.data; // 서버에서 반환된 데이터를 전달
+  } catch (error) {
+    if (error.response) {
+      // 서버에서 반환한 에러
+      console.error("Server error response:", error.response.status, error.response.data);
+    } else if (error.request) {
+      // 요청이 서버에 도달하지 못함
+      console.error("Request made but no response:", error.request);
+    } else {
+      // 요청 설정 중 에러
+      console.error("Error during request setup:", error.message);
+    }
+    console.error("Error during registration (full):", error);
+    throw error; // 에러를 상위로 전달
+  }
 };
+
+
 
 // 토큰 검증 요청
 const verifyToken = async () => {

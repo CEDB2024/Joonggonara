@@ -25,6 +25,12 @@ public class UserService {
         return userMapper.selectUserById(userId);
     }
 
+        // UserService.java
+    public boolean isEmailRegistered(String email) {
+        return userMapper.selectUserByEmail(email) != null;
+    }
+
+
     // 모든 사용자 조회
     public List<User> getAllUsers() {
         return userMapper.selectAllUsers();

@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dbproject.joongo.domain.UserMapper">
+<mapper namespace="com.dbproject.joongo.mapper.UserMapper">
 
     <!-- 사용자 추가 -->
     <insert id="insertUser" parameterType="com.dbproject.joongo.domain.User">
-        INSERT INTO USERS (user_name, nickname, user_password, email, tel_1, tel_2, location, user_role, user_status, money)
-        VALUES (#{userName}, #{nickname}, #{userPassword}, #{email}, #{tel1}, #{tel2}, #{location}, #{userRole}, #{userStatus}, #{money})
+        INSERT INTO USERS (user_name, nickname, user_password, email, tel_1, tel_2, location)
+        VALUES (#{userName}, #{nickname}, #{userPassword}, #{email}, #{tel_1}, #{tel_2}, #{location});
     </insert>
+
+
 
     <!-- 사용자 조회 (ID) -->
     <select id="selectUserById" parameterType="int" resultType="com.dbproject.joongo.domain.User">
@@ -27,8 +29,8 @@
             nickname = #{nickname},
             user_password = #{userPassword},
             email = #{email},
-            tel_1 = #{tel1},
-            tel_2 = #{tel2},
+            tel_1 = #{tel_1},
+            tel_2 = #{tel_2},
             location = #{location},
             user_role = #{userRole},
             user_status = #{userStatus},
@@ -40,5 +42,10 @@
     <delete id="deleteUserById" parameterType="int">
         DELETE FROM USERS WHERE user_id = #{userId}
     </delete>
+
+
+    <select id="selectUserByEmail" parameterType="String" resultType="com.dbproject.joongo.domain.User">
+        SELECT * FROM USERS WHERE email = #{email}
+    </select>
 
 </mapper>
