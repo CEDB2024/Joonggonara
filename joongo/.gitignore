@@ -34,4 +34,6 @@ build/
 
 #react node_module
 node_module
-
+build
+gradle
+.gradle
