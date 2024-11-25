@@ -26,12 +26,15 @@ public class AuthenticationController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         User user = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         if (user == null) {
-            return ResponseEntity.status(401).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "Invalid email or password"));
         }
 
         // 토큰 생성
         String token = jwtTokenProvider.createToken(user.getEmail());
-        return ResponseEntity.ok().body(token);
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "token", token
+        ));
     }
 
     // 토큰 검증 (React에서 호출 가능)

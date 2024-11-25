@@ -48,4 +48,11 @@
         SELECT * FROM USERS WHERE email = #{email}
     </select>
 
+    <select id="selectUserByEmailAndPassword" parameterType="map" resultType="com.dbproject.joongo.domain.User">
+        SELECT *
+        FROM USERS
+        WHERE email = #{email} AND user_password = #{userPassword}
+    </select>
+
+
 </mapper>

@@ -24,6 +24,6 @@ public interface UserMapper {
     User selectUserByEmail(String email);
 
     // 이메일과 비밀번호로 사용자 조회
-    User selectUserByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+    User selectUserByEmailAndPassword(@Param("email") String email, @Param("userPassword") String password);
 }
 

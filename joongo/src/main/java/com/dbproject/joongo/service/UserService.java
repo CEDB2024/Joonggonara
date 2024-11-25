@@ -47,7 +47,7 @@ public class UserService {
     }
 
     // 사용자 인증 (이메일과 비밀번호로 사용자 확인)
-    public User authenticate(String email, String password) {
-        return userMapper.selectUserByEmailAndPassword(email, password);
+    public User authenticate(String email, String userPassword) {
+        return userMapper.selectUserByEmailAndPassword(email, userPassword);
     }
 }
