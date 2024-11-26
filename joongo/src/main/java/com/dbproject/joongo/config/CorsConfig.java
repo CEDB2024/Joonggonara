@@ -1,6 +1,5 @@
-package com.dbproject.joongo;  // 적절한 패키지명으로 변경하세요.
+package com.dbproject.joongo.config;  // 적절한 패키지명으로 변경하세요.
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
