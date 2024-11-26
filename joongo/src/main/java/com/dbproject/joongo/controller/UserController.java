@@ -1,6 +1,5 @@
 package com.dbproject.joongo.controller;
 
-import com.dbproject.joongo.dto.LoginRequest;
 import com.dbproject.joongo.domain.User;
 import com.dbproject.joongo.service.UserService;
 import org.springframework.http.ResponseEntity;
