@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import "./MainPage.css";
 
 const MainPage = () => {
@@ -6,9 +8,12 @@ const MainPage = () => {
         <div className="main-page">
             <header className="header">
                 <h1>중고거래 플랫폼</h1>
-                <div className="search-bar">
-                    <input type="text" placeholder="검색어를 입력하세요" />
-                    <button>검색</button>
+                <div className="header-right">
+                    <div className="mypage"><Link to="/mypage">마이페이지</Link></div>
+                    <div className="search-bar">
+                        <input type="text" placeholder="검색어를 입력하세요" />
+                        <button>검색</button>
+                    </div>
                 </div>
             </header>
 

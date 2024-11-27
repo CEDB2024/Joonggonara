@@ -4,7 +4,7 @@ import Login from "./components/login";
 import Register from "./components/register";
 import PrivateRoute from "./components/privateRouter";
 import MainPage from "./components/page/MainPage";
-
+import MyPage from "./components/mypage/MyPage";
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/main" element={<MainPage/>}/>
+        <Route path="/mypage" element={<MyPage/>}/>
         {/* 메인 페이지는 인증된 사용자만 접근 가능 */}
         <Route
           path="/main"

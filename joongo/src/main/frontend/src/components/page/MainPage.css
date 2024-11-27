@@ -20,6 +20,32 @@ body {
     align-items: center;
 }
 
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* 마이페이지와 검색창 사이 간격 */
+}
+
+.mypage {
+    font-size: 16px;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.mypage a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: #444444;
+}
+
+.mypage a:hover {
+    background-color: #ffcc00;
+    color: #000000;
+}
+
 .header h1 {
     margin: 0;
     font-size: 24px;
