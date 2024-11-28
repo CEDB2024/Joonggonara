@@ -1,4 +1,4 @@
-package com.dbproject.joongo.controller;
+package com.dbProject.joongo.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

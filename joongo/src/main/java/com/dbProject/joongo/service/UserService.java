@@ -1,7 +1,7 @@
-package com.dbproject.joongo.service;
+package com.dbProject.joongo.service;
 
-import com.dbproject.joongo.domain.User;
-import com.dbproject.joongo.mapper.UserMapper;
+import com.dbProject.joongo.domain.User;
+import com.dbProject.joongo.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.dbproject.joongo.dto;
+package com.dbProject.joongo.dto;
 
 import lombok.Data;
 

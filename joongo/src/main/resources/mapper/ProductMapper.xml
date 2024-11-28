@@ -2,17 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dbProject.joongo.mapper.UserMapper">
+<mapper namespace="com.dbProject.joongo.mapper.ProductMapper">
 
-    <!-- 사용자 추가 -->
-    <insert id="createPost" parameterType="com.dbProject.joongo.domain.Post">
-        INSERT INTO USERS (user_name, nickname, user_password, email, tel_1, tel_2, location)
-        VALUES (#{userName}, #{nickname}, #{userPassword}, #{email}, #{tel_1}, #{tel_2}, #{location});
+    <!--상품 생성  -->
+    <insert id="saveProduct" parameterType="com.dbProject.joongo.domain.Product" useGeneratedKeys="true" keyProperty="productId">
+        INSERT INTO PRODUCT (user_id, title, content, image, price, product_status, location, category_id, count, created_at, updated_at)
+        VALUES (#{userId}, #{title}, #{content}, #{image}, #{price}, #{productStatus}, #{location}, #{categoryId}, #{count}, NOW(), NOW());
     </insert>
 
-    <!-- 사용자 조회 (ID) -->
-    <select id="selectUserById" parameterType="int" resultType="com.dbProject.joongo.domain.User">
-        SELECT * FROM USERS WHERE user_id = #{userId}
+    <!--모든 상품 조회-->
+    <select id="findAll" resultType="com.dbProject.joongo.domain.User">
+        SELECT *
+        FROM POSTS
+        WHERE user_id = #{userId}
     </select>
 
     <!-- 모든 사용자 조회 -->

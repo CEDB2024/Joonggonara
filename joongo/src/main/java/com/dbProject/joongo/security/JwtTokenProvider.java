@@ -1,4 +1,4 @@
-package com.dbproject.joongo.security;
+package com.dbProject.joongo.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

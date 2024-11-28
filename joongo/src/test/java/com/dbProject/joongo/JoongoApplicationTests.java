@@ -1,4 +1,4 @@
-package com.dbproject.joongo;
+package com.dbProject.joongo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
