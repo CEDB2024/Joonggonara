@@ -1,19 +1,17 @@
-package com.dbproject.joongo.service;
+package com.dbProject.joongo.service;
 
-import com.dbproject.joongo.domain.User;
-import com.dbproject.joongo.mapper.UserMapper;
+import com.dbProject.joongo.domain.User;
+import com.dbProject.joongo.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserMapper userMapper;
-
-    public UserService(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     // 사용자 추가
     public void addUser(User user) {

@@ -38,4 +38,4 @@ build
 gradle
 .gradle
 
-/src/main/resources/properties/env.properties
+application-heehun.properties

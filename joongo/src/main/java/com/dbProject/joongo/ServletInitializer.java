@@ -1,4 +1,4 @@
-package com.dbproject.joongo;
+package com.dbProject.joongo;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

@@ -1,9 +1,9 @@
-package com.dbproject.joongo.controller;
+package com.dbProject.joongo.controller;
 
-import com.dbproject.joongo.dto.LoginRequest;
-import com.dbproject.joongo.security.JwtTokenProvider;
-import com.dbproject.joongo.service.UserService;
-import com.dbproject.joongo.domain.User;
+import com.dbProject.joongo.dto.LoginRequest;
+import com.dbProject.joongo.security.JwtTokenProvider;
+import com.dbProject.joongo.service.UserService;
+import com.dbProject.joongo.domain.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;

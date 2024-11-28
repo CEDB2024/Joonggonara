@@ -1,9 +1,8 @@
-package com.dbproject.joongo.mapper;
+package com.dbProject.joongo.mapper;
 
-import com.dbproject.joongo.domain.User;
+import com.dbProject.joongo.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 
 import java.util.List;
 

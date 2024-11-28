@@ -1,4 +1,4 @@
-package com.dbproject.joongo.domain;
+package com.dbProject.joongo.domain;
 
 import lombok.Data;
 
