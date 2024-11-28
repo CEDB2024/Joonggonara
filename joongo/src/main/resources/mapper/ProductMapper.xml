@@ -6,20 +6,21 @@
 
     <!--상품 생성  -->
     <insert id="saveProduct" parameterType="com.dbProject.joongo.domain.Product" useGeneratedKeys="true" keyProperty="productId">
-        INSERT INTO PRODUCT (user_id, title, content, image, price, product_status, location, category_id, count, created_at, updated_at)
+        INSERT INTO PRODUCTS (user_id, title, content, image, price, product_status, location, category_id, count, created_at, updated_at)
         VALUES (#{userId}, #{title}, #{content}, #{image}, #{price}, #{productStatus}, #{location}, #{categoryId}, #{count}, NOW(), NOW());
     </insert>
 
     <!--모든 상품 조회-->
-    <select id="findAll" resultType="com.dbProject.joongo.domain.User">
+    <select id="findAll" resultType="com.dbProject.joongo.domain.Product">
         SELECT *
-        FROM POSTS
-        WHERE user_id = #{userId}
+        FROM PRODUCTS
     </select>
 
-    <!-- 모든 사용자 조회 -->
-    <select id="selectAllUsers" resultType="com.dbProject.joongo.domain.User">
-        SELECT * FROM USERS
+    <!--카테고리 별 상품 조회 -->
+    <select id="findAllByCategoryId" resultType="com.dbProject.joongo.domain.Product">
+        SELECT *
+        FROM PRODUCTS
+        WHERE category_id = #{categoryId}
     </select>
 
     <!-- 사용자 수정 -->
