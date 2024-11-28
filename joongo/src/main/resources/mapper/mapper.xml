@@ -2,26 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dbProject.joongo.mapper.UserMapper">
+<mapper namespace="com.dbproject.joongo.mapper.UserMapper">
 
     <!-- 사용자 추가 -->
-    <insert id="createPost" parameterType="com.dbProject.joongo.domain.Post">
+    <insert id="insertUser" parameterType="com.dbproject.joongo.domain.User">
         INSERT INTO USERS (user_name, nickname, user_password, email, tel_1, tel_2, location)
         VALUES (#{userName}, #{nickname}, #{userPassword}, #{email}, #{tel_1}, #{tel_2}, #{location});
     </insert>
 
+
+
     <!-- 사용자 조회 (ID) -->
-    <select id="selectUserById" parameterType="int" resultType="com.dbProject.joongo.domain.User">
+    <select id="selectUserById" parameterType="int" resultType="com.dbproject.joongo.domain.User">
         SELECT * FROM USERS WHERE user_id = #{userId}
     </select>
 
     <!-- 모든 사용자 조회 -->
-    <select id="selectAllUsers" resultType="com.dbProject.joongo.domain.User">
+    <select id="selectAllUsers" resultType="com.dbproject.joongo.domain.User">
         SELECT * FROM USERS
     </select>
 
     <!-- 사용자 수정 -->
-    <update id="updateUser" parameterType="com.dbProject.joongo.domain.User">
+    <update id="updateUser" parameterType="com.dbproject.joongo.domain.User">
         UPDATE USERS
         SET user_name = #{userName},
             nickname = #{nickname},
@@ -42,11 +44,11 @@
     </delete>
 
 
-    <select id="selectUserByEmail" parameterType="String" resultType="com.dbProject.joongo.domain.User">
+    <select id="selectUserByEmail" parameterType="String" resultType="com.dbproject.joongo.domain.User">
         SELECT * FROM USERS WHERE email = #{email}
     </select>
 
-    <select id="selectUserByEmailAndPassword" parameterType="map" resultType="com.dbProject.joongo.domain.User">
+    <select id="selectUserByEmailAndPassword" parameterType="map" resultType="com.dbproject.joongo.domain.User">
         SELECT *
         FROM USERS
         WHERE email = #{email} AND user_password = #{userPassword}
