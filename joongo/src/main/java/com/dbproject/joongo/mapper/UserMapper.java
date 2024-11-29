@@ -3,7 +3,7 @@ package com.dbproject.joongo.mapper;
 import com.dbproject.joongo.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -25,5 +25,11 @@ public interface UserMapper {
 
     // 이메일과 비밀번호로 사용자 조회
     User selectUserByEmailAndPassword(@Param("email") String email, @Param("userPassword") String password);
+
+    @Select("SELECT money FROM USERS WHERE user_id = #{id}")
+    Long selectUserMoney(int id);
+
+    @Select("SELECT * FROM TRANSACTIONS WHERE buyer_id = #{id} OR seller_id = #{id}")
+    List<String> selectTransactionHistory(int id);
 }
 

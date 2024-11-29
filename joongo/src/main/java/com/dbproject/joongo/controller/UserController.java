@@ -1,20 +1,24 @@
 package com.dbproject.joongo.controller;
 
 import com.dbproject.joongo.domain.User;
+import com.dbproject.joongo.domain.Product;
 import com.dbproject.joongo.service.UserService;
+import com.dbproject.joongo.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users") // /api를 추가하여 모든 경로 일관성 유지
 public class UserController {
 
     private final UserService userService;
+    private final ProductService productService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ProductService productService) {
         this.userService = userService;
+        this.productService = productService;
     }
 
     // 사용자 추가
@@ -54,7 +58,25 @@ public class UserController {
         userService.deleteUserById(id);
         return ResponseEntity.ok("User deleted successfully!");
     }
-    
+
+    // [추가] 유저의 보유 금액 조회
+    @GetMapping("/{id}/money")
+    public ResponseEntity<Long> getUserMoney(@PathVariable int id) {
+        Long money = userService.getUserMoney(id);
+        return ResponseEntity.ok(money);
+    }
+
+    // [추가] 내가 등록한 물품 조회
+    @GetMapping("/{id}/products")
+    public ResponseEntity<List<Product>> getUserProducts(@PathVariable int id) {
+        List<Product> products = productService.getProductsByUserId(id);
+        return ResponseEntity.ok(products);
+    }
+
+    // [추가] 내가 거래한 내역 조회
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<String>> getTransactionHistory(@PathVariable int id) {
+        List<String> transactions = userService.getTransactionHistory(id);
+        return ResponseEntity.ok(transactions);
+    }
 }
-
-

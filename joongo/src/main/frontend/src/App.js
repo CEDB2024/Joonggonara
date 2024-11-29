@@ -10,22 +10,15 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
 
-        {/* 로그인 및 회원가입은 누구나 접근 가능 */}
+        {/* 로그인 및 회원가입 */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/main" element={<MainPage/>}/>
-        <Route path="/mypage" element={<MyPage/>}/>
-        {/* 메인 페이지는 인증된 사용자만 접근 가능 */}
-        <Route
-          path="/main"
-          element={
-            <PrivateRoute>
-              <div>Welcome to the Main Page!</div>
-            </PrivateRoute>
-          }
-        />
+
+        {/* 메인 및 마이페이지 */}
+        <Route path="/main" element={<PrivateRoute><MainPage /></PrivateRoute>} />
+        <Route path="/mypage" element={<PrivateRoute><MyPage /></PrivateRoute>} />
       </Routes>
     </Router>
   );

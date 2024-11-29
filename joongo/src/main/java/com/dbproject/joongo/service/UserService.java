@@ -50,4 +50,14 @@ public class UserService {
     public User authenticate(String email, String userPassword) {
         return userMapper.selectUserByEmailAndPassword(email, userPassword);
     }
+
+    // 보유 금액 조회
+    public Long getUserMoney(int userId) {
+        return userMapper.selectUserMoney(userId);
+    }
+
+    // 거래 내역 조회
+    public List<String> getTransactionHistory(int userId) {
+        return userMapper.selectTransactionHistory(userId);
+    }
 }
