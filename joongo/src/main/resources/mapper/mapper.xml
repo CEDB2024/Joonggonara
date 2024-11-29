@@ -10,8 +10,6 @@
         VALUES (#{userName}, #{nickname}, #{userPassword}, #{email}, #{tel_1}, #{tel_2}, #{location});
     </insert>
 
-
-
     <!-- 사용자 조회 (ID) -->
     <select id="selectUserById" parameterType="int" resultType="com.dbproject.joongo.domain.User">
         SELECT * FROM USERS WHERE user_id = #{userId}

@@ -5,7 +5,7 @@
 <mapper namespace="com.dbProject.joongo.mapper.ProductMapper">
 
     <!--상품 생성  -->
-    <insert id="saveProduct" parameterType="com.dbProject.joongo.domain.Product" useGeneratedKeys="true" keyProperty="productId">
+    <insert id="insertProduct" parameterType="com.dbProject.joongo.domain.Product" useGeneratedKeys="true" keyProperty="productId">
         INSERT INTO PRODUCTS (user_id, title, content, image, price, product_status, location, category_id, count, created_at, updated_at)
         VALUES (#{userId}, #{title}, #{content}, #{image}, #{price}, #{productStatus}, #{location}, #{categoryId}, #{count}, NOW(), NOW());
     </insert>
