@@ -56,17 +56,33 @@ const verifyToken = async () => {
   }
 };
 
-
 const isAuthenticated = () => {
   const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰을 가져옴
   return !!token; // 토큰이 존재하면 true, 아니면 false
 };
 
-
-
 // 로그아웃 처리
 const logout = () => {
   localStorage.removeItem("token"); // 로컬 스토리지에서 토큰 삭제
+};
+
+const getEmail = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No token found");
+  }
+
+  try {
+    const response = await axios.get(`${API_URL}/email`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Authorization 헤더 설정
+      },
+    });
+    return response.data.email; // 서버에서 반환된 이메일
+  } catch (error) {
+    console.error("Failed to fetch email", error);
+    throw error; // 에러를 상위로 전달
+  }
 };
 
 const authService = {
@@ -75,6 +91,7 @@ const authService = {
   verifyToken,
   logout,
   isAuthenticated,
+  getEmail,
 };
 
 export default authService;

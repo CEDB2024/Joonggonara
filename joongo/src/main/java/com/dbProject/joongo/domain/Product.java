@@ -1,10 +1,12 @@
 package com.dbProject.joongo.domain;
 
+import lombok.Builder;
 import lombok.Data;
 import java.time.LocalDateTime;
 
 
 @Data
+@Builder
 public class Product {
     private Integer productId;       // 상품 고유 번호
     private Integer userId;          // 유저 고유 번호 (FK)

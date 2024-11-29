@@ -19,8 +19,7 @@ public class UserService {
     }
 
     // 사용자 조회 (ID)
-    public User getUserById(int userId) {
-        return userMapper.selectUserById(userId);
+    public User getUserById(int userId) {return userMapper.selectUserById(userId);
     }
 
         // UserService.java

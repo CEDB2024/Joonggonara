@@ -8,10 +8,20 @@ const PrivateRoute = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const valid = await authService.isAuthenticated();
+      const hasToken = authService.isAuthenticated(); // 로컬 스토리지에서 토큰 존재 여부 확인
+
+      if (!hasToken) {
+        setIsAuthenticated(false);
+        setLoading(false);
+        return;
+      }
+
+      // 서버에서 토큰 유효성 검증
+      const valid = await authService.verifyToken();
       setIsAuthenticated(valid);
       setLoading(false);
     };
+
     checkAuth();
   }, []);
 
