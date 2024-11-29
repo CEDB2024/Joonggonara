@@ -66,12 +66,32 @@ const logout = () => {
   localStorage.removeItem("token"); // 로컬 스토리지에서 토큰 삭제
 };
 
+const getEmail = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No token found");
+  }
+
+  try {
+    const response = await axios.get(`${API_URL}/email`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Authorization 헤더 설정
+      },
+    });
+    return response.data.email; // 서버에서 반환된 이메일
+  } catch (error) {
+    console.error("Failed to fetch email", error);
+    throw error; // 에러를 상위로 전달
+  }
+};
+
 const authService = {
   login,
   register,
   verifyToken,
   logout,
   isAuthenticated,
+  getEmail,
 };
 
 export default authService;
