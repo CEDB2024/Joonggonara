@@ -56,13 +56,10 @@ const verifyToken = async () => {
   }
 };
 
-
 const isAuthenticated = () => {
   const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰을 가져옴
   return !!token; // 토큰이 존재하면 true, 아니면 false
 };
-
-
 
 // 로그아웃 처리
 const logout = () => {
