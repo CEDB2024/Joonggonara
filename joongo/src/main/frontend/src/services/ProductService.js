@@ -1,53 +1,76 @@
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import ProductService from "./ProductService"; // ProductService를 import
+import "./MainPage.css";
 
-const API_URL = "http://localhost:8080/api/products"; // Spring Boot API 경로
+const MainPage = () => {
+    const [products, setProducts] = useState([]); // 상품 목록 상태 관리
+    const [error, setError] = useState(null); // 에러 상태 관리
 
-const getAllProducts = async () => {
-    try {
-        const response = await axios.get(`${API_URL}/`);
-        return response.data;
-    } catch (error) {
-        console.error("[getAllProducts Error] ", error);
-        throw error; // 에러를 호출한 쪽에서 처리할 수 있도록 다시 던짐
-    }
+    useEffect(() => {
+        // 컴포넌트 로드 시 상품 데이터 로드
+        const fetchProducts = async () => {
+            try {
+                const data = await ProductService.getAllProducts();
+                setProducts(data); // 상품 목록 상태 업데이트
+            } catch (err) {
+                console.error("[MainPage Error] ", err);
+                setError("상품 데이터를 불러오는 중 오류가 발생했습니다.");
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    return (
+        <div className="main-page">
+            <header className="header">
+                <h1>중고거래 플랫폼</h1>
+                <div className="header-right">
+                    <div className="mypage">
+                        <Link to="/mypage">마이페이지</Link>
+                    </div>
+                    <div className="search-bar">
+                        <input type="text" placeholder="검색어를 입력하세요" />
+                        <button>검색</button>
+                    </div>
+                </div>
+            </header>
+
+            <nav className="nav">
+                <a href="#">전체 카테고리</a>
+                <a href="#">전자기기</a>
+                <a href="#">의류</a>
+                <a href="#">가구</a>
+                <a href="#">스포츠</a>
+                <a href="#">도서</a>
+            </nav>
+
+            <div className="container">
+                {error ? (
+                    <p className="error-message">{error}</p>
+                ) : products.length > 0 ? (
+                    products.map((product) => (
+                        <div className="product-card" key={product.id}>
+                            <img
+                                src={product.image || "https://via.placeholder.com/200x150"}
+                                alt={product.name}
+                                className="product-image"
+                            />
+                            <h2 className="product-name">{product.name}</h2>
+                            <p className="product-price">₩{product.price.toLocaleString()}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p className="loading-message">상품을 불러오는 중...</p>
+                )}
+            </div>
+
+            <footer className="footer">
+                <p>&copy; 2024 중고거래 플랫폼. All rights reserved.</p>
+            </footer>
+        </div>
+    );
 };
 
-const getAllProductsByCategories = async () => {
-    try {
-        const response = await axios.get(`${API_URL}/categories`);
-        return response.data;
-    } catch (error) {
-        console.error("[getAllProductsByCategories Error] ", error);
-        throw error;
-    }
-};
-
-const addProduct = async (productInfo) => {
-    try {
-        const response = await axios.post(`${API_URL}/`, productInfo);
-        return response.data;
-    } catch (error) {
-        console.error("[addProduct Error] ", error);
-        throw error;
-    }
-};
-
-const updateProduct = async (productId, updateInfo) => {
-    try {
-        const response = await axios.patch(`${API_URL}/${productId}`, updateInfo);
-        return response.data;
-    } catch (error) {
-        console.error("[updateProduct Error] ", error);
-        throw error;
-    }
-};
-
-// ProductService 객체로 관리
-const ProductService = {
-    getAllProducts,
-    getAllProductsByCategories,
-    addProduct,
-    updateProduct
-};
-
-export default ProductService;
+export default MainPage;
