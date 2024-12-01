@@ -31,8 +31,6 @@ const register = async (formData) => {
   }
 };
 
-
-
 // 토큰 검증 요청
 const verifyToken = async () => {
   const token = localStorage.getItem("token");

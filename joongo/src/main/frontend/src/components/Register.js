@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import authService from "../services/authService";
+import authService from "../services/AuthService";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -119,7 +119,7 @@ function Register() {
         <button type="submit">Sign Up</button>
       </form>
       <p>
-        Already have an account? <a href="/login">Login</a>
+        Already have an account? <a href="/Login">Login</a>
       </p>
     </div>
   );

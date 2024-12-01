@@ -1,6 +1,8 @@
 package com.dbProject.joongo.service;
 
 import com.dbProject.joongo.domain.User;
+import com.dbProject.joongo.dto.auth.AuthRequest;
+import com.dbProject.joongo.global.PasswordUtils;
 import com.dbProject.joongo.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,9 @@ public class UserService {
     private final UserMapper userMapper;
 
     // 사용자 추가
-    public void addUser(User user) {
+    public void addUser(AuthRequest.RegisterRequest registerRequest) {
+        registerRequest.setUserPassword(PasswordUtils.hashPassword(registerRequest.getUserPassword()));
+        User user = registerRequest.toUser();
         userMapper.insertUser(user);
     }
 
@@ -22,12 +26,13 @@ public class UserService {
     public User getUserById(int userId) {return userMapper.selectUserById(userId);
     }
 
-        // UserService.java
     public boolean isEmailRegistered(String email) {
         return userMapper.selectUserByEmail(email) != null;
     }
 
-
+    public User getUserByEmail(String email) {
+        return userMapper.selectUserByEmail(email);
+    }
     // 모든 사용자 조회
     public List<User> getAllUsers() {
         return userMapper.selectAllUsers();

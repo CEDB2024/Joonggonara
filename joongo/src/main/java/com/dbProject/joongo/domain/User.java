@@ -1,8 +1,10 @@
 package com.dbProject.joongo.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class User {
     private int userId;       // 자동 증가, 생성 시 필요 없음
     private String userName;
