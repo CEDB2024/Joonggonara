@@ -8,9 +8,11 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ProductMapper {
     void insertProduct(Product product);
 
+    Product findById(int id);
+
     List<Product> findAll();
 
-    Product findByCategoryId(int categoryId);
+    List<Product> findAllByCategoryId(int categoryId);
 
     void updateProduct(Product product);
 

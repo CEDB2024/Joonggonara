@@ -1,26 +1,24 @@
 package com.dbProject.joongo.controller;
 
 import com.dbProject.joongo.domain.User;
+import com.dbProject.joongo.dto.auth.AuthRequest;
 import com.dbProject.joongo.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     // 사용자 추가
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody User user) {
-        userService.addUser(user);
+    public ResponseEntity<String> createUser(@RequestBody AuthRequest.RegisterRequest registerRequest) {
+        userService.addUser(registerRequest);
         return ResponseEntity.ok("User created successfully!");
     }
 

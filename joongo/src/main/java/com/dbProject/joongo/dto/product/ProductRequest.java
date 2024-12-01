@@ -3,7 +3,7 @@ package com.dbProject.joongo.dto.product;
 import com.dbProject.joongo.domain.Product;
 import lombok.Builder;
 import lombok.Getter;
-public class ProductRequestDto {
+public class ProductRequest {
 
     @Getter
     @Builder
@@ -13,8 +13,10 @@ public class ProductRequestDto {
         private String image;
         private String productStatus; // Enum으로 변경 예정
         private String location;
-        private int count;
-        private int price;
+        private Integer count;
+        private Integer price;
+        private Integer categoryId;
+        private Integer userId;
 
         public Product toEntity() {
             return Product.builder()
@@ -25,6 +27,8 @@ public class ProductRequestDto {
                     .location(this.location)
                     .count(this.count)
                     .price(this.price)
+                    .categoryId(this.categoryId)
+                    .userId(this.userId)
                     .build();
         }
 
@@ -37,6 +41,8 @@ public class ProductRequestDto {
                     .location(product.getLocation())
                     .count(product.getCount())
                     .price(product.getPrice())
+                    .userId(product.getUserId())
+                    .categoryId(product.getCategoryId())
                     .build();
         }
     }
