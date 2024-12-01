@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import authService from "../services/authService";
+import authService from "../services/AuthService";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -85,7 +85,7 @@ function Login() {
                 <button type="submit">Login</button>
               </form>
               <p>
-                Don't have an account? <a href="/register">Sign up</a>
+                Don't have an account? <a href="/Register">Sign up</a>
               </p>
             </div>
         )}
