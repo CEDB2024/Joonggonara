@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users") // /api를 추가하여 모든 경로 일관성 유지
+@RequestMapping("/api/user") // /api를 추가하여 모든 경로 일관성 유지
 public class UserController {
 
     private final UserService userService;

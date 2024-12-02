@@ -37,16 +37,27 @@ public class AuthenticationController {
         ));
     }
 
-    // 토큰 검증 (React에서 호출 가능)
     @PostMapping("/verify")
     public ResponseEntity<?> verifyToken(@RequestHeader("Authorization") String token) {
-        if (jwtTokenProvider.validateToken(token)) {
-            return ResponseEntity.ok(Map.of("valid", true));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("valid", false));
+        try {
+            // 'Bearer '를 제거하고 실제 토큰 추출
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7); // 'Bearer ' 뒤의 토큰만 추출
+            }
+            
+            // 토큰 검증
+            if (jwtTokenProvider.validateToken(token)) {
+                return ResponseEntity.ok(Map.of("valid", true));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                     .body(Map.of("valid", false));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    
 
     // 사용자 등록 (회원가입)
     @PostMapping("/register")

@@ -32,16 +32,12 @@ const register = async (formData) => {
 };
 
 
+const verifyToken = async (token = localStorage.getItem("token")) => {
+  if (!token) return false;
 
-// 토큰 검증 요청
-const verifyToken = async () => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    return false;
-  }
   try {
     const response = await axios.post(
-      `${API_URL}/verify`,
+      "/api/auth/verify",
       {},
       {
         headers: {
@@ -49,18 +45,18 @@ const verifyToken = async () => {
         },
       }
     );
-    return response.data.valid; // 서버에서 유효성 반환
+    return response.data.valid;
   } catch (err) {
-    console.error("Token verification failed", err);
+    localStorage.removeItem("token"); // 만료 시 제거
     return false;
   }
 };
 
 
-const isAuthenticated = () => {
-  const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰을 가져옴
-  return !!token; // 토큰이 존재하면 true, 아니면 false
+const isAuthenticated = async () => {
+  return await verifyToken(); // 내부적으로 verifyToken 호출
 };
+
 
 
 
