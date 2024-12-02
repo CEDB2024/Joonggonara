@@ -21,8 +21,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             throws Exception {
         String token = request.getHeader(LoginConst.AUTH_HEADER);
         if (token == null || !jwtTokenProvider.validateToken(token)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            log.error("interceptor error !");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Unauthorized\", \"details\": \"Invalid or missing token\"}");            log.error("interceptor error !");
             return false;
         }
 
