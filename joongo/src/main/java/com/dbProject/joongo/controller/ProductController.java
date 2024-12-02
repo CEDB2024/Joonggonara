@@ -23,10 +23,10 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/")
-    public ResponseEntity<Integer> addProduct(@RequestBody ProductRequest.ProductInfo request) {
-        Integer productId = productService.create(request);
+    public ResponseEntity<String> addProduct(@RequestBody ProductRequest.ProductInfo request) {
+        productService.create(request);
 
-        return ResponseEntity.ok(productId);
+        return ResponseEntity.ok("Product created");
     }
 
     @GetMapping("/")

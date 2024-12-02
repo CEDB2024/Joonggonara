@@ -16,18 +16,19 @@ public class ProductService {
 
     private final ProductMapper productMapper;
 
-    public int create(ProductInfo productInfo) {
+    public void create(ProductInfo productInfo) {
         Product product = productInfo.toEntity();
 
         try {
             productMapper.insertProduct(product);
         } catch (DataAccessException e) {
             log.error("[SQL 에러]: {}", e.getMessage());
+            throw new DataAccessException("SQL 에러") {
+            };
         } catch (Exception e) {
             log.error("[예상하지 못한 에러]: {}", e.getMessage());
+            throw new RuntimeException("예상하지 못한 에러");
         }
-
-        return product.getProductId();
     }
 
     public List<ProductInfo> findAll() {
@@ -36,12 +37,13 @@ public class ProductService {
             return products.stream()
                     .map(ProductInfo::fromEntity) // Entity → DTO 변환
                     .toList(); // 리스트로 변환
-        } catch (DataAccessException e) {
+        }  catch (DataAccessException e) {
             log.error("[SQL 에러]: {}", e.getMessage());
-            throw new IllegalStateException();
+            throw new DataAccessException("SQL 에러") {
+            };
         } catch (Exception e) {
             log.error("[예상하지 못한 에러]: {}", e.getMessage());
-            throw new IllegalStateException();
+            throw new RuntimeException("예상하지 못한 에러");
         }
     }
 

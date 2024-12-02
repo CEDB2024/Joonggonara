@@ -31,8 +31,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date()) // 토큰 발급 시간
-//                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 1시간 유효
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // test: 2분 유효
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(secretKey, SignatureAlgorithm.HS512) // 최신 방식의 signWith
                 .compact();
     }
