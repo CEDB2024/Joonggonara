@@ -48,4 +48,6 @@ dependencies {
     // Bcrypt
     implementation 'de.svenkubiak:jBCrypt:0.4'
 
+    //validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
