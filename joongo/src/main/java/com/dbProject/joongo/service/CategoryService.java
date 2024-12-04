@@ -1,6 +1,6 @@
 package com.dbProject.joongo.service;
 
-import com.dbProject.joongo.domain.Category;
+import com.dbProject.joongo.domain.Categories;
 import com.dbProject.joongo.dto.category.CategoryResponse;
 import com.dbProject.joongo.dto.category.CategoryResponse.CategoryNames;
 import com.dbProject.joongo.mapper.CategoryMapper;
@@ -18,8 +18,13 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     public List<CategoryResponse.CategoryNames> findAll() {
+        List<Categories> test = categoryMapper.getAllCategory();
+        if (test == null) {
+            log.info("return 값이 null");
+        }
+        log.info("category: {}", test);
         try{
-            return categoryMapper.findAll()
+            return categoryMapper.getAllCategory()
                     .stream()
                     .map(CategoryNames::fromEntity)
                     .toList();
@@ -31,4 +36,5 @@ public class CategoryService {
             throw new IllegalStateException();
         }
     }
+
 }

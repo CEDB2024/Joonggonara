@@ -24,10 +24,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"Unauthorized\", \"details\": \"Invalid or missing token\"}");
-            log.error("interceptor error !");
+            log.error("interceptor error: {}", request.getRequestURI());
             return false;
         }
-
         return true;
     }
 }

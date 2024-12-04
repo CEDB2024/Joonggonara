@@ -5,9 +5,9 @@
 <mapper namespace="com.dbProject.joongo.mapper.CategoryMapper">
 
     <!--모든 카테고리 조회-->
-    <select id="getAllCategory" resultType="com.dbProject.joongo.domain.Category">
+    <select id="getAllCategory" resultType="com.dbProject.joongo.domain.Categories">
         SELECT *
-        FROM CATEGORY
+        FROM CATEGORIES
     </select>
 
 </mapper>

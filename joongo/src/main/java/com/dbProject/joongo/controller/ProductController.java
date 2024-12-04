@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     @GetMapping("/category")
-    public ResponseEntity<List<ProductInfo>>  getAllProductsByCategoryId(@RequestParam Integer categoryId) {
+    public ResponseEntity<List<ProductInfo>>  getAllProductsByCategoryId(@RequestParam("categoryId") Integer categoryId) {
         List<ProductInfo> productInfos = productService.findAllByCategory(categoryId);
 
         return ResponseEntity.ok(productInfos);
