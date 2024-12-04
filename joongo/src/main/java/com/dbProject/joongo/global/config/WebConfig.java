@@ -1,4 +1,4 @@
-package com.dbProject.joongo.config;
+package com.dbProject.joongo.global.config;
 
 import com.dbProject.joongo.global.interceptor.LoginCheckInterceptor;
 import lombok.RequiredArgsConstructor;
