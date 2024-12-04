@@ -1,13 +1,18 @@
 package com.dbProject.joongo.dto.product;
 
 import com.dbProject.joongo.domain.Product;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 public class ProductRequest {
 
     @Getter
     @Builder
-    public static class ProductInfo {
+    @NoArgsConstructor
+    @AllArgsConstructor
+   public static class ProductInfo {
         private String title;
         private String content;
         private String image;
@@ -32,7 +37,7 @@ public class ProductRequest {
                     .build();
         }
 
-        public static ProductInfo fromEntity(Product product) {
+        public static ProductInfo fromEntity(final Product product) {
             return ProductInfo.builder()
                     .title(product.getTitle())
                     .content(product.getContent())

@@ -1,4 +1,4 @@
-package com.dbProject.joongo.interceptor;
+package com.dbProject.joongo.global.interceptor;
 
 import com.dbProject.joongo.global.LoginConst;
 import com.dbProject.joongo.security.JwtTokenProvider;
@@ -23,7 +23,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         if (token == null || !jwtTokenProvider.validateToken(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"Unauthorized\", \"details\": \"Invalid or missing token\"}");            log.error("interceptor error !");
+            response.getWriter().write("{\"error\": \"Unauthorized\", \"details\": \"Invalid or missing token\"}");
+            log.error("interceptor error !");
             return false;
         }
 
