@@ -1,4 +1,4 @@
-package com.dbProject.joongo.interceptor;
+package com.dbProject.joongo.global.interceptor;
 
 import com.dbProject.joongo.global.LoginConst;
 import com.dbProject.joongo.security.JwtTokenProvider;

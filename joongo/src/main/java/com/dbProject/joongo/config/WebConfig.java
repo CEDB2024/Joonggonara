@@ -1,6 +1,6 @@
 package com.dbProject.joongo.config;
 
-import com.dbProject.joongo.interceptor.LoginCheckInterceptor;
+import com.dbProject.joongo.global.interceptor.LoginCheckInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
