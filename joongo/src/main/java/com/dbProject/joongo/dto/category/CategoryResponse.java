@@ -1,6 +1,6 @@
 package com.dbProject.joongo.dto.category;
 
-import com.dbProject.joongo.domain.Category;
+import com.dbProject.joongo.domain.Categories;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,9 +11,9 @@ public class CategoryResponse {
     public static class CategoryNames {
         String name;
 
-        public static CategoryNames fromEntity(final Category category) {
+        public static CategoryNames fromEntity(final Categories categories) {
             return CategoryNames.builder()
-                    .name(category.getCategoryName())
+                    .name(categories.getCategoryName())
                     .build();
         }
     }
