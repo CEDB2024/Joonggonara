@@ -3,6 +3,7 @@ package com.dbProject.joongo.global.exception.advice;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import com.dbProject.joongo.global.exception.ErrorReason;
+import javax.security.auth.login.LoginException;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,11 @@ public class ExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public ErrorReason generalExceptionHandler(Exception ex) {
         return new ErrorReason("SER500", "서버 오류", false);
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(LoginException.class)
+    public ErrorReason loginExceptionHandler(Exception ex) {
+        return new ErrorReason(ex.getMessage(), "서버 오류", false);
     }
 }

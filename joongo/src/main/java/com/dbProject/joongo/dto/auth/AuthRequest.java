@@ -1,6 +1,7 @@
 package com.dbProject.joongo.dto.auth;
 
 import com.dbProject.joongo.domain.User;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 public class AuthRequest {
@@ -12,6 +13,7 @@ public class AuthRequest {
     }
 
     @Data
+    @AllArgsConstructor
     public static class RegisterRequest {
         private String userName;
         private String nickname;

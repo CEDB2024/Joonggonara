@@ -19,11 +19,8 @@ public class CategoryService {
 
     public List<CategoryResponse.CategoryNames> findAll() {
         List<Categories> test = categoryMapper.getAllCategory();
-        if (test == null) {
-            log.info("return 값이 null");
-        }
-        log.info("category: {}", test);
-        try{
+
+        try {
             return categoryMapper.getAllCategory()
                     .stream()
                     .map(CategoryNames::fromEntity)
@@ -36,5 +33,4 @@ public class CategoryService {
             throw new IllegalStateException();
         }
     }
-
 }
