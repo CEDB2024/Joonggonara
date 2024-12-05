@@ -4,14 +4,24 @@
 <mapper namespace="com.dbProject.joongo.mapper.UserMapper">
 
     <!-- 사용자 추가 -->
-    <insert id="insertUser" parameterType="com.dbProject.joongo.domain.User">
+    <insert id="insertUser" parameterType="com.dbProject.joongo.domain.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO USERS (user_name, nickname, user_password, email, tel_1, tel_2, location)
         VALUES (#{userName}, #{nickname}, #{userPassword}, #{email}, #{tel_1}, #{tel_2}, #{location});
     </insert>
 
+    <!-- 마지막 삽입 사용자 ID 조회 (ID) -->
+    <select id="getLastInsertId" resultType="int">
+        SELECT LAST_INSERT_ID();
+    </select>
+
     <!-- 사용자 조회 (ID) -->
     <select id="selectUserById" parameterType="int" resultType="com.dbProject.joongo.domain.User">
         SELECT * FROM USERS WHERE user_id = #{userId}
+    </select>
+
+    <!-- 데이터베이스 내 가장 큰 ID 조회 -->
+    <select id="getLastIdInDatabase" resultType="int">
+        SELECT MAX(user_id) FROM USERS;
     </select>
 
     <!-- 모든 사용자 조회 -->
