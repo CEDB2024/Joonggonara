@@ -23,8 +23,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         if (token == null || !jwtTokenProvider.validateToken(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"Unauthorized\", \"details\": \"Invalid or missing token\"}");
-            log.error("interceptor error: {}", request.getRequestURI());
+            response.getWriter().write("{\"error\": \"Unauthorized\", \"details\": \"인가에 실패했습니다.\"}");
+            log.error("Auth Error: {}", request.getRequestURI());
             return false;
         }
         return true;

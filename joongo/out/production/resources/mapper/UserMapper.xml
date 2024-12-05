@@ -42,7 +42,7 @@
 
     <!-- 이메일로 사용자 조회 -->
     <select id="selectUserByEmail" parameterType="string" resultType="com.dbProject.joongo.domain.User">
-        SELECT * FROM USERS WHERE email = #{email}
+        SELECT * FROM USERS WHERE email = #{email} FOR UPDATE;
     </select>
 
     <!-- 이메일과 비밀번호로 사용자 조회 -->

@@ -7,9 +7,11 @@ import com.dbProject.joongo.global.PasswordUtils;
 import com.dbProject.joongo.security.JwtTokenProvider;
 import com.dbProject.joongo.service.UserService;
 import com.dbProject.joongo.domain.User;
+import javax.security.auth.login.LoginException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
@@ -25,19 +27,18 @@ public class AuthenticationController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws LoginException {
         // 사용자 조회
         User user = userService.getUserByEmail(loginRequest.getEmail());
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+            throw new LoginException("[Auth] Invalid Email: " + loginRequest.getEmail());
         }
 
         // 비밀번호 검증
         boolean isPasswordMatch = PasswordUtils.matchPassword(loginRequest.getPassword(), user.getUserPassword());
         if (!isPasswordMatch) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+            throw new LoginException("[Auth] Invalid Password");
         }
-
 
         // 토큰 생성
         String token = jwtTokenProvider.createToken(user.getEmail());
@@ -61,9 +62,15 @@ public class AuthenticationController {
     }
 
     // 사용자 등록 (회원가입)
+    @Transactional
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthRequest.RegisterRequest registerRequest) {
         try {
+            // 사용자 조회 및 중복 체크
+            User user = userService.getUserByEmail(registerRequest.getEmail());
+            if (user != null) {
+                throw new IllegalArgumentException("[Register] Duplicated Email: " + registerRequest.getEmail());
+            }
             userService.addUser(registerRequest);
             return ResponseEntity.ok(Map.of("success", true, "message", "User registered successfully!"));
         } catch (Exception e) {
