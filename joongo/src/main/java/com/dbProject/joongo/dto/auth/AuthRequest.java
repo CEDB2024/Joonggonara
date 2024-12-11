@@ -15,6 +15,7 @@ public class AuthRequest {
     @Data
     @AllArgsConstructor
     public static class RegisterRequest {
+        private Integer userId;
         private String userName;
         private String nickname;
         private String userPassword;

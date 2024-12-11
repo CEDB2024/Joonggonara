@@ -4,7 +4,7 @@
 <mapper namespace="com.dbProject.joongo.mapper.UserMapper">
 
     <!-- 사용자 추가 -->
-    <insert id="insertUser" parameterType="com.dbProject.joongo.domain.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertUser" parameterType="com.dbProject.joongo.domain.User" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO USERS (user_name, nickname, user_password, email, tel_1, tel_2, location)
         VALUES (#{userName}, #{nickname}, #{userPassword}, #{email}, #{tel_1}, #{tel_2}, #{location});
     </insert>

@@ -64,12 +64,15 @@ public class AuthenticationController {
     }
 
     // 사용자 등록 (회원가입)
-    @Transactional
+    /* FIXME : Transactional을 controller에 달면 잘 동작함
+                service에 달면 제대로 동작을 안함 이유는 ?
+                그건 그렇고 쿼리 별로 락이고 shared lock일 때 동작 ?
+    * */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthRequest.RegisterRequest registerRequest) {
         try {
-            Integer registerId = authService.register(registerRequest);
-            return ResponseEntity.ok(Map.of("success", true, registerId , "User registered successfully!"));
+            authService.register(registerRequest);
+            return ResponseEntity.ok(Map.of("success", true, "registry"  , "User registered successfully!"));
         } catch (Exception e) {// 디버깅을 위해 예외를 출력
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("success", false, "message", "Registration failed."));
         }

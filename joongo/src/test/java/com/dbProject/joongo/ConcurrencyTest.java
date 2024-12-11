@@ -25,12 +25,12 @@ public class ConcurrencyTest {
         // given
         int threadNum = 2;
         ExecutorService executorService = Executors.newFixedThreadPool(threadNum);
-        AuthRequest.RegisterRequest newMember1 = new AuthRequest.RegisterRequest(
+        AuthRequest.RegisterRequest newMember1 = new AuthRequest.RegisterRequest(null,
                 "randomUser1", "nickname1", "password1", "random1@example.com",
                 "1234", "1234", "Seoul", "USER", "ACTIVE", 5000L
         );
 
-        AuthRequest.RegisterRequest newMember2 = new AuthRequest.RegisterRequest(
+        AuthRequest.RegisterRequest newMember2 = new AuthRequest.RegisterRequest(null,
                 "randomUser2", "nickname2", "password2", "random1@example.com",
                 "1234", "1234", "Busan", "USER", "ACTIVE", 10000L
         );
