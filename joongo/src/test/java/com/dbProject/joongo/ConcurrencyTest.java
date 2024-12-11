@@ -76,6 +76,5 @@ public class ConcurrencyTest {
         executorService.awaitTermination(30, TimeUnit.SECONDS);
         // 시나리오는 맞는데 지금 RestControllerAdvice에서 예외를 처리하고 있어서 register는 정상 흐름으로 끝남
         // 그래서 테스트하기 애매
-        //
     }
 }
