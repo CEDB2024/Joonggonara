@@ -4,6 +4,7 @@ import com.dbProject.joongo.domain.User;
 import com.dbProject.joongo.dto.auth.AuthRequest;
 import com.dbProject.joongo.global.PasswordUtils;
 import com.dbProject.joongo.mapper.UserMapper;
+import io.swagger.v3.oas.models.security.SecurityScheme.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,14 @@ public class UserService {
         userMapper.insertUser(user);
     }
 
+    // 마지막 insert 사용자 ID 조회
+    public Integer getLastInsertId() {
+        return userMapper.getLastInsertId();
+    }
+
+    public Integer getLastIdInDatabase() {
+        return userMapper.getLastIdInDatabase();
+    }
     // 사용자 조회 (ID)
     public User getUserById(int userId) {return userMapper.selectUserById(userId);
     }

@@ -22,8 +22,8 @@ public class AuthRequest {
         private String tel_1;
         private String tel_2;
         private String location;
-        private String userRole;     // 기본값
-        private String userStatus; // 기본값
+        private String userRole;        // 기본값
+        private String userStatus;      // 기본값
         private long money;             // 기본값
 
 

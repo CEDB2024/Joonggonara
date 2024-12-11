@@ -16,7 +16,7 @@ public class ProductRequest {
         private String title;
         private String content;
         private String image;
-        private String productStatus; // Enum으로 변경 예정
+        private String productStatus; // Enum 으로 변경 예정
         private String location;
         private Integer count;
         private Integer price;
