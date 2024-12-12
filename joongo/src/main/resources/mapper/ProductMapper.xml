@@ -14,7 +14,7 @@
     <select id="findById" resultType="com.dbProject.joongo.domain.Product">
         SELECT *
         FROM PRODUCTS
-        WHERE id = #{id}
+        WHERE product_id = #{productId}
     </select>
 
     <!--모든 상품 조회-->
@@ -51,7 +51,7 @@
     <delete id="deleteProductById" parameterType="int">
         DELETE
         FROM PRODUCTS
-        WHERE productId = #{productId}
+        WHERE product_id = #{productId}
     </delete>
 
 </mapper>

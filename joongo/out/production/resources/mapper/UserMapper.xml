@@ -4,7 +4,7 @@
 <mapper namespace="com.dbProject.joongo.mapper.UserMapper">
 
     <!-- 사용자 추가 -->
-    <insert id="insertUser" parameterType="com.dbProject.joongo.domain.User" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="insertUser" parameterType="com.dbProject.joongo.domain.User" useGeneratedKeys="true">
         INSERT INTO USERS (user_name, nickname, user_password, email, tel_1, tel_2, location)
         VALUES (#{userName}, #{nickname}, #{userPassword}, #{email}, #{tel_1}, #{tel_2}, #{location});
     </insert>
@@ -51,20 +51,13 @@
     </delete>
 
     <!-- 이메일로 사용자 조회 -->
-    <!-- for shared 로 바꿔도 됨, shared lock, exclusive lock 모두 가능
-        모두 다른 트랜잭션에 대해 write 를 금지함
-        사실 해당 쿼리는 Update 또는 Insert 할 때 사용함
-        Insert 할 때 해당 쿼리를 사용하면 데이터가 없는 경우를 신경써주면 된다.
-        그러면 특정 행이 아니라 읽는 범위에 대한 Lock 이 필요하다.(범위 잠금) -> for share
-        Update 하는 경우에도 share lock 을 사용, 다른 트랜잭션이 write 하는 것을 방지 함
-        그러면 수정 중에는 전 데이터를 읽어도 무방하니 share lock 사용하는 게 좋을 듯
-        이러면 read commited 로 동작
-        MySQL 기본 격리 수준은 REPEATABLE READ 이다.
-        SELECT 에는 기본적으로 LOCK 이 안결려있음, MVCC 를 사용하므로 항상 같은 값을 읽는 것이 보장됨.
-        결국 SELECT 를 스냅샷에서 함.
+    <!-- 베타락만 가능
+         공유락을 하면 select 는 여러 트랜잭션에서 같이 할 수 있기 때문에
+         email 검증이 모두 통과하게 됨
+         그 후 insert 에서 데드락이 발생 , 레코드 락 요청 시
     -->
     <select id="selectUserByEmail" parameterType="string" resultType="com.dbProject.joongo.domain.User">
-        SELECT * FROM USERS WHERE email = #{email} FOR SHARE;
+        SELECT * FROM USERS WHERE email = #{email} FOR UPDATE;
     </select>
 
     <!-- 이메일과 비밀번호로 사용자 조회 -->

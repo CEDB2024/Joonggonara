@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ProductService from "./ProductService"; // ProductService import
+import ProductService from "./ProductService";
 import CategoryService from "../../services/CategoryService";
 import "./MainPage.css";
 
@@ -17,7 +17,7 @@ const MainPage = () => {
                 const data = await ProductService.getAllProducts();
                 setProducts(data); // 상품 목록 상태 업데이트
             } catch (err) {
-                console.error("[MainPage Error - Products]", err.response || err.message);
+                console.error("[MainPage Error - Products]", err);
                 setProductError("상품 데이터를 불러오는 중 오류가 발생했습니다.");
             }
         };
@@ -28,7 +28,7 @@ const MainPage = () => {
                 const data = await CategoryService.getCategoryNames();
                 setCategories(data); // 카테고리 목록 상태 업데이트
             } catch (err) {
-                console.error("[MainPage Error - Categories]", err.response || err.message);
+                console.error("[MainPage Error - Categories]", err);
                 setCategoryError("카테고리 데이터를 불러오는 중 오류가 발생했습니다.");
             }
         };
@@ -71,13 +71,15 @@ const MainPage = () => {
                     <p className="error-message">{productError}</p>
                 ) : products.length > 0 ? (
                     products.map((product) => (
-                        <div className="product-card" key={product.id}>
-                            <img
-                                src={product.image || "https://via.placeholder.com/200x150"}
-                                alt={product.name}
-                                className="product-image"
-                            />
-                            <h2 className="product-name">{product.name}</h2>
+                        <div className="product-card" key={product.productId}>
+                            <Link to={`/product/${product.productId}`}>
+                                <img
+                                    src={product.image || "https://via.placeholder.com/200x150"}
+                                    alt={product.title}
+                                    className="product-image"
+                                />
+                                <h2 className="product-name">{product.title}</h2>
+                            </Link>
                             <p className="product-price">₩{product.price.toLocaleString()}</p>
                         </div>
                     ))

@@ -2,6 +2,7 @@ package com.dbProject.joongo.controller;
 
 import com.dbProject.joongo.dto.product.ProductRequest;
 import com.dbProject.joongo.dto.product.ProductRequest.ProductInfo;
+import com.dbProject.joongo.dto.product.ProductResponse;
 import com.dbProject.joongo.service.ProductService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,22 +31,29 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<ProductInfo>>  getAllProducts() {
-        List<ProductInfo> productInfos = productService.findAll();
+    public ResponseEntity<List<ProductResponse.ProductInfo>>  getAllProducts() {
+        List<ProductResponse.ProductInfo> productInfos = productService.findAll();
 
         return ResponseEntity.ok(productInfos);
     }
 
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductResponse.ProductInfo> getProductById(@PathVariable("productId") Integer productId) {
+        ProductResponse.ProductInfo productInfo = productService.findProductById(productId);
+
+        return ResponseEntity.ok(productInfo);
+    }
+
     @GetMapping("/category")
-    public ResponseEntity<List<ProductInfo>>  getAllProductsByCategoryId(@RequestParam("categoryId") Integer categoryId) {
-        List<ProductInfo> productInfos = productService.findAllByCategory(categoryId);
+    public ResponseEntity<List<ProductResponse.ProductInfo>>  getAllProductsByCategoryId(@RequestParam("categoryId") Integer categoryId) {
+        List<ProductResponse.ProductInfo> productInfos = productService.findAllByCategory(categoryId);
 
         return ResponseEntity.ok(productInfos);
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<ProductInfo> updateProduct(@PathVariable Integer productId, @RequestBody ProductRequest.ProductInfo request) {
-        ProductInfo productInfo = productService.update(productId ,request);
+    public ResponseEntity<ProductResponse.ProductInfo> updateProduct(@PathVariable("productId") Integer productId, @RequestBody ProductRequest.ProductInfo request) {
+        ProductResponse.ProductInfo productInfo = productService.update(productId ,request);
 
         return ResponseEntity.ok(productInfo);
     }

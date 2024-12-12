@@ -70,6 +70,7 @@ public class AuthenticationController {
     * */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthRequest.RegisterRequest registerRequest) {
+        log.info("Register method called with request: {}", registerRequest);
         try {
             authService.register(registerRequest);
             return ResponseEntity.ok(Map.of("success", true, "registry"  , "User registered successfully!"));
