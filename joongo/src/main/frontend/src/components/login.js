@@ -27,10 +27,13 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log(formData);
     try {
       const response = await authService.login(formData);
+      console.log(response);
       if (response.token) {
         // 토큰 저장
         localStorage.setItem("token", response.token);
