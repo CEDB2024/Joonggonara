@@ -5,6 +5,7 @@ import Register from "./components/Register";
 import PrivateRoute from "./components/PrivateRouter";
 import MainPage from "./components/page/MainPage";
 import MyPage from "./components/mypage/MyPage";
+import ProductDetailPage from "./components/page/DetailPage";
 
 function App() {
     return (
@@ -16,15 +17,16 @@ function App() {
                 {/* 공개 라우트 */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-
+                <Route path="/product/:productId" element={<ProductDetailPage />} />
+                <Route path="/main" element={<MainPage />} />
                 {/* 인증된 사용자만 접근 가능 */}
-                <Route
-                    path="/main"
-                    element={
-                        <PrivateRoute>
-                            <MainPage />
-                        </PrivateRoute>
-                    }
+                {/*<Route*/}
+                {/*    path="/main"*/}
+                {/*    element={*/}
+                {/*        <PrivateRoute>*/}
+                {/*            <MainPage />*/}
+                {/*        </PrivateRoute>*/}
+                {/*    }*/}
                 />
                 <Route
                     path="/mypage"

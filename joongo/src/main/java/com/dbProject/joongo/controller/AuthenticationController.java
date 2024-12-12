@@ -5,6 +5,7 @@ import com.dbProject.joongo.dto.auth.AuthRequest.LoginRequest;
 import com.dbProject.joongo.global.LoginConst;
 import com.dbProject.joongo.global.PasswordUtils;
 import com.dbProject.joongo.security.JwtTokenProvider;
+import com.dbProject.joongo.service.AuthService;
 import com.dbProject.joongo.service.UserService;
 import com.dbProject.joongo.domain.User;
 import javax.security.auth.login.LoginException;
@@ -25,6 +26,7 @@ public class AuthenticationController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthService authService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws LoginException {
@@ -62,24 +64,22 @@ public class AuthenticationController {
     }
 
     // 사용자 등록 (회원가입)
-    @Transactional
+    /* FIXME : Transactional을 controller에 달면 잘 동작함
+                service에 달면 제대로 동작을 안함 이유는 ?
+                그건 그렇고 쿼리 별로 락이고 shared lock일 때 동작 ?
+    * */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthRequest.RegisterRequest registerRequest) {
+        log.info("Register method called with request: {}", registerRequest);
         try {
-            // 사용자 조회 및 중복 체크
-            User user = userService.getUserByEmail(registerRequest.getEmail());
-            if (user != null) {
-                throw new IllegalArgumentException("[Register] Duplicated Email: " + registerRequest.getEmail());
-            }
-            userService.addUser(registerRequest);
-            return ResponseEntity.ok(Map.of("success", true, "message", "User registered successfully!"));
-        } catch (Exception e) {
-            e.printStackTrace(); // 디버깅을 위해 예외를 출력
+            authService.register(registerRequest);
+            return ResponseEntity.ok(Map.of("success", true, "registry"  , "User registered successfully!"));
+        } catch (Exception e) {// 디버깅을 위해 예외를 출력
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("success", false, "message", "Registration failed."));
         }
     }
 
-    // JWT에서 이메일 정보 추출
+    // JWT 에서 이메일 정보 추출
     @GetMapping("/email")
     public ResponseEntity<?> getEmailFromToken(@RequestHeader(LoginConst.AUTH_HEADER) String token) {
         if (token == null || !token.startsWith(LoginConst.AUTH_HEADER_PREFIX)) {
