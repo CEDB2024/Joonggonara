@@ -18,24 +18,24 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/product/:productId" element={<ProductDetailPage />} />
-                <Route path="/mypage" element={<MyPage />} />
+                <Route path="/main" element={<MainPage />} />
                 {/* 인증된 사용자만 접근 가능 */}
+                {/*<Route*/}
+                {/*    path="/main"*/}
+                {/*    element={*/}
+                {/*        <PrivateRoute>*/}
+                {/*            <MainPage />*/}
+                {/*        </PrivateRoute>*/}
+                {/*    }*/}
+                />
                 <Route
-                    path="/main"
+                    path="/mypage"
                     element={
                         <PrivateRoute>
-                            <MainPage />
+                            <MyPage />
                         </PrivateRoute>
                     }
                 />
-                {/*<Route*/}
-                {/*    path="/mypage"*/}
-                {/*    element={*/}
-                {/*        <PrivateRoute>*/}
-                {/*            <MyPage />*/}
-                {/*        </PrivateRoute>*/}
-                {/*    }*/}
-                {/*/>*/}
             </Routes>
         </Router>
     );
