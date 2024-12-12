@@ -10,7 +10,7 @@ version = '1.0.0'
 sourceCompatibility = '17'
 
 application {
-    mainClass = 'com.dbproject.joongo.JoongoApplication' // 메인 클래스의 전체 경로
+    mainClass = 'com.dbProject.joongo.JoongoApplication' // 메인 클래스의 전체 경로
 }
 
 
