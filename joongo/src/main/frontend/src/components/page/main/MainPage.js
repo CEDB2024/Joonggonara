@@ -45,6 +45,9 @@ const MainPage = () => {
                     <div className="mypage">
                         <Link to="/mypage">마이페이지</Link>
                     </div>
+                    <div className="create-product">
+                        <Link to="/create-product">상품 등록</Link>
+                    </div>
                     <div className="search-bar">
                         <input type="text" placeholder="검색어를 입력하세요" />
                         <button>검색</button>
