@@ -23,7 +23,9 @@ public interface UserMapper {
     User selectUserByEmail(String email);
 
     int getLastInsertId();
+
     int getLastIdInDatabase();
+
     // 이메일과 비밀번호로 사용자 조회
     User selectUserByEmailAndPassword(@Param("email") String email, @Param("userPassword") String password);
 }

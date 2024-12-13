@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ProductService from "./ProductService";
-import CategoryService from "../../services/CategoryService";
+import ProductService from "../../../services/ProductService";
+import CategoryService from "../../../services/CategoryService";
 import "./MainPage.css";
 
 const MainPage = () => {
@@ -46,7 +46,7 @@ const MainPage = () => {
                         <Link to="/mypage">마이페이지</Link>
                     </div>
                     <div className="create-product">
-                        <Link to="/create-product">상품 등록</Link>
+                        <Link to="/products/new">상품 등록</Link>
                     </div>
                     <div className="search-bar">
                         <input type="text" placeholder="검색어를 입력하세요" />

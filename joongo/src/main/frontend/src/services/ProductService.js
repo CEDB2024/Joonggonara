@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "../global/AxiosInstance";
 
 const API_URL = "http://localhost:8080/api/products"; // Spring Boot API 경로
 
@@ -14,7 +15,7 @@ const getAllProducts = async () => {
 
 const getAllProductsByCategories = async (categoryId) => {
     try {
-        const response = await axios.get(`${API_URL}/categories/${categoryId}`);
+        const response = await axiosInstance.get(`${API_URL}/categories/${categoryId}`);
         return response.data;
     } catch (error) {
         console.error("[getAllProductsByCategories Error]:", error.response || error.message);
@@ -24,7 +25,7 @@ const getAllProductsByCategories = async (categoryId) => {
 
 const addProduct = async (productInfo) => {
     try {
-        const response = await axios.post(`${API_URL}/`, productInfo);
+        const response = await axiosInstance.post(`${API_URL}/`, productInfo);
         return response.data;
     } catch (error) {
         console.error("[addProduct Error]:", error.response || error.message);
@@ -34,7 +35,7 @@ const addProduct = async (productInfo) => {
 
 const updateProduct = async (productId, updateInfo) => {
     try {
-        const response = await axios.patch(`${API_URL}/${productId}`, updateInfo);
+        const response = await axiosInstance.patch(`${API_URL}/${productId}`, updateInfo);
         return response.data;
     } catch (error) {
         console.error("[updateProduct Error]:", error.response || error.message);
@@ -44,7 +45,7 @@ const updateProduct = async (productId, updateInfo) => {
 
 const getProductById = async (productId) => {
     try {
-        const response = await axios.get(`${API_URL}/${productId}`);
+        const response = await axiosInstance.get(`${API_URL}/${productId}`);
         return response.data;
     } catch (error) {
         console.error("[getProductById Error]:", error.response || error.message);

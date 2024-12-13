@@ -62,8 +62,6 @@ public class ProductRequest {
     public static class uploadInfo {
         private String title;
         private String content;
-        private String image;
-//        private String productStatus; // Enum 으로 변경 예정
         private String location;
         private Integer count;
         private Integer price;
@@ -75,27 +73,12 @@ public class ProductRequest {
             return Product.builder()
                     .title(this.title)
                     .content(this.content)
-                    .image(this.image)
                     .productStatus("available")
                     .location(this.location)
                     .count(this.count)
                     .price(this.price)
                     .categoryId(this.categoryId)
                     .userId(this.userId)
-                    .build();
-        }
-
-        public static ProductInfo fromEntity(final Product product) {
-            return ProductInfo.builder()
-                    .title(product.getTitle())
-                    .content(product.getContent())
-                    .image(product.getImage())
-                    .productStatus(product.getProductStatus())
-                    .location(product.getLocation())
-                    .count(product.getCount())
-                    .price(product.getPrice())
-                    .userId(product.getUserId())
-                    .categoryId(product.getCategoryId())
                     .build();
         }
     }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import ProductService from "./ProductService";
+import ProductService from "../../../services/ProductService";
 import "./DetailPage.css";
 
 const ProductDetailPage = () => {

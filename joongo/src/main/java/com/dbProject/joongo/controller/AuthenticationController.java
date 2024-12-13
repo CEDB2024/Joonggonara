@@ -66,7 +66,9 @@ public class AuthenticationController {
     // 사용자 등록 (회원가입)
     /* FIXME : Transactional을 controller에 달면 잘 동작함
                 service에 달면 제대로 동작을 안함 이유는 ?
-                그건 그렇고 쿼리 별로 락이고 shared lock일 때 동작 ?
+                EXCEPTION이 전파되는 정도때문이었음
+                CONTROLLER에서는 TRY CATCH로 예외르 잡아줘서
+                MYSQL에서 보낸 에러를 처리해서 롤백이 안일어남..? 맞나
     * */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthRequest.RegisterRequest registerRequest) {
