@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -30,12 +30,11 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+    @GetMapping("/email")
+    public ResponseEntity<User> getUserByEmail(@RequestParam("email") String email) {
         User user = userService.getUserByEmail(email);
 
         return ResponseEntity.ok(user);
-
     }
 
     // 모든 사용자 조회

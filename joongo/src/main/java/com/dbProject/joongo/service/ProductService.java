@@ -28,13 +28,7 @@ public class ProductService {
     public void create(ProductRequest.uploadInfo productInfo) {
         try {
             String uuid = UUID.randomUUID().toString();
-            Uuid forSave = Uuid.builder()
-                    .uuid(uuid)
-                    .build();
-
-            Long uuidId = uuidMapper.createUuid(forSave);
-            Uuid savedUuid = uuidMapper.findById(uuidId);
-            String pictureUrl = s3Manager.uploadFile(s3Manager.generateReviewKeyName(savedUuid),
+            String pictureUrl = s3Manager.uploadFile(uuid,
                     productInfo.getProductPicture());
 
             Product product = productInfo.toEntity();

@@ -64,7 +64,7 @@ const CreateProductPage = () => {
                 const userInfo = await UserService.getUserByEmail(email);
                 setFormData((prevData) => ({
                     ...prevData,
-                    userId: userInfo.id, // 받아온 유저 ID를 formData에 추가
+                    userId: userInfo.userId, // 받아온 유저 ID를 formData에 추가
                 }));
             } catch (err) {
                 console.error("[Error Fetching User Info]", err);
