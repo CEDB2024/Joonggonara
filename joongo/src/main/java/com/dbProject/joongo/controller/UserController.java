@@ -30,10 +30,15 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable int id) {
         User user = userService.getUserById(id);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        }
-        return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity<User> getUserByEmail(@RequestParam("email") String email) {
+        User user = userService.getUserByEmail(email);
+
+        return ResponseEntity.ok(user);
     }
 
     // 모든 사용자 조회

@@ -3,6 +3,7 @@ package com.dbProject.joongo.dto.auth;
 import com.dbProject.joongo.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class AuthRequest {
 
@@ -13,6 +14,7 @@ public class AuthRequest {
     }
 
     @Data
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class RegisterRequest {
         private String userName;
@@ -22,9 +24,6 @@ public class AuthRequest {
         private String tel_1;
         private String tel_2;
         private String location;
-        private String userRole;     // 기본값
-        private String userStatus; // 기본값
-        private long money;             // 기본값
 
 
         public User toUser() {
@@ -36,7 +35,6 @@ public class AuthRequest {
                     .tel_1(this.tel_1)
                     .tel_2(this.tel_2)
                     .location(this.location)
-                    .money(this.money) // 기본값 설정
                     .build();
         }
     }

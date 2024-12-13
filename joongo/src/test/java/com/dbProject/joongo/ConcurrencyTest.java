@@ -27,12 +27,12 @@ public class ConcurrencyTest {
         ExecutorService executorService = Executors.newFixedThreadPool(threadNum);
         AuthRequest.RegisterRequest newMember1 = new AuthRequest.RegisterRequest(
                 "randomUser1", "nickname1", "password1", "random1@example.com",
-                "1234", "1234", "Seoul", "USER", "ACTIVE", 5000L
+                "1234", "1234", "Seoul"
         );
 
         AuthRequest.RegisterRequest newMember2 = new AuthRequest.RegisterRequest(
                 "randomUser2", "nickname2", "password2", "random1@example.com",
-                "1234", "1234", "Busan", "USER", "ACTIVE", 10000L
+                "1234", "1234", "Busan"
         );
 
         // when
@@ -76,6 +76,5 @@ public class ConcurrencyTest {
         executorService.awaitTermination(30, TimeUnit.SECONDS);
         // 시나리오는 맞는데 지금 RestControllerAdvice에서 예외를 처리하고 있어서 register는 정상 흐름으로 끝남
         // 그래서 테스트하기 애매
-        //
     }
 }
