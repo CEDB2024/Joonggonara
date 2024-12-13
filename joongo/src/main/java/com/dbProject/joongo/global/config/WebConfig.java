@@ -17,6 +17,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginCheckInterceptor)
                 .addPathPatterns("/**")  // 적용할 URL 패턴
                 .order(1)
+                .excludePathPatterns("/api/users/**")
+                .excludePathPatterns("/api/categories/**")
                 .excludePathPatterns("/api/auth/**")
                 .excludePathPatterns("/api/products/**")
                 .excludePathPatterns(
@@ -27,6 +29,5 @@ public class WebConfig implements WebMvcConfigurer {
                         "/webjars/**",
                         "/actuator/**"); //Swagger 용
                 // 인가 필요없는 API URI 추가해주세요.
-
     }
 }

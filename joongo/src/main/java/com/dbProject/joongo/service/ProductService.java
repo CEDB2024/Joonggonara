@@ -1,13 +1,19 @@
 package com.dbProject.joongo.service;
 
+import com.dbProject.joongo.aws.s3.AmazonS3Manager;
 import com.dbProject.joongo.domain.Product;
+import com.dbProject.joongo.domain.Uuid;
+import com.dbProject.joongo.dto.product.ProductRequest;
 import com.dbProject.joongo.dto.product.ProductRequest.ProductInfo;
 import com.dbProject.joongo.dto.product.ProductResponse;
 import com.dbProject.joongo.mapper.ProductMapper;
+import com.dbProject.joongo.mapper.UuidMapper;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -15,13 +21,22 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductMapper productMapper;
-
-    public void create(ProductInfo productInfo) {
-        Product product = productInfo.toEntity();
-
+    private final UuidMapper uuidMapper;
+    private final AmazonS3Manager s3Manager;
+    // image 필드가 pictureUrl 저장함
+    // s3에 uuid 를 식별자로 단건 업로드 중
+    public void create(ProductRequest.uploadInfo productInfo) {
         try {
+            String uuid = UUID.randomUUID().toString();
+            String pictureUrl = s3Manager.uploadFile(uuid,
+                    productInfo.getProductPicture());
+
+            Product product = productInfo.toEntity();
+            product.setImage(pictureUrl);
+
             productMapper.insertProduct(product);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("[예상하지 못한 에러]: {}", e.getMessage());
             throw new RuntimeException("예상하지 못한 에러");
         }
@@ -34,6 +49,7 @@ public class ProductService {
                     .map(ProductResponse.ProductInfo::fromEntity) // Entity → DTO 변환
                     .toList(); // 리스트로 변환
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("[예상하지 못한 에러]: {}", e.getMessage());
             throw new RuntimeException("예상하지 못한 에러");
         }

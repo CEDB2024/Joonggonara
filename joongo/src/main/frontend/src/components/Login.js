@@ -22,6 +22,8 @@ function Login() {
     try {
       const response = await authService.login({ email, password });
       if (response.success) {
+        console.log(response);
+        localStorage.setItem("userId", response.userId); // userId 저장
         localStorage.setItem("token", response.token); // 인증 토큰 저장
         fetchUserEmail(); // 로그인 성공 후 사용자 이메일 가져오기
         navigate("/main"); // 메인 페이지로 이동

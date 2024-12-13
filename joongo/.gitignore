@@ -38,4 +38,15 @@ build
 gradle
 .gradle
 
-application-heehun.properties
+# IntelliJ IDEA
+/.idea
+/out/
+
+# Maven
+/target/
+
+# Gradle
+/build/
+
+# 기타 빌드 출력 디렉토리
+/joongo/out/
