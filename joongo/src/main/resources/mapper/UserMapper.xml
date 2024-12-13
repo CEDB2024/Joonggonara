@@ -51,4 +51,15 @@
         FROM USERS
         WHERE email = #{email} AND user_password = #{userPassword}
     </select>
+
+    <select id="selectProductsByUserId" parameterType="int" resultType="com.dbProject.joongo.domain.Product">
+        SELECT * FROM PRODUCTS WHERE user_id = #{userId}
+    </select>
+
+    <update id="updateUserMoney">
+        UPDATE USERS
+        SET money = #{money}
+        WHERE user_id = #{userId}
+    </update>
+
 </mapper>

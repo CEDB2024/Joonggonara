@@ -1,8 +1,10 @@
 package com.dbProject.joongo.mapper;
 
+import com.dbProject.joongo.domain.Product;
 import com.dbProject.joongo.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -24,5 +26,10 @@ public interface UserMapper {
 
     // 이메일과 비밀번호로 사용자 조회
     User selectUserByEmailAndPassword(@Param("email") String email, @Param("userPassword") String password);
+
+    List<Product> selectProductsByUserId(@Param("userId") int userId);
+    
+    void updateUserMoney(@Param("userId") int userId, @Param("money") long money);
+
 }
 

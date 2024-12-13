@@ -44,9 +44,12 @@ public class AuthenticationController {
         String token = jwtTokenProvider.createToken(user.getEmail());
         log.info("created token {}", token);
 
+        int userId = user.getUserId();
+
         return ResponseEntity.ok(Map.of(
                 "success", true,
-                "token", token
+                "token", token,
+                "userId", userId
         ));
     }
 

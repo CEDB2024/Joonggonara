@@ -1,5 +1,6 @@
 package com.dbProject.joongo.service;
 
+import com.dbProject.joongo.domain.Product;
 import com.dbProject.joongo.domain.User;
 import com.dbProject.joongo.dto.auth.AuthRequest;
 import com.dbProject.joongo.global.PasswordUtils;
@@ -53,4 +54,24 @@ public class UserService {
     public User authenticate(String email, String userPassword) {
         return userMapper.selectUserByEmailAndPassword(email, userPassword);
     }
+
+    public List<Product> getProductsByUserId(int userId) {
+        return userMapper.selectProductsByUserId(userId);
+    }
+
+    public void chargeUserMoney(int userId, int amount) {
+        // 현재 금액 가져오기
+        User user = userMapper.selectUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        // 금액 충전
+        long newBalance = user.getMoney() + amount;
+        user.setMoney(newBalance);
+
+        // 데이터베이스 업데이트
+        userMapper.updateUserMoney(userId, newBalance);
+    }
+
 }
