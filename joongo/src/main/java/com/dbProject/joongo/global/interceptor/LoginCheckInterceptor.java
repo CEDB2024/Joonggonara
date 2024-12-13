@@ -20,6 +20,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String token = request.getHeader(LoginConst.AUTH_HEADER);
+        log.info("token: {}", token);
         if (token == null || !jwtTokenProvider.validateToken(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
