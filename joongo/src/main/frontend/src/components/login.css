@@ -1,39 +1,104 @@
-<div className="login-container">
-  {userEmail ? (
-    // 로그인된 상태
-    <div className="welcome-box">
-      <h2>Welcome, {userEmail}</h2>
-      <button onClick={handleLogout}>Logout</button>
-    </div>
-  ) : (
-    // 로그인되지 않은 상태
-    <div className="login-box">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p className="error-message">{error}</p>}
-        <button type="submit">Login</button>
-      </form>
-      <p>
-        Don't have an account? <a href="/Register">Sign up</a>
-      </p>
-    </div>
-  )}
-</div>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.login-box {
+    background-color: #2b2b2b;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    padding: 30px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.login-box h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.login-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-box label {
+    text-align: left;
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.login-box input {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #444444;
+    color: white;
+}
+
+.login-box button {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ffcc00;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-box button:hover {
+    background-color: #e6b800;
+}
+
+.login-box a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.login-box a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+}
+
+.welcome-box {
+    text-align: center;
+    color: #ffffff;
+}
+
+.welcome-box button {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #444444;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.welcome-box button:hover {
+    background-color: #555555;
+}
