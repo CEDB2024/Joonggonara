@@ -3,6 +3,7 @@ package com.dbProject.joongo.service;
 import com.dbProject.joongo.domain.Product;
 import com.dbProject.joongo.domain.User;
 import com.dbProject.joongo.dto.auth.AuthRequest;
+import com.dbProject.joongo.dto.user.UserDTO;
 import com.dbProject.joongo.global.PasswordUtils;
 import com.dbProject.joongo.mapper.UserMapper;
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
@@ -38,7 +39,7 @@ public class UserService {
         return userMapper.getLastIdInDatabase();
     }
     // 사용자 조회 (ID)
-    public User getUserById(int userId) {return userMapper.selectUserById(userId);
+    public UserDTO getUserById(int userId) {return userMapper.selectUserById(userId);
     }
 
     public boolean isEmailRegistered(String email) {
@@ -74,7 +75,7 @@ public class UserService {
 
     public void chargeUserMoney(int userId, int amount) {
         // 현재 금액 가져오기
-        User user = userMapper.selectUserById(userId);
+        UserDTO user = userMapper.selectUserById(userId);
         if (user == null) {
             throw new RuntimeException("User not found");
         }

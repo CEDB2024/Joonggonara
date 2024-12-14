@@ -3,6 +3,7 @@ package com.dbProject.joongo.controller;
 import com.dbProject.joongo.domain.Product;
 import com.dbProject.joongo.domain.User;
 import com.dbProject.joongo.dto.auth.AuthRequest;
+import com.dbProject.joongo.dto.user.*;
 import com.dbProject.joongo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,8 @@ public class UserController {
 
     // ID로 사용자 조회
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
-        User user = userService.getUserById(id);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
+        UserDTO user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
 
@@ -42,7 +43,7 @@ public class UserController {
     @GetMapping("/{id}/info")
     public ResponseEntity<?> getUserInfo(@PathVariable int id) {
         try {
-            User user = userService.getUserById(id);
+            UserDTO user = userService.getUserById(id);
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }

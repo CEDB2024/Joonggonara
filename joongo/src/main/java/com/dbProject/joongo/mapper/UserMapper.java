@@ -2,6 +2,7 @@ package com.dbProject.joongo.mapper;
 
 import com.dbProject.joongo.domain.Product;
 import com.dbProject.joongo.domain.User;
+import com.dbProject.joongo.dto.user.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
@@ -14,7 +15,7 @@ public interface UserMapper {
     // 기존 메서드들
     void insertUser(User user);
 
-    User selectUserById(int userId);
+    UserDTO selectUserById(int userId);
 
     List<User> selectAllUsers();
 

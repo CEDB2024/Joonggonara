@@ -3,41 +3,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dbProject.joongo.mapper.UserMapper">
 
-    <resultMap id="UserResultMap" type="com.dbProject.joongo.domain.User">
-        <id column="user_id" property="userId"/>
-        <result column="user_name" property="userName"/>
-        <result column="nickname" property="nickname"/>
-        <result column="user_password" property="userPassword"/>
-        <result column="email" property="email"/>
-        <result column="location" property="location"/>
-        <result column="user_role" property="userRole"/>
-        <result column="user_status" property="userStatus"/>
-        <result column="money" property="money"/>
-        <result column="tel_1" property="tel_1"/> <!-- tel_1 매핑 -->
-        <result column="tel_2" property="tel_2"/> <!-- tel_2 매핑 -->
-        <result column="phone_number" property="phoneNumber"/> <!-- CONCAT 결과 매핑 -->
+    <resultMap id="UserDTOResultMap" type="com.dbProject.joongo.dto.UserDTO">
+        <id column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="nickname" property="nickname" />
+        <result column="email" property="email" />
+        <result column="location" property="location" />
+        <result column="money" property="money" />
+        <result column="phone_number" property="phoneNumber" />
     </resultMap>
 
-    <select id="selectUserById" parameterType="int" resultMap="UserResultMap">
+    <select id="selectUserById" parameterType="int" resultMap="UserDTOResultMap">
         SELECT
             user_id,
             user_name,
             nickname,
-            user_password,
             email,
             location,
-            user_role,
-            user_status,
             money,
-            tel_1, <!-- tel_1 추가 -->
-            tel_2, <!-- tel_2 추가 -->
-            CASE
-                WHEN tel_1 IS NULL AND tel_2 IS NULL THEN NULL
-                ELSE CONCAT(COALESCE(tel_1, ''), '-', COALESCE(tel_2, ''))
-            END AS phone_number
+            CONCAT(COALESCE(tel_1, ''), '-', COALESCE(tel_2, '')) AS phone_number
         FROM USERS
-        WHERE user_id = #{id}
+        WHERE user_id = #{userId}
     </select>
+
 
     <!-- 사용자 추가 -->
     <insert id="insertUser" parameterType="com.dbProject.joongo.domain.User" useGeneratedKeys="true">
