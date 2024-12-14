@@ -1,6 +1,6 @@
-const getLocalStorage = (defaultValue = null) => {
+const getLocalStorage = (key, defaultValue = null) => {
     try {
-        const storedValue = localStorage.getItem("token");
+        const storedValue = localStorage.getItem(key);
         if (storedValue === null) {
             return defaultValue; // 데이터가 없으면 기본값 반환
         }

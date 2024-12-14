@@ -51,7 +51,7 @@ const getProductById = async (productId) => {
 };
 
 const purchaseProduct = async (purchasedInfo) => {
-    return await sendRequest("post", `order/`, purchasedInfo);
+    return await sendRequest("post", `orders/`, purchasedInfo);
 }
 // ProductService 객체로 관리
 const ProductService = {

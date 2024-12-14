@@ -1,5 +1,6 @@
 package com.dbProject.joongo.domain;
 
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -20,4 +21,28 @@ public class Product {
     private Integer count;           // 조회수
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Product product = (Product) o;
+        return Objects.equals(productId, product.productId) && Objects.equals(userId, product.userId)
+                && Objects.equals(title, product.title) && Objects.equals(content, product.content)
+                && Objects.equals(image, product.image) && Objects.equals(price, product.price)
+                && Objects.equals(productStatus, product.productStatus) && Objects.equals(location,
+                product.location) && Objects.equals(categoryId, product.categoryId) && Objects.equals(
+                count, product.count) && Objects.equals(createdAt, product.createdAt) && Objects.equals(
+                updatedAt, product.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, userId, title, content, image, price, productStatus, location, categoryId, count,
+                createdAt, updatedAt);
+    }
 }

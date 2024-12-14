@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Param;
 public interface ProductMapper {
     void insertProduct(Product product);
 
+    Integer findUserIdById(Integer productId);
+
     Product findById(int id);
 
     List<Product> findAll();
@@ -17,5 +19,5 @@ public interface ProductMapper {
 
     void updateProduct(Product product);
 
-    void deleteProductId(int productId);
+    void deleteProductById(int productId);
 }

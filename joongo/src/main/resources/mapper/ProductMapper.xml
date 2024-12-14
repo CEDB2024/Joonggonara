@@ -5,9 +5,12 @@
 <mapper namespace="com.dbProject.joongo.mapper.ProductMapper">
 
     <!--상품 생성  -->
-    <insert id="insertProduct" parameterType="com.dbProject.joongo.domain.Product" useGeneratedKeys="true" keyProperty="productId">
-        INSERT INTO PRODUCTS (user_id, title, content, image, price, product_status, location, category_id, count, created_at, updated_at)
-        VALUES (#{userId}, #{title}, #{content}, #{image}, #{price}, #{productStatus}, #{location}, #{categoryId}, #{count}, NOW(), NOW());
+    <insert id="insertProduct" parameterType="com.dbProject.joongo.domain.Product" useGeneratedKeys="true"
+            keyProperty="productId">
+        INSERT INTO PRODUCTS (user_id, title, content, image, price, product_status, location, category_id, count,
+                              created_at, updated_at)
+        VALUES (#{userId}, #{title}, #{content}, #{image}, #{price}, #{productStatus}, #{location}, #{categoryId},
+                #{count}, NOW(), NOW());
     </insert>
 
     <!--단일 상품 조회-->
@@ -23,6 +26,13 @@
         FROM PRODUCTS
     </select>
 
+    <!--모든 상품 조회-->
+    <select id="findUserIdById" resultType="com.dbProject.joongo.domain.Product">
+        SELECT user_id
+        FROM PRODUCTS
+        WHERE product_id = #{productId}
+    </select>
+
     <!--카테고리 별 상품 조회 -->
     <select id="findAllByCategoryId" resultType="com.dbProject.joongo.domain.Product">
         SELECT *
@@ -30,7 +40,6 @@
         WHERE category_id = #{categoryId}
     </select>
 
-    <!-- 상품 수정 -->
     <update id="updateProduct" parameterType="com.dbProject.joongo.domain.Product">
         UPDATE PRODUCTS
         <set>
@@ -42,10 +51,11 @@
             <if test="location != null">location = #{location},</if>
             <if test="categoryId != null">category_id = #{categoryId},</if>
             <if test="count != null">count = #{count},</if>
+            updated_at = NOW() <!-- 고정 필드를 SET 블록 안으로 이동 -->
         </set>
-        updated_at = NOW()
         WHERE product_id = #{productId}
     </update>
+
 
     <!-- 상품 삭제 -->
     <delete id="deleteProductById" parameterType="int">

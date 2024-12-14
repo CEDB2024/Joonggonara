@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductService from "../../../services/ProductService";
 import Layout from "../../../global/Layout";
+import getLocalStorage from "../../../global/LocalStorage";
 import "./DetailPage.css";
 
 const ProductDetailPage = () => {
@@ -18,7 +19,10 @@ const ProductDetailPage = () => {
         3: "의류",
         4: "식물",
     };
-    //todo : localstorage에서 id 가져오는 거 추가해서 여기서 써
+
+    // LocalStorage에서 userId 가져오기
+    const userId = getLocalStorage("userId", null);
+
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -38,11 +42,16 @@ const ProductDetailPage = () => {
     }, [productId]);
 
     const handlePurchase = async () => {
+        if (!userId) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
         try {
             const orderData = {
                 productId: product.productId, // 상품 ID
-                buyerId: 1, // 구매자 ID (예: 로컬 스토리지에서 가져옴)
-                sellerId: product.sellerId, // 판매자 ID
+                buyerId: userId, // 로컬 스토리지에서 가져온 구매자 ID
+                sellerId: product.userId, // 판매자 ID
                 count: selectedQuantity, // 선택된 수량
             };
 

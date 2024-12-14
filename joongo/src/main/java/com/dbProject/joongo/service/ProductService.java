@@ -45,6 +45,7 @@ public class ProductService {
         try {
             List<Product> products = productMapper.findAll();
             return products.stream()
+                    .filter(product -> product.getCount() > 0)
                     .map(ProductResponse.ProductInfo::fromEntity) // Entity → DTO 변환
                     .toList(); // 리스트로 변환
         } catch (Exception e) {
@@ -58,6 +59,7 @@ public class ProductService {
         try {
             List<Product> products = productMapper.findAllByCategoryId(categoryId);
             return products.stream()
+                    .filter(product -> product.getCount() > 0)
                     .map(ProductResponse.ProductInfo::fromEntity)
                     .toList();
         } catch (Exception e) {
