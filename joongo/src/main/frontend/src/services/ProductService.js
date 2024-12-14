@@ -15,8 +15,7 @@ const sendRequest = async (method, endpoint, data = null, params = null) => {
             method,
             url: `${API_URL}/${endpoint}`,
             headers: {
-                "Content-Type": "application/json",
-                ...(token && { Authorization: `Bearer ${token}` }), // 토큰이 있으면 Authorization 헤더 추가
+                ...(token && {Authorization: `Bearer ${token}`}), // 토큰이 있으면 Authorization 헤더 추가
             },
             data,
             params,
@@ -36,11 +35,11 @@ const getAllProducts = async () => {
 };
 
 const getAllProductsByCategories = async (categoryId) => {
-    return await sendRequest("get", "products/category", null, { categoryId });
+    return await sendRequest("get", "products/category", null, {categoryId});
 };
 
 const addProduct = async (productInfo) => {
-    return await sendRequest("post", "products", productInfo);
+    return await sendRequest("post", "products/", productInfo);
 };
 
 const updateProduct = async (productId, updateInfo) => {
@@ -51,8 +50,12 @@ const getProductById = async (productId) => {
     return await sendRequest("get", `products/${productId}`);
 };
 
+const purchaseProduct = async (purchasedInfo) => {
+    return await sendRequest("post", `order/`, purchasedInfo);
+}
 // ProductService 객체로 관리
 const ProductService = {
+    purchaseProduct,
     getAllProducts,
     getAllProductsByCategories,
     addProduct,

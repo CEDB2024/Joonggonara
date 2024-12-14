@@ -8,5 +8,6 @@ public class OrderRequest {
         Integer productId;
         Integer buyerId;
         Integer sellerId;
+        Integer count;
     }
 }

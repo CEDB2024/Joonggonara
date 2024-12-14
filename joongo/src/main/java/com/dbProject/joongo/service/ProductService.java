@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductService {
 
     private final ProductMapper productMapper;
-    private final UuidMapper uuidMapper;
     private final AmazonS3Manager s3Manager;
     // image 필드가 pictureUrl 저장함
     // s3에 uuid 를 식별자로 단건 업로드 중

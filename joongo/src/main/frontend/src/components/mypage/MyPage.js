@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Layout from "../../global/Layout"; // 헤더와 푸터를 포함한 공통 Layout
 import "./MyPage.css";
 import mypageService from "../../services/MypageService";
 
@@ -48,40 +49,42 @@ const MyPage = () => {
   };
 
   return (
-    <div className="mypage">
-      <h1>마이페이지</h1>
+      <Layout>
+        <div className="mypage">
+          <h1>마이페이지</h1>
 
-      {/* 소지 금액 및 충전 */}
-      <div className="balance-section">
-        <h2>현재 소지 금액: ₩{money.toLocaleString()}</h2>
-        <div className="charge">
-          <input
-            type="number"
-            placeholder="충전 금액 입력"
-            value={chargeAmount}
-            onChange={(e) => setChargeAmount(e.target.value)}
-          />
-          <button onClick={handleCharge}>충전</button>
-        </div>
-      </div>
+          {/* 소지 금액 및 충전 */}
+          <div className="balance-section">
+            <h2>현재 소지 금액: ₩{money.toLocaleString()}</h2>
+            <div className="charge">
+              <input
+                  type="number"
+                  placeholder="충전 금액 입력"
+                  value={chargeAmount}
+                  onChange={(e) => setChargeAmount(e.target.value)}
+              />
+              <button onClick={handleCharge}>충전</button>
+            </div>
+          </div>
 
-      {/* 내가 판매 중인 물품 */}
-      <div className="selling-section">
-        <h2>내가 판매 중인 물품</h2>
-        <div className="items">
-          {sellingItems.length > 0 ? (
-            sellingItems.map((item) => (
-              <div key={item.id} className="item-card">
-                <h3>{item.name}</h3>
-                <p>₩{item.price.toLocaleString()}</p>
-              </div>
-            ))
-          ) : (
-            <p>판매 중인 물품이 없습니다.</p>
-          )}
+          {/* 내가 판매 중인 물품 */}
+          <div className="selling-section">
+            <h2>내가 판매 중인 물품</h2>
+            <div className="items">
+              {sellingItems.length > 0 ? (
+                  sellingItems.map((item) => (
+                      <div key={item.id} className="item-card">
+                        <h3>{item.name}</h3>
+                        <p>₩{item.price.toLocaleString()}</p>
+                      </div>
+                  ))
+              ) : (
+                  <p>판매 중인 물품이 없습니다.</p>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </Layout>
   );
 };
 

@@ -7,7 +7,7 @@
     <!--주문 생성  -->
     <insert id="createOrder" parameterType="com.dbProject.joongo.domain.Order" useGeneratedKeys="true"
             keyProperty="orderId">
-        INSERT INTO Orders (product_id, buyer_id, seller_id, completed_at)
-        VALUES (#{product_id}, #{buyer_id}, #{seller_id}, NOW());
+        INSERT INTO Orders (product_id, buyer_id, count, seller_id, completed_at)
+        VALUES (#{product_id}, #{buyer_id}, #{count}, #{seller_id}, NOW());
     </insert>
 </mapper>

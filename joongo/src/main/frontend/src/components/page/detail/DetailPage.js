@@ -18,7 +18,7 @@ const ProductDetailPage = () => {
         3: "의류",
         4: "식물",
     };
-
+    //todo : localstorage에서 id 가져오는 거 추가해서 여기서 써
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -39,7 +39,14 @@ const ProductDetailPage = () => {
 
     const handlePurchase = async () => {
         try {
-            await ProductService.purchaseProduct(productId, selectedQuantity);
+            const orderData = {
+                productId: product.productId, // 상품 ID
+                buyerId: 1, // 구매자 ID (예: 로컬 스토리지에서 가져옴)
+                sellerId: product.sellerId, // 판매자 ID
+                count: selectedQuantity, // 선택된 수량
+            };
+
+            await ProductService.purchaseProduct(orderData); // 서버로 주문 데이터 전송
             alert("구매가 완료되었습니다!");
         } catch (err) {
             console.error("[Purchase Error]:", err);

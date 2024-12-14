@@ -1,3 +1,4 @@
+/* 전체 레이아웃 설정 */
 body {
     margin: 0;
     padding: 0;
@@ -11,6 +12,7 @@ body {
     min-height: 100vh;
 }
 
+/* 헤더 스타일 */
 .header {
     background-color: #333333;
     color: white;
@@ -23,62 +25,58 @@ body {
 .header-right {
     display: flex;
     align-items: center;
-    gap: 20px; /* 마이페이지와 검색창 사이 간격 */
-}
-.create-product {
-    font-size: 16px;
-    cursor: pointer;
-    color: #ffffff;
+    gap: 20px; /* 오른쪽 요소 간격 */
 }
 
-.create-product a {
+/* 마이페이지 버튼 스타일 */
+.header-right .mypage a {
     text-decoration: none;
-    color: #ffffff;
+    color: white;
     font-weight: bold;
-    padding: 5px 10px;
+    padding: 8px 12px; /* 버튼 내부 여백을 약간 더 넓힘 */
+    border-radius: 4px;
+    background-color: #444444; /* 배경색 */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 14px;
+    text-align: center;
+}
+
+.header-right .mypage a:hover {
+    background-color: #ffcc00; /* 호버 시 배경색 */
+    color: black;
+}
+
+/* 상품 등록 버튼 스타일 */
+.header-right .create-product a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 8px 12px;
     border-radius: 4px;
     background-color: #444444;
-}
-
-.create-product a:hover {
-    background-color: #ffcc00;
-    color: #000000;
-}
-
-.mypage {
-    font-size: 16px;
+    border: none;
     cursor: pointer;
-    color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 14px;
 }
 
-.mypage a {
-    text-decoration: none;
-    color: #ffffff;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 4px;
-    background-color: #444444;
-}
-
-.mypage a:hover {
+.header-right .create-product a:hover {
     background-color: #ffcc00;
-    color: #000000;
+    color: black;
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 24px;
-}
-
-.search-bar {
+/* 검색창 스타일 */
+.header-right .search-bar {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.search-bar input[type="text"] {
+.header-right .search-bar input[type="text"] {
     padding: 8px;
-    font-size: 16px;
+    font-size: 14px;
     border: none;
     border-radius: 4px;
     width: 200px;
@@ -86,9 +84,9 @@ body {
     color: white;
 }
 
-.search-bar button {
+.header-right .search-bar button {
     padding: 8px 12px;
-    font-size: 16px;
+    font-size: 14px;
     background-color: #444444;
     color: white;
     border: none;
@@ -96,20 +94,33 @@ body {
     cursor: pointer;
 }
 
+/* 카테고리 네비게이션 */
 .nav {
     background-color: #222222;
     color: white;
     padding: 10px;
     display: flex;
     justify-content: space-around;
+    gap: 10px; /* 버튼 간격 */
 }
 
-.nav a {
+.nav button.category-button {
+    background-color: #444444;
     color: white;
-    text-decoration: none;
-    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.nav button.category-button:hover {
+    background-color: #ffcc00;
+    color: black;
+}
+
+/* 상품 카드 컨테이너 */
 .container {
     padding: 20px;
     display: flex;
@@ -152,6 +163,7 @@ body {
     color: #ffcc00;
 }
 
+/* 푸터 스타일 */
 .footer {
     background-color: #222222;
     color: white;
