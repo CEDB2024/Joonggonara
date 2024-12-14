@@ -1,72 +1,62 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import ProductService from "../../../services/ProductService";
-import CategoryService from "../../../services/CategoryService";
+import Layout from "../../../global/Layout";
 import "./MainPage.css";
 
 const MainPage = () => {
     const [products, setProducts] = useState([]); // 상품 목록 상태 관리
-    const [categories, setCategories] = useState([]); // 카테고리 목록 상태 관리
     const [productError, setProductError] = useState(null); // 상품 에러 상태 관리
-    const [categoryError, setCategoryError] = useState(null); // 카테고리 에러 상태 관리
+    const [searchParams, setSearchParams] = useSearchParams(); // 쿼리 파라미터 관리
+
+    // 고정된 카테고리 데이터
+    const categories = [
+        { id: 0, name: "전체" },
+        { id: 1, name: "디지털 기기" },
+        { id: 2, name: "가구/인테리어" },
+        { id: 3, name: "의류" },
+        { id: 4, name: "식물" },
+    ];
+
+    const fetchProducts = async (categoryId) => {
+        try {
+            if (categoryId === 0) {
+                // 기본값: 전체 상품 가져오기
+                const data = await ProductService.getAllProducts();
+                setProducts(data);
+            } else {
+                // 카테고리별 상품 가져오기
+                const data = await ProductService.getAllProductsByCategories(categoryId);
+                setProducts(data);
+            }
+            setProductError(null);
+        } catch (err) {
+            console.error("[MainPage Error - Products]", err);
+            setProductError("상품 데이터를 불러오는 중 오류가 발생했습니다.");
+        }
+    };
 
     useEffect(() => {
-        // 상품 데이터 로드
-        const fetchProducts = async () => {
-            try {
-                const data = await ProductService.getAllProducts();
-                setProducts(data); // 상품 목록 상태 업데이트
-            } catch (err) {
-                console.error("[MainPage Error - Products]", err);
-                setProductError("상품 데이터를 불러오는 중 오류가 발생했습니다.");
-            }
-        };
+        const categoryId = parseInt(searchParams.get("category")) || 0; // 쿼리 파라미터에서 카테고리 ID 가져오기
+        fetchProducts(categoryId);
+    }, [searchParams]);
 
-        // 카테고리 데이터 로드
-        const fetchCategories = async () => {
-            try {
-                const data = await CategoryService.getCategoryNames();
-                setCategories(data); // 카테고리 목록 상태 업데이트
-            } catch (err) {
-                console.error("[MainPage Error - Categories]", err);
-                setCategoryError("카테고리 데이터를 불러오는 중 오류가 발생했습니다.");
-            }
-        };
-
-        fetchProducts();
-        fetchCategories();
-    }, []);
+    const handleCategoryClick = (categoryId) => {
+        setSearchParams({ category: categoryId }); // 선택한 카테고리 ID를 쿼리 파라미터에 설정
+    };
 
     return (
-        <div className="main-page">
-            <header className="header">
-                <h1>중고거래 플랫폼</h1>
-                <div className="header-right">
-                    <div className="mypage">
-                        <Link to="/mypage">마이페이지</Link>
-                    </div>
-                    <div className="create-product">
-                        <Link to="/products/new">상품 등록</Link>
-                    </div>
-                    <div className="search-bar">
-                        <input type="text" placeholder="검색어를 입력하세요" />
-                        <button>검색</button>
-                    </div>
-                </div>
-            </header>
-
+        <Layout>
             <nav className="nav">
-                {categoryError ? (
-                    <p className="error-message">{categoryError}</p>
-                ) : categories.length > 0 ? (
-                    categories.map((category) => (
-                        <a href="#" key={category.id}>
-                            {category.name}
-                        </a>
-                    ))
-                ) : (
-                    <p className="loading-message">카테고리를 불러오는 중...</p>
-                )}
+                {categories.map((category) => (
+                    <button
+                        key={category.id}
+                        className="category-button"
+                        onClick={() => handleCategoryClick(category.id)}
+                    >
+                        {category.name}
+                    </button>
+                ))}
             </nav>
 
             <div className="container">
@@ -90,11 +80,7 @@ const MainPage = () => {
                     <p className="loading-message">상품을 불러오는 중...</p>
                 )}
             </div>
-
-            <footer className="footer">
-                <p>&copy; 2024 중고거래 플랫폼. All rights reserved.</p>
-            </footer>
-        </div>
+        </Layout>
     );
 };
 

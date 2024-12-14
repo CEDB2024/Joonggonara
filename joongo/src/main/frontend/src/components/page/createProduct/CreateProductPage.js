@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../../services/AuthService";
 import UserService from "../../../services/UserService"; // UserService 추가
-import "./CreateProductPage.css";
 import ProductService from "../../../services/ProductService";
+import Layout from "../../../global/Layout";
+import "./CreateProductPage.css";
 
 const CreateProductPage = () => {
     const navigate = useNavigate();
@@ -22,9 +23,22 @@ const CreateProductPage = () => {
 
     const [userEmail, setUserEmail] = useState("");
 
+    // 고정된 카테고리 데이터
+    const categories = [
+        { id: 1, name: "디지털 기기" },
+        { id: 2, name: "가구/인테리어" },
+        { id: 3, name: "의류" },
+        { id: 4, name: "식물" },
+    ];
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+    };
+
+    const handleCategoryChange = (e) => {
+        const selectedCategoryId = parseInt(e.target.value, 10); // 선택된 카테고리 ID
+        setFormData({ ...formData, categoryId: selectedCategoryId });
     };
 
     const handleFileChange = (e) => {
@@ -76,92 +90,102 @@ const CreateProductPage = () => {
     }, []);
 
     return (
-        <div className="create-product-page">
-            <header className="header">
-                <h1>상품 등록</h1>
-                {userEmail && <p>유저 이메일: {userEmail}</p>} {/* 이메일 표시 */}
-                {emailError && <p className="error">{emailError}</p>} {/* 에러 메시지 표시 */}
-            </header>
-            <form className="product-form" onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="title">제목</label>
-                    <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="content">내용</label>
-                    <textarea
-                        id="content"
-                        name="content"
-                        value={formData.content}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="location">위치</label>
-                    <input
-                        type="text"
-                        id="location"
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="count">수량</label>
-                    <input
-                        type="number"
-                        id="count"
-                        name="count"
-                        value={formData.count}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="price">가격</label>
-                    <input
-                        type="number"
-                        id="price"
-                        name="price"
-                        value={formData.price}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="categoryId">카테고리 ID</label>
-                    <input
-                        type="number"
-                        id="categoryId"
-                        name="categoryId"
-                        value={formData.categoryId}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="productPicture">상품 이미지</label>
-                    <input
-                        type="file"
-                        id="productPicture"
-                        name="productPicture"
-                        onChange={handleFileChange}
-                    />
-                </div>
-                <button type="submit" className="submit-button">
-                    등록하기
-                </button>
-            </form>
-        </div>
+        <Layout>
+            <div className="create-product-page">
+                <header>
+                    <h1>상품 등록</h1>
+                    {userEmail && <p>유저 이메일: {userEmail}</p>} {/* 이메일 표시 */}
+                    {emailError && <p className="error">{emailError}</p>} {/* 에러 메시지 표시 */}
+                </header>
+                <form className="product-form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="title">제목</label>
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value={formData.title}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="content">내용</label>
+                        <textarea
+                            id="content"
+                            name="content"
+                            value={formData.content}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="location">위치</label>
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            value={formData.location}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="count">수량</label>
+                        <input
+                            type="number"
+                            id="count"
+                            name="count"
+                            value={formData.count}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="price">가격</label>
+                        <input
+                            type="number"
+                            id="price"
+                            name="price"
+                            value={formData.price}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="category">카테고리</label>
+                        <select
+                            id="category"
+                            name="categoryId"
+                            value={formData.categoryId}
+                            onChange={handleCategoryChange}
+                            required
+                        >
+                            <option value="" disabled>
+                                카테고리를 선택하세요
+                            </option>
+                            {categories.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="productPicture">상품 이미지</label>
+                        <input
+                            type="file"
+                            id="productPicture"
+                            name="productPicture"
+                            onChange={handleFileChange}
+                        />
+                    </div>
+                    <button type="submit" className="submit-button">
+                        등록하기
+                    </button>
+                </form>
+            </div>
+        </Layout>
     );
 };
 

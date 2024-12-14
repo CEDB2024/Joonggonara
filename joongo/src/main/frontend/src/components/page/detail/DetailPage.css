@@ -41,7 +41,9 @@ body {
     border-radius: 4px;
     background-color: #444444;
 }
-
+.product-category {
+    color: inherit;
+}
 .mypage a:hover {
     background-color: #ffcc00;
     color: #000000;

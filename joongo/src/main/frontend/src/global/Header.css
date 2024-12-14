@@ -1,0 +1,83 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* 상하 간격을 줄여 더 깔끔하게 */
+    background-color: #333333;
+    color: white;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* 로고와 텍스트 간의 간격을 약간 늘림 */
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+}
+
+.logo-icon {
+    width: 35px; /* 로고 크기를 조금 키움 */
+    height: 35px;
+    object-fit: contain; /* 로고 이미지의 비율을 유지 */
+    border-radius: 4px; /* 약간의 둥근 효과를 추가 */
+    border: 1px solid #444; /* 깔끔하게 보이도록 테두리 추가 */
+}
+
+.logo-text {
+    font-size: 22px; /* 텍스트 크기를 약간 키워 로고와 균형 맞춤 */
+    font-weight: bold;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* 오른쪽 요소 간격을 조금 줄임 */
+}
+
+.mypage a,
+.create-product a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: #444444;
+}
+
+.mypage a:hover,
+.create-product a:hover {
+    background-color: #ffcc00;
+    color: black;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-bar input {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    background-color: #2b2b2b;
+    color: white;
+    width: 200px; /* 검색창 너비 고정 */
+}
+
+.search-bar button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    background-color: #444444;
+    color: white;
+    border: none;
+    cursor: pointer;
+}

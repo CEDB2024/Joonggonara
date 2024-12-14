@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ProductService from "../../../services/ProductService";
+import Layout from "../../../global/Layout";
 import "./DetailPage.css";
 
 const ProductDetailPage = () => {
@@ -9,6 +10,14 @@ const ProductDetailPage = () => {
     const [selectedQuantity, setSelectedQuantity] = useState(1);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+
+    // 고정된 카테고리 데이터
+    const categories = {
+        1: "디지털 기기",
+        2: "가구/인테리어",
+        3: "의류",
+        4: "식물",
+    };
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -51,22 +60,7 @@ const ProductDetailPage = () => {
     }
 
     return (
-        <div className="main-page">
-            {/* 기존 메인 페이지의 헤더 */}
-            <header className="header">
-                <h1>중고거래 플랫폼</h1>
-                <div className="header-right">
-                    <div className="mypage">
-                        <Link to="/mypage">마이페이지</Link>
-                    </div>
-                    <div className="search-bar">
-                        <input type="text" placeholder="검색어를 입력하세요" />
-                        <button>검색</button>
-                    </div>
-                </div>
-            </header>
-
-            {/* 상세 페이지 디자인 */}
+        <Layout>
             <div className="product-detail-container">
                 <div className="product-detail-card">
                     <div className="product-image-wrapper">
@@ -84,6 +78,9 @@ const ProductDetailPage = () => {
                         <p className="product-description">
                             <strong>설명:</strong> {product.content || "설명이 없습니다."}
                         </p>
+                        <p className="product-category">
+                            <strong>카테고리:</strong> {categories[product.categoryId] || "카테고리 미지정"}
+                        </p>
                         <p className="product-status">
                             <strong>상태:</strong> {product.productStatus || "상태 미지정"}
                         </p>
@@ -94,7 +91,6 @@ const ProductDetailPage = () => {
                             <strong>남은 수량:</strong> {product.count}
                         </p>
 
-                        {/* 수량 선택 */}
                         <div className="quantity-selector">
                             <label htmlFor="quantity">수량 선택:</label>
                             <select
@@ -110,7 +106,6 @@ const ProductDetailPage = () => {
                             </select>
                         </div>
 
-                        {/* 구매 버튼 */}
                         <button
                             className="purchase-button"
                             onClick={handlePurchase}
@@ -121,11 +116,7 @@ const ProductDetailPage = () => {
                     </div>
                 </div>
             </div>
-
-            <footer className="footer">
-                <p>&copy; 2024 중고거래 플랫폼. All rights reserved.</p>
-            </footer>
-        </div>
+        </Layout>
     );
 };
 
