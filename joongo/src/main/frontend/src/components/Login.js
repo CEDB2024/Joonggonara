@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../services/AuthService";
+import './login.css';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -53,45 +54,46 @@ function Login() {
   }, []);
 
   return (
-      <div>
-        {userEmail ? (
-            // 로그인된 상태
-            <div>
-              <h2>Welcome, {userEmail}</h2>
-              <button onClick={handleLogout}>Logout</button>
-            </div>
-        ) : (
-            // 로그인되지 않은 상태
-            <div>
-              <h2>Login</h2>
-              <form onSubmit={handleLogin}>
-                <div>
-                  <label>Email</label>
-                  <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                  />
-                </div>
-                <div>
-                  <label>Password</label>
-                  <input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                  />
-                </div>
-                {error && <p style={{ color: "red" }}>{error}</p>}
-                <button type="submit">Login</button>
-              </form>
-              <p>
-                Don't have an account? <a href="/Register">Sign up</a>
-              </p>
-            </div>
-        )}
+    <div className="login-container">
+    {userEmail ? (
+      // 로그인된 상태
+      <div className="welcome-box">
+        <h2>환영합니다, {userEmail}</h2>
+        <button onClick={handleLogout}>Logout</button>
       </div>
+    ) : (
+      // 로그인되지 않은 상태
+      <div className="login-box">
+        <h2>로그인</h2>
+        <form onSubmit={handleLogin}>
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          {error && <p className="error-message">{error}</p>}
+          <button type="submit">Login</button>
+        </form>
+        <p>
+          계정이 없으신가요? <a href="/Register">Sign up</a>
+        </p>
+      </div>
+    )}
+  </div>
+  
   );
 }
 
