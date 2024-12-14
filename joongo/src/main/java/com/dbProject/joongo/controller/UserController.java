@@ -39,7 +39,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    // 특정 ID의 사용자 정보 조회 (DTO 변환 포함)
     @GetMapping("/{id}/info")
     public ResponseEntity<?> getUserInfo(@PathVariable int id) {
         try {
@@ -48,15 +47,12 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
 
-            // 전화번호 합치기
-            String fullPhoneNumber = user.getTel_1() + "-" + user.getTel_2();
-
             // 필요한 정보만 담아 반환
             Map<String, Object> response = new HashMap<>();
             response.put("userId", user.getUserId());
             response.put("userName", user.getUserName());
             response.put("email", user.getEmail());
-            response.put("phone", fullPhoneNumber);
+            response.put("phone", user.getPhoneNumber());
             response.put("location", user.getLocation());
             response.put("money", user.getMoney());
 

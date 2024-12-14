@@ -17,7 +17,7 @@ const MyPage = () => {
         // 사용자 정보 가져오기
         const user = await MypageService.getUserInfo(userId);
         setUserInfo(user);
-
+        console.log(user);
         // 판매 물품 가져오기
         const products = await MypageService.getUserProducts(userId);
         setSellingItems(products);
@@ -61,9 +61,8 @@ const MyPage = () => {
         <div className="user-info">
           <h2>회원 정보</h2>
           <p>이름: {userInfo.userName}</p>
-          <p>닉네임: {userInfo.nickname}</p>
           <p>이메일: {userInfo.email}</p>
-          <p>지역: {userInfo.location}</p>
+          <p>전화번호: {userInfo.phone}</p>
         </div>
       )}
 
