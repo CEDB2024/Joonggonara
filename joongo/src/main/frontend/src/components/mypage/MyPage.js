@@ -1,79 +1,88 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MyPage.css";
+import mypageService from "../../services/MypageService";
 
 const MyPage = () => {
-    // State 관리
-    const [money, setMoney] = useState(50000); // 초기 소지 금액
-    const [chargeAmount, setChargeAmount] = useState(""); // 충전 금액 입력값
+  const [money, setMoney] = useState(0); // 소지 금액
+  const [chargeAmount, setChargeAmount] = useState(""); // 충전 금액 입력값
+  const [sellingItems, setSellingItems] = useState([]); // 판매 중인 물품
 
-    // 판매 목록 (데모 데이터)
-    const sellingItems = [
-        { id: 1, name: "중고 노트북", price: 300000 },
-        { id: 2, name: "스마트폰", price: 200000 },
-    ];
+  const userId = localStorage.getItem("userId"); // 로컬스토리지에서 사용자 ID 가져오기
 
-    // 거래 내역 (데모 데이터)
-    const transactionHistory = [
-        { id: 1, item: "중고책", price: 15000, date: "2024-11-20" },
-        { id: 2, item: "의류", price: 25000, date: "2024-11-22" },
-    ];
+  // 유저 정보 및 판매 아이템 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 판매 물품 가져오기
+        const products = await mypageService.getUserProducts(userId);
+        setSellingItems(products);
 
-    // 돈 충전 기능
-    const handleCharge = () => {
-        const amount = parseInt(chargeAmount);
-        if (!isNaN(amount) && amount > 0) {
-            setMoney(money + amount);
-            alert(`₩${amount} 충전 완료!`);
-            setChargeAmount(""); // 입력값 초기화
-        } else {
-            alert("올바른 금액을 입력해주세요.");
-        }
+        // 사용자 소지 금액 가져오기
+        const userResponse = await mypageService.chargeMoney(userId, 0); // 금액 충전을 0으로 요청해 현재 금액만 가져옴
+        setMoney(userResponse.newBalance || 0);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("데이터를 가져오는 데 실패했습니다.");
+      }
     };
 
-    return (
-        <div className="mypage">
-            <h1>마이페이지</h1>
+    fetchData();
+  }, [userId]);
 
-            {/* 소지 금액 및 충전 */}
-            <div className="balance-section">
-                <h2>현재 소지 금액: ₩{money.toLocaleString()}</h2>
-                <div className="charge">
-                    <input
-                        type="number"
-                        placeholder="충전 금액 입력"
-                        value={chargeAmount}
-                        onChange={(e) => setChargeAmount(e.target.value)}
-                    />
-                    <button onClick={handleCharge}>충전</button>
-                </div>
-            </div>
+  // 금액 충전 핸들러
+  const handleCharge = async () => {
+    if (!chargeAmount || chargeAmount <= 0) {
+      alert("올바른 충전 금액을 입력해주세요.");
+      return;
+    }
 
-            {/* 내가 판매 중인 물품 */}
-            <div className="selling-section">
-                <h2>내가 판매 중인 물품</h2>
-                <div className="items">
-                    {sellingItems.map((item) => (
-                        <div key={item.id} className="item-card">
-                            <h3>{item.name}</h3>
-                            <p>₩{item.price.toLocaleString()}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
+    try {
+      const response = await mypageService.chargeMoney(userId, parseInt(chargeAmount));
+      setMoney(response.newBalance); // 새 소지 금액 업데이트
+      alert("충전이 완료되었습니다.");
+      setChargeAmount(""); // 입력값 초기화
+    } catch (error) {
+      console.error("Error charging money:", error);
+      alert("충전 중 오류가 발생했습니다.");
+    }
+  };
 
-            {/* 거래 내역 */}
-            <div className="history-section">
-                <h2>거래 내역</h2>
-                <ul>
-                    {transactionHistory.map((history) => (
-                        <li key={history.id}>
-                            {history.date} - {history.item}: ₩{history.price.toLocaleString()}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+  return (
+    <div className="mypage">
+      <h1>마이페이지</h1>
+
+      {/* 소지 금액 및 충전 */}
+      <div className="balance-section">
+        <h2>현재 소지 금액: ₩{money.toLocaleString()}</h2>
+        <div className="charge">
+          <input
+            type="number"
+            placeholder="충전 금액 입력"
+            value={chargeAmount}
+            onChange={(e) => setChargeAmount(e.target.value)}
+          />
+          <button onClick={handleCharge}>충전</button>
         </div>
-    );
+      </div>
+
+      {/* 내가 판매 중인 물품 */}
+      <div className="selling-section">
+        <h2>내가 판매 중인 물품</h2>
+        <div className="items">
+          {sellingItems.length > 0 ? (
+            sellingItems.map((item) => (
+              <div key={item.id} className="item-card">
+                <h3>{item.name}</h3>
+                <p>₩{item.price.toLocaleString()}</p>
+              </div>
+            ))
+          ) : (
+            <p>판매 중인 물품이 없습니다.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default MyPage;

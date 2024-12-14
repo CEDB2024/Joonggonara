@@ -1,13 +1,17 @@
 package com.dbProject.joongo.controller;
 
+import com.dbProject.joongo.domain.Product;
 import com.dbProject.joongo.domain.User;
 import com.dbProject.joongo.dto.auth.AuthRequest;
 import com.dbProject.joongo.service.UserService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,6 +62,24 @@ public class UserController {
         return ResponseEntity.ok("User deleted successfully!");
     }
 
+    @GetMapping("/{id}/products")
+    public ResponseEntity<List<Product>> getUserProducts(@PathVariable int id) {
+        List<Product> products = userService.getProductsByUserId(id);
+        return ResponseEntity.ok(products);
+    }
+
+    @PutMapping("/{id}/charge")
+    public ResponseEntity<?> chargeMoney(@PathVariable int id, @RequestBody Map<String, Integer> requestBody) {
+        try {
+            int chargeAmount = requestBody.get("amount");
+            userService.chargeUserMoney(id, chargeAmount);
+            return ResponseEntity.ok("Money charged successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error occurred during money charging.");
+        }
+    }
 }
 
 
