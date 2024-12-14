@@ -45,11 +45,37 @@ const getUserInfo = async (userId) => {
   }
 };
 
+
+// 특정 사용자 거래 내역 가져오기
+const getOrdersByUserId = async (userId) => {
+    try {
+      const response = await axios.get(`${API_URL}/orders/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching orders:", error.response || error.message);
+      throw error;
+    }
+  };
+  
+  // 거래량 순위 가져오기
+  const getUserRankByTransactionCount = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/orders/rank`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user rank:", error.response || error.message);
+      throw error;
+    }
+  };
+  
+
 // 서비스 객체
 const MypageService = {
   getUserProducts,
   chargeMoney,
   getUserInfo,
+  getOrdersByUserId,
+  getUserRankByTransactionCount,
 };
 
 export default MypageService;

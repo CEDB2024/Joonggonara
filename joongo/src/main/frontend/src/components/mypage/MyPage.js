@@ -7,17 +7,19 @@ const MyPage = () => {
   const [chargeAmount, setChargeAmount] = useState(""); // 충전 금액 입력값
   const [sellingItems, setSellingItems] = useState([]); // 판매 중인 물품
   const [userInfo, setUserInfo] = useState(null); // 사용자 정보 추가
+  const [orderHistory, setOrderHistory] = useState([]); // 주문 내역
+  const [rank, setRank] = useState(null); // 거래량 순위
 
   const userId = localStorage.getItem("userId"); // 로컬스토리지에서 사용자 ID 가져오기
 
-  // 유저 정보 및 판매 아이템 가져오기
+  // 유저 정보 및 판매 아이템, 주문 내역, 거래 순위 가져오기
   useEffect(() => {
     const fetchData = async () => {
       try {
         // 사용자 정보 가져오기
         const user = await MypageService.getUserInfo(userId);
         setUserInfo(user);
-        console.log(user);
+
         // 판매 물품 가져오기
         const products = await MypageService.getUserProducts(userId);
         setSellingItems(products);
@@ -25,6 +27,14 @@ const MyPage = () => {
         // 사용자 소지 금액 가져오기
         const userResponse = await MypageService.chargeMoney(userId, 0); // 금액 충전을 0으로 요청해 현재 금액만 가져옴
         setMoney(userResponse.newBalance || 0);
+
+        // 주문 내역 가져오기
+        const orders = await MypageService.getOrderHistory(userId);
+        setOrderHistory(orders);
+
+        // 거래량 순위 가져오기
+        const userRank = await MypageService.getUserRank(userId);
+        setRank(userRank);
       } catch (error) {
         console.error("Error fetching data:", error);
         alert("데이터를 가져오는 데 실패했습니다.");
@@ -66,6 +76,17 @@ const MyPage = () => {
         </div>
       )}
 
+      {/* 거래량 순위 */}
+      {rank && (
+        <div className="user-rank">
+          <h2>거래량 순위</h2>
+          <p>
+            현재 거래량 순위: <strong>{rank.rank}</strong>
+          </p>
+          <p>총 거래 횟수: {rank.transactionCount}건</p>
+        </div>
+      )}
+
       {/* 소지 금액 및 충전 */}
       <div className="balance-section">
         <h2>현재 소지 금액: ₩{money.toLocaleString()}</h2>
@@ -93,6 +114,33 @@ const MyPage = () => {
             ))
           ) : (
             <p>판매 중인 물품이 없습니다.</p>
+          )}
+        </div>
+      </div>
+
+      {/* 거래 내역 */}
+      <div className="order-section">
+        <h2>거래 내역</h2>
+        <div className="orders">
+          {orderHistory.length > 0 ? (
+            orderHistory.map((order, index) => (
+              <div key={index} className="order-card">
+                <p>
+                  <strong>상품:</strong> {order.productTitle}
+                </p>
+                <p>
+                  <strong>구매자:</strong> {order.buyerName}
+                </p>
+                <p>
+                  <strong>판매자:</strong> {order.sellerName}
+                </p>
+                <p>
+                  <strong>완료 날짜:</strong> {new Date(order.completedAt).toLocaleString()}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p>거래 내역이 없습니다.</p>
           )}
         </div>
       </div>

@@ -10,4 +10,37 @@
         INSERT INTO Orders (product_id, buyer_id, seller_id, completed_at)
         VALUES (#{product_id}, #{buyer_id}, #{seller_id}, NOW());
     </insert>
+
+    <!-- 사용자별 거래량 순위 조회 -->
+    <select id="selectUserRankByTransactionCount" resultType="map">
+        SELECT 
+            user_id,
+            COUNT(*) AS transaction_count,
+            RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+        FROM (
+            SELECT buyer_id AS user_id FROM ORDERS
+            UNION ALL
+            SELECT seller_id AS user_id FROM ORDERS
+        ) AS user_transactions
+        GROUP BY user_id
+        ORDER BY rank
+    </select>
+    
+    <select id="getOrderHistory" parameterType="int" resultType="map">
+        SELECT 
+            o.order_id AS orderId,
+            o.product_id AS productId,
+            o.buyer_id AS buyerId,
+            o.seller_id AS sellerId,
+            o.completed_at AS completedAt,
+            p.title AS productTitle,
+            u_buyer.user_name AS buyerName,
+            u_seller.user_name AS sellerName
+        FROM orders o
+        JOIN products p ON o.product_id = p.product_id
+        LEFT JOIN users u_buyer ON o.buyer_id = u_buyer.user_id
+        LEFT JOIN users u_seller ON o.seller_id = u_seller.user_id
+        WHERE o.buyer_id = #{userId} OR o.seller_id = #{userId};
+    </select>
+
 </mapper>
