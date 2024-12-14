@@ -1,5 +1,6 @@
 package com.dbProject.joongo.dto.auth;
 
+
 import com.dbProject.joongo.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,57 +1,54 @@
 import axios from "axios";
-import axiosInstance from "../global/AxiosInstance";
+import getLocalStorage from "../global/LocalStorage";
 
-const API_URL = "http://localhost:8080/api/products"; // Spring Boot API 경로
+// 기본 API URL 설정
+const API_URL = "http://localhost:8080/api";
 
-const getAllProducts = async () => {
+// 공통 Axios 요청 함수
+const sendRequest = async (method, endpoint, data = null, params = null) => {
     try {
-        const response = await axios.get(`${API_URL}/`);
+        // 로컬 스토리지에서 토큰 가져오기
+        const token = getLocalStorage("token");
+
+        // Axios 요청 설정
+        const config = {
+            method,
+            url: `${API_URL}/${endpoint}`,
+            headers: {
+                "Content-Type": "application/json",
+                ...(token && { Authorization: `Bearer ${token}` }), // 토큰이 있으면 Authorization 헤더 추가
+            },
+            data,
+            params,
+        };
+
+        const response = await axios(config);
         return response.data;
     } catch (error) {
-        console.error("[getAllProducts Error]:", error.response || error.message);
-        throw new Error("상품 목록을 불러오는 중 오류가 발생했습니다.");
+        console.error(`[Axios Error]: ${error.response || error.message}`);
+        throw new Error("요청 처리 중 오류가 발생했습니다.");
     }
+};
+
+// API 함수 정의
+const getAllProducts = async () => {
+    return await sendRequest("get", "products/");
 };
 
 const getAllProductsByCategories = async (categoryId) => {
-    try {
-        const response = await axiosInstance.get(`${API_URL}/category`, {
-            params: { categoryId }, // 쿼리 파라미터로 categoryId 전달
-        });
-        return response.data; // Axios에서는 응답 데이터가 response.data에 포함됩니다.
-    } catch (error) {
-        throw new Error("Failed to fetch products: " + error.message);
-    }
+    return await sendRequest("get", "products/category", null, { categoryId });
 };
 
 const addProduct = async (productInfo) => {
-    try {
-        const response = await axiosInstance.post(`${API_URL}/`, productInfo);
-        return response.data;
-    } catch (error) {
-        console.error("[addProduct Error]:", error.response || error.message);
-        throw new Error("상품 추가 중 오류가 발생했습니다.");
-    }
+    return await sendRequest("post", "products", productInfo);
 };
 
 const updateProduct = async (productId, updateInfo) => {
-    try {
-        const response = await axiosInstance.patch(`${API_URL}/${productId}`, updateInfo);
-        return response.data;
-    } catch (error) {
-        console.error("[updateProduct Error]:", error.response || error.message);
-        throw new Error("상품 수정 중 오류가 발생했습니다.");
-    }
+    return await sendRequest("patch", `products/${productId}`, updateInfo);
 };
 
 const getProductById = async (productId) => {
-    try {
-        const response = await axiosInstance.get(`${API_URL}/${productId}`);
-        return response.data;
-    } catch (error) {
-        console.error("[getProductById Error]:", error.response || error.message);
-        throw new Error("상품 상세 정보를 불러오는 중 오류가 발생했습니다.");
-    }
+    return await sendRequest("get", `products/${productId}`);
 };
 
 // ProductService 객체로 관리

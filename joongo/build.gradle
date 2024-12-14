@@ -5,7 +5,7 @@ plugins {
 	id 'application' // 이 플러그인을 추가해야 함
 }
 
-group = 'com.dbproject'
+group = 'com.dbProject'
 version = '1.0.0'
 sourceCompatibility = '17'
 

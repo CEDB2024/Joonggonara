@@ -19,6 +19,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+        if (request.getMethod().equals("OPTIONS")) {
+            return true;
+        } // 하.. cors 때문에 preflight 요청을 보냄 거기는 토큰이 비워져있니깐 해당 인터셉터를 항상 통과 못했지..
         String token = request.getHeader(LoginConst.AUTH_HEADER);
         log.info("token: {}", token);
         if (token == null || !jwtTokenProvider.validateToken(token)) {

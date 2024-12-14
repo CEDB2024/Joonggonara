@@ -16,11 +16,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginCheckInterceptor)
                 .addPathPatterns("/**")  // 적용할 URL 패턴
-                .order(1)
-                .excludePathPatterns("/api/users/**")
-                .excludePathPatterns("/api/categories/**")
+//                .excludePathPatterns("/api/users/**")
+//                .excludePathPatterns("/api/categories/**")
                 .excludePathPatterns("/api/auth/**")
-                .excludePathPatterns("/api/products/**")
+//                .excludePathPatterns("/api/products/**")
                 .excludePathPatterns(
                         "/swagger-ui/**",
                         "/swagger-resources/**",
