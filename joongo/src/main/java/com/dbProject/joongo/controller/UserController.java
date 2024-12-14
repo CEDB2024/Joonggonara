@@ -5,11 +5,11 @@ import com.dbProject.joongo.domain.User;
 import com.dbProject.joongo.dto.auth.AuthRequest;
 import com.dbProject.joongo.service.UserService;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,15 +30,41 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable int id) {
         User user = userService.getUserById(id);
-
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/email")
     public ResponseEntity<User> getUserByEmail(@RequestParam("email") String email) {
         User user = userService.getUserByEmail(email);
-
         return ResponseEntity.ok(user);
+    }
+
+    // 특정 ID의 사용자 정보 조회 (DTO 변환 포함)
+    @GetMapping("/{id}/info")
+    public ResponseEntity<?> getUserInfo(@PathVariable int id) {
+        try {
+            User user = userService.getUserById(id);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+
+            // 전화번호 합치기
+            String fullPhoneNumber = user.getTel_1() + "-" + user.getTel_2();
+
+            // 필요한 정보만 담아 반환
+            Map<String, Object> response = new HashMap<>();
+            response.put("userId", user.getUserId());
+            response.put("userName", user.getUserName());
+            response.put("email", user.getEmail());
+            response.put("phone", fullPhoneNumber);
+            response.put("location", user.getLocation());
+            response.put("money", user.getMoney());
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching user info");
+        }
     }
 
     // 모든 사용자 조회
@@ -62,12 +88,14 @@ public class UserController {
         return ResponseEntity.ok("User deleted successfully!");
     }
 
+    // 사용자가 등록한 상품 조회
     @GetMapping("/{id}/products")
     public ResponseEntity<List<Product>> getUserProducts(@PathVariable int id) {
         List<Product> products = userService.getProductsByUserId(id);
         return ResponseEntity.ok(products);
     }
 
+    // 금액 충전
     @PutMapping("/{id}/charge")
     public ResponseEntity<?> chargeMoney(@PathVariable int id, @RequestBody Map<String, Integer> requestBody) {
         try {
@@ -77,9 +105,7 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("Error occurred during money charging.");
+                    .body("Error occurred during money charging.");
         }
     }
 }
-
-

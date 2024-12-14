@@ -49,3 +49,21 @@
 .user-info p {
     margin: 5px 0;
 }
+
+.user-info {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .user-info h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .user-info p {
+    margin: 5px 0;
+    font-size: 16px;
+  }
+  

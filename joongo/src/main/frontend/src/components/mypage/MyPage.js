@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./MyPage.css";
-import mypageService from "../../services/MypageService";
+import MypageService from "../../services/MypageService";
 
 const MyPage = () => {
   const [money, setMoney] = useState(0); // 소지 금액
   const [chargeAmount, setChargeAmount] = useState(""); // 충전 금액 입력값
   const [sellingItems, setSellingItems] = useState([]); // 판매 중인 물품
+  const [userInfo, setUserInfo] = useState(null); // 사용자 정보 추가
 
   const userId = localStorage.getItem("userId"); // 로컬스토리지에서 사용자 ID 가져오기
 
@@ -13,12 +14,16 @@ const MyPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // 사용자 정보 가져오기
+        const user = await MypageService.getUserInfo(userId);
+        setUserInfo(user);
+
         // 판매 물품 가져오기
-        const products = await mypageService.getUserProducts(userId);
+        const products = await MypageService.getUserProducts(userId);
         setSellingItems(products);
 
         // 사용자 소지 금액 가져오기
-        const userResponse = await mypageService.chargeMoney(userId, 0); // 금액 충전을 0으로 요청해 현재 금액만 가져옴
+        const userResponse = await MypageService.chargeMoney(userId, 0); // 금액 충전을 0으로 요청해 현재 금액만 가져옴
         setMoney(userResponse.newBalance || 0);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -37,7 +42,7 @@ const MyPage = () => {
     }
 
     try {
-      const response = await mypageService.chargeMoney(userId, parseInt(chargeAmount));
+      const response = await MypageService.chargeMoney(userId, parseInt(chargeAmount));
       setMoney(response.newBalance); // 새 소지 금액 업데이트
       alert("충전이 완료되었습니다.");
       setChargeAmount(""); // 입력값 초기화
@@ -50,6 +55,17 @@ const MyPage = () => {
   return (
     <div className="mypage">
       <h1>마이페이지</h1>
+
+      {/* 사용자 정보 */}
+      {userInfo && (
+        <div className="user-info">
+          <h2>회원 정보</h2>
+          <p>이름: {userInfo.userName}</p>
+          <p>닉네임: {userInfo.nickname}</p>
+          <p>이메일: {userInfo.email}</p>
+          <p>지역: {userInfo.location}</p>
+        </div>
+      )}
 
       {/* 소지 금액 및 충전 */}
       <div className="balance-section">
