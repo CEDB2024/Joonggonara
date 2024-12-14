@@ -15,11 +15,12 @@ const getAllProducts = async () => {
 
 const getAllProductsByCategories = async (categoryId) => {
     try {
-        const response = await axiosInstance.get(`${API_URL}/categories/${categoryId}`);
-        return response.data;
+        const response = await axiosInstance.get(`${API_URL}/category`, {
+            params: { categoryId }, // 쿼리 파라미터로 categoryId 전달
+        });
+        return response.data; // Axios에서는 응답 데이터가 response.data에 포함됩니다.
     } catch (error) {
-        console.error("[getAllProductsByCategories Error]:", error.response || error.message);
-        throw new Error("카테고리별 상품 목록을 불러오는 중 오류가 발생했습니다.");
+        throw new Error("Failed to fetch products: " + error.message);
     }
 };
 
