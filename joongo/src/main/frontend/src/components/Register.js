@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import authService from "../services/AuthService";
 import { useNavigate } from "react-router-dom";
-
+import "./register.css";
 function Register() {
   const [formData, setFormData] = useState({
     email: "",
