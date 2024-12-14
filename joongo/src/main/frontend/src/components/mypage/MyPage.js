@@ -6,13 +6,13 @@ const MyPage = () => {
   const [money, setMoney] = useState(0); // 소지 금액
   const [chargeAmount, setChargeAmount] = useState(""); // 충전 금액 입력값
   const [sellingItems, setSellingItems] = useState([]); // 판매 중인 물품
-  const [userInfo, setUserInfo] = useState(null); // 사용자 정보 추가
-  const [orderHistory, setOrderHistory] = useState([]); // 주문 내역
-  const [rank, setRank] = useState(null); // 거래량 순위
+  const [userInfo, setUserInfo] = useState(null); // 사용자 정보
+  const [orders, setOrders] = useState([]); // 사용자 거래 내역
+  const [userRank, setUserRank] = useState([]); // 거래량 순위
 
   const userId = localStorage.getItem("userId"); // 로컬스토리지에서 사용자 ID 가져오기
 
-  // 유저 정보 및 판매 아이템, 주문 내역, 거래 순위 가져오기
+  // 유저 정보, 판매 아이템, 거래 내역 및 순위 가져오기
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,16 +25,16 @@ const MyPage = () => {
         setSellingItems(products);
 
         // 사용자 소지 금액 가져오기
-        const userResponse = await MypageService.chargeMoney(userId, 0); // 금액 충전을 0으로 요청해 현재 금액만 가져옴
+        const userResponse = await MypageService.chargeMoney(userId, 0);
         setMoney(userResponse.newBalance || 0);
 
-        // 주문 내역 가져오기
-        const orders = await MypageService.getOrderHistory(userId);
-        setOrderHistory(orders);
+        // 사용자 거래 내역 가져오기
+        const userOrders = await MypageService.getOrdersByUserId(userId);
+        setOrders(userOrders);
 
         // 거래량 순위 가져오기
-        const userRank = await MypageService.getUserRank(userId);
-        setRank(userRank);
+        const rankData = await MypageService.getUserRankByTransactionCount();
+        setUserRank(rankData);
       } catch (error) {
         console.error("Error fetching data:", error);
         alert("데이터를 가져오는 데 실패했습니다.");
@@ -73,17 +73,7 @@ const MyPage = () => {
           <p>이름: {userInfo.userName}</p>
           <p>이메일: {userInfo.email}</p>
           <p>전화번호: {userInfo.phone}</p>
-        </div>
-      )}
-
-      {/* 거래량 순위 */}
-      {rank && (
-        <div className="user-rank">
-          <h2>거래량 순위</h2>
-          <p>
-            현재 거래량 순위: <strong>{rank.rank}</strong>
-          </p>
-          <p>총 거래 횟수: {rank.transactionCount}건</p>
+          <p>지역: {userInfo.location}</p>
         </div>
       )}
 
@@ -107,8 +97,8 @@ const MyPage = () => {
         <div className="items">
           {sellingItems.length > 0 ? (
             sellingItems.map((item) => (
-              <div key={item.id} className="item-card">
-                <h3>{item.name}</h3>
+              <div key={item.productId} className="item-card">
+                <h3>{item.title}</h3>
                 <p>₩{item.price.toLocaleString()}</p>
               </div>
             ))
@@ -121,28 +111,33 @@ const MyPage = () => {
       {/* 거래 내역 */}
       <div className="order-section">
         <h2>거래 내역</h2>
-        <div className="orders">
-          {orderHistory.length > 0 ? (
-            orderHistory.map((order, index) => (
-              <div key={index} className="order-card">
-                <p>
-                  <strong>상품:</strong> {order.productTitle}
-                </p>
-                <p>
-                  <strong>구매자:</strong> {order.buyerName}
-                </p>
-                <p>
-                  <strong>판매자:</strong> {order.sellerName}
-                </p>
-                <p>
-                  <strong>완료 날짜:</strong> {new Date(order.completedAt).toLocaleString()}
-                </p>
-              </div>
+        <ul>
+          {orders.length > 0 ? (
+            orders.map((order) => (
+              <li key={order.orderId}>
+                상품 ID: {order.productId}, 구매자 ID: {order.buyerId}, 판매자 ID: {order.sellerId}, 완료 시각: {order.completedAt}
+              </li>
             ))
           ) : (
             <p>거래 내역이 없습니다.</p>
           )}
-        </div>
+        </ul>
+      </div>
+
+      {/* 거래량 순위 */}
+      <div className="rank-section">
+        <h2>거래량 순위</h2>
+        <ul>
+          {userRank.length > 0 ? (
+            userRank.map((rank, index) => (
+              <li key={index}>
+                {index + 1}위: {rank.userName} ({rank.transactionCount}건)
+              </li>
+            ))
+          ) : (
+            <p>거래량 순위 정보가 없습니다.</p>
+          )}
+        </ul>
       </div>
     </div>
   );

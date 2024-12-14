@@ -3,6 +3,7 @@ package com.dbProject.joongo.mapper;
 import com.dbProject.joongo.domain.Product;
 import com.dbProject.joongo.domain.Order;
 import com.dbProject.joongo.dto.order.OrderRequest;
+import com.dbProject.joongo.dto.order.OrderRank;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public interface OrderMapper {
     List<Order> selectOrdersByUserId(@Param("userId") int userId);
 
     // 사용자별 거래량 순위 조회
-    List<Map<String, Object>> selectUserRankByTransactionCount();
+    List<OrderRank> selectUserRankByTransactionCount();
 
 
 }

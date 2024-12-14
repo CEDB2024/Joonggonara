@@ -2,6 +2,7 @@ package com.dbProject.joongo.service;
 
 import com.dbProject.joongo.domain.Order;
 import com.dbProject.joongo.dto.order.OrderRequest;
+import com.dbProject.joongo.dto.order.OrderRank;
 import com.dbProject.joongo.dto.order.OrderResponse;
 import com.dbProject.joongo.mapper.OrderMapper;
 import java.time.LocalDateTime;
@@ -37,7 +38,7 @@ public class OrderService {
     }
 
     // 거래량 순위 조회
-    public List<Map<String, Object>> getUserRankByTransactionCount() {
+    public List<OrderRank> getUserRankByTransactionCount() {
         return orderMapper.selectUserRankByTransactionCount();
     }
 }

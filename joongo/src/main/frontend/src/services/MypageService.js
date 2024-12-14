@@ -1,24 +1,18 @@
 import axios from "axios";
 
-// API 기본 URL
-const API_URL = "http://localhost:8080/api";
-
-// Axios 기본 설정 (Interceptor)
-axios.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+const API_BASE_URL = "http://localhost:8080/api"; // API 기본 경로
 
 // 사용자가 등록한 상품 조회
 const getUserProducts = async (userId) => {
   try {
-    const response = await axios.get(`${API_URL}/users/${userId}/products`);
+    const response = await axios.get(`${API_BASE_URL}/users/${userId}/products`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // 토큰 전달
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error fetching user products:", error.response || error.message);
+    console.error("Error fetching user products:", error);
     throw error;
   }
 };
@@ -26,10 +20,14 @@ const getUserProducts = async (userId) => {
 // 금액 충전
 const chargeMoney = async (userId, amount) => {
   try {
-    const response = await axios.post(`${API_URL}/users/${userId}/charge`, { amount });
+    const response = await axios.put(`${API_BASE_URL}/users/${userId}/charge`, { amount }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // 토큰 전달
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error charging money:", error.response || error.message);
+    console.error("Error charging money:", error);
     throw error;
   }
 };
@@ -37,39 +35,49 @@ const chargeMoney = async (userId, amount) => {
 // 사용자 정보 가져오기
 const getUserInfo = async (userId) => {
   try {
-    const response = await axios.get(`${API_URL}/users/${userId}/info`);
+    const response = await axios.get(`${API_BASE_URL}/users/${userId}/info`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // 토큰 전달
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error fetching user info:", error.response || error.message);
+    console.error("Error fetching user info:", error);
     throw error;
   }
 };
 
-
-// 특정 사용자 거래 내역 가져오기
+// 사용자 거래 내역 가져오기
 const getOrdersByUserId = async (userId) => {
-    try {
-      const response = await axios.get(`${API_URL}/orders/${userId}`);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching orders:", error.response || error.message);
-      throw error;
-    }
-  };
-  
-  // 거래량 순위 가져오기
-  const getUserRankByTransactionCount = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/orders/rank`);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching user rank:", error.response || error.message);
-      throw error;
-    }
-  };
-  
+  try {
+    const response = await axios.get(`${API_BASE_URL}/orders/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // 토큰 전달
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user orders:", error);
+    throw error;
+  }
+};
 
-// 서비스 객체
+// 거래량 순위 가져오기
+const getUserRankByTransactionCount = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/orders/rank`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // 토큰 전달
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user rank:", error);
+    throw error;
+  }
+};
+
+// 서비스 객체로 내보내기
 const MypageService = {
   getUserProducts,
   chargeMoney,

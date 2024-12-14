@@ -1,6 +1,7 @@
 package com.dbProject.joongo.controller;
 
 import com.dbProject.joongo.domain.Order;
+import com.dbProject.joongo.dto.order.OrderRank;
 import com.dbProject.joongo.dto.order.OrderRequest;
 import com.dbProject.joongo.dto.order.OrderResponse;
 import com.dbProject.joongo.service.OrderService;
@@ -33,13 +34,27 @@ public class OrderController {
         return ResponseEntity.ok(result);
     }
 
+    // 특정 사용자의 거래 내역 가져오기
     @GetMapping("/{userId}")
     public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable int userId) {
-        return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
+        try {
+            List<Order> orders = orderService.getOrdersByUserId(userId);
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
+    // 거래량 순위 가져오기
     @GetMapping("/rank")
-    public ResponseEntity<List<Map<String, Object>>> getUserRankByTransactionCount() {
-        return ResponseEntity.ok(orderService.getUserRankByTransactionCount());
+    public ResponseEntity<List<OrderRank>> getUserRankByTransactionCount() {
+        try {
+            List<OrderRank> ranks = orderService.getUserRankByTransactionCount();
+            return ResponseEntity.ok(ranks);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
     }
 }
