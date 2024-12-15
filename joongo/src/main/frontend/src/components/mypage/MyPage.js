@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Pie } from "react-chartjs-2"; // react-chartjs-2 라이브러리 사용
 import "./MyPage.css";
 import MypageService from "../../services/MypageService";
 
@@ -9,6 +10,7 @@ const MyPage = () => {
   const [userInfo, setUserInfo] = useState(null); // 사용자 정보
   const [orders, setOrders] = useState([]); // 사용자 거래 내역
   const [userRank, setUserRank] = useState([]); // 거래량 순위
+  const [productStatusData, setProductStatusData] = useState({}); // 상품 상태 데이터
 
   const userId = localStorage.getItem("userId"); // 로컬스토리지에서 사용자 ID 가져오기
 
@@ -23,6 +25,16 @@ const MyPage = () => {
         // 판매 물품 가져오기
         const products = await MypageService.getUserProducts(userId);
         setSellingItems(products);
+
+        // 상품 상태별 데이터 계산
+        const statusData = products.reduce(
+          (acc, item) => {
+            acc[item.productStatus] = (acc[item.productStatus] || 0) + 1;
+            return acc;
+          },
+          { available: 0, sold_out: 0, reserved: 0 }
+        );
+        setProductStatusData(statusData);
 
         // 사용자 소지 금액 가져오기
         const userResponse = await MypageService.chargeMoney(userId, 0);
@@ -62,6 +74,22 @@ const MyPage = () => {
     }
   };
 
+  // 파이 차트 데이터 준비
+  const chartData = {
+    labels: ["판매 가능", "품절", "예약 중"],
+    datasets: [
+      {
+        data: [
+          productStatusData.available || 0,
+          productStatusData.sold_out || 0,
+          productStatusData.reserved || 0,
+        ],
+        backgroundColor: ["#4caf50", "#f44336", "#ff9800"],
+        hoverBackgroundColor: ["#66bb6a", "#e57373", "#ffb74d"],
+      },
+    ],
+  };
+
   return (
     <div className="mypage">
       <h1>마이페이지</h1>
@@ -89,6 +117,29 @@ const MyPage = () => {
           />
           <button onClick={handleCharge}>충전</button>
         </div>
+      </div>
+
+      {/* 내가 판매 중인 물품 */}
+      <div className="selling-section">
+        <h2>내가 판매 중인 물품</h2>
+        <div className="items">
+          {sellingItems.length > 0 ? (
+            sellingItems.map((item) => (
+              <div key={item.productId} className="item-card">
+                <h3>{item.title}</h3>
+                <p>₩{item.price.toLocaleString()}</p>
+              </div>
+            ))
+          ) : (
+            <p>판매 중인 물품이 없습니다.</p>
+          )}
+        </div>
+      </div>
+
+      {/* 상품 상태 비율 */}
+      <div className="product-status-chart">
+        <h2>상품 상태 비율</h2>
+        <Pie data={chartData} />
       </div>
 
       {/* 거래 내역 */}
@@ -121,23 +172,6 @@ const MyPage = () => {
             <p>거래량 순위 정보가 없습니다.</p>
           )}
         </ul>
-      </div>
-
-      {/* 내가 판매 중인 물품 */}
-      <div className="selling-section">
-        <h2>내가 판매 중인 물품</h2>
-        <div className="items">
-          {sellingItems.length > 0 ? (
-            sellingItems.map((item) => (
-              <div key={item.productId} className="item-card">
-                <h3>{item.title}</h3>
-                <p>₩{item.price.toLocaleString()}</p>
-              </div>
-            ))
-          ) : (
-            <p>판매 중인 물품이 없습니다.</p>
-          )}
-        </div>
       </div>
     </div>
   );

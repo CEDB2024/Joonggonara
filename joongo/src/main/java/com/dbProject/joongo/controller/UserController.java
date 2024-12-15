@@ -96,7 +96,7 @@ public class UserController {
     @PutMapping("/{id}/charge")
     public ResponseEntity<?> chargeMoney(@PathVariable int id, @RequestBody Map<String, Integer> requestBody) {
         try {
-            int chargeAmount = requestBody.get("amount");
+            int chargeAmount = requestBody.get("chargeAmount");
             userService.chargeUserMoney(id, chargeAmount);
             return ResponseEntity.ok("Money charged successfully!");
         } catch (Exception e) {
