@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthService from "../../../services/AuthService";
-import UserService from "../../../services/UserService";
+import { useNavigate, useLocation } from "react-router-dom";
 import ProductService from "../../../services/ProductService";
 import Layout from "../../../global/Layout";
-import "./CreateProductPage.css";
+import "./EditProductPage.css";
 
-const CreateProductPage = () => {
+const EditProductPage = () => {
     const navigate = useNavigate();
-    const [emailError, setEmailError] = useState(null);
+    const location = useLocation();
+    const { productId } = location.state; // MyPage에서 전달받은 productId
+
+    // 수정할 상품의 초기 데이터
     const [formData, setFormData] = useState({
         title: "",
         content: "",
@@ -16,71 +17,102 @@ const CreateProductPage = () => {
         count: 0,
         price: 0,
         categoryId: "",
-        userId: null,
         productPicture: null,
     });
-    const [userEmail, setUserEmail] = useState("");
 
-    const categories = [
+    const [categories] = useState([
         { id: 1, name: "디지털 기기" },
         { id: 2, name: "가구/인테리어" },
         { id: 3, name: "의류" },
         { id: 4, name: "식물" },
-    ];
+    ]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [uploadedFileName, setUploadedFileName] = useState("");
 
+    // 상품 정보 불러오기
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const product = await ProductService.getProductById(productId);
+                setFormData({
+                    title: product.title,
+                    content: product.content,
+                    location: product.location,
+                    count: product.count,
+                    price: product.price,
+                    categoryId: product.categoryId,
+                    productPicture: null, // 이미지는 별도로 처리
+                });
+            } catch (err) {
+                console.error("상품 정보를 불러오는 중 오류 발생:", err);
+                setError("상품 정보를 불러오는 중 오류가 발생했습니다.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProduct();
+    }, [productId]);
+
+    // 입력값 변경 핸들러
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleCategoryChange = (e) => {
-        const selectedCategoryId = parseInt(e.target.value, 10) || "";
-        setFormData({ ...formData, categoryId: selectedCategoryId });
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setFormData({ ...formData, productPicture: file });
+        setUploadedFileName(file ? file.name : "");
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const form = new FormData();
-        Object.entries(formData).forEach(([key, value]) => {
-            form.append(key, value);
-        });
+        if (!productId) {
+            alert("유효하지 않은 상품 ID입니다.");
+            return;
+        }
 
         try {
-            await ProductService.addProduct(form);
-            navigate("/main");
+            const form = new FormData();
+            Object.entries(formData).forEach(([key, value]) => {
+                form.append(key, value);
+            });
+            form.append("productId", productId);
+
+            await ProductService.editProduct(form);
+
+            alert("상품이 성공적으로 수정되었습니다.");
+            navigate("/mypage"); // 성공 시 마이페이지로 이동
         } catch (error) {
-            console.error("상품 등록 실패", error);
+            console.error("상품 수정 실패:", error);
+            alert("상품 수정 중 오류가 발생했습니다.");
         }
     };
 
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const email = await AuthService.getEmail();
-                setUserEmail(email);
 
-                const userInfo = await UserService.getUserByEmail(email);
-                setFormData((prevData) => ({
-                    ...prevData,
-                    userId: userInfo.userId,
-                }));
-            } catch (err) {
-                console.error("유저 정보를 불러오는 중 오류 발생", err);
-                setEmailError("유저 정보를 불러오는 중 오류가 발생했습니다.");
-            }
-        };
+    if (loading) {
+        return (
+            <Layout>
+                <div className="loading-message">로딩 중...</div>
+            </Layout>
+        );
+    }
 
-        fetchUserInfo();
-    }, []);
+    if (error) {
+        return (
+            <Layout>
+                <div className="error-message">{error}</div>
+            </Layout>
+        );
+    }
 
     return (
         <Layout>
             <div className="create-product-page">
                 <header className="page-header">
-                    <h1>상품 등록</h1>
-                    {userEmail && <p className="user-email">유저 이메일: {userEmail}</p>}
-                    {emailError && <p className="error">{emailError}</p>}
+                    <h1>상품 수정</h1>
                 </header>
                 <form className="product-form" onSubmit={handleSubmit}>
                     <div className="form-group">
@@ -143,7 +175,7 @@ const CreateProductPage = () => {
                             id="category"
                             name="categoryId"
                             value={formData.categoryId}
-                            onChange={handleCategoryChange}
+                            onChange={handleChange}
                             required
                         >
                             <option value="">카테고리를 선택하세요</option>
@@ -160,13 +192,12 @@ const CreateProductPage = () => {
                             type="file"
                             id="productPicture"
                             name="productPicture"
-                            onChange={(e) =>
-                                setFormData({ ...formData, productPicture: e.target.files[0] })
-                            }
+                            onChange={handleFileChange}
                         />
+                        {uploadedFileName && <p className="file-name">업로드된 파일: {uploadedFileName}</p>}
                     </div>
                     <button type="submit" className="submit-button">
-                        등록하기
+                        수정하기
                     </button>
                 </form>
             </div>
@@ -174,4 +205,4 @@ const CreateProductPage = () => {
     );
 };
 
-export default CreateProductPage;
+export default EditProductPage;

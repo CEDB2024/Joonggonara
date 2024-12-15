@@ -1,5 +1,6 @@
 package com.dbProject.joongo.service;
 
+import com.dbProject.joongo.domain.Order;
 import com.dbProject.joongo.domain.Product;
 import com.dbProject.joongo.domain.User;
 import com.dbProject.joongo.dto.order.OrderRequest;
@@ -9,6 +10,7 @@ import com.dbProject.joongo.mapper.OrderMapper;
 import com.dbProject.joongo.mapper.ProductMapper;
 import com.dbProject.joongo.mapper.UserMapper;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,8 @@ public class OrderService {
             return OrderResponse.createOrderDTO.builder()
                     .createTime(LocalDateTime.now())
                     .build();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error creating order", e);
@@ -45,7 +49,7 @@ public class OrderService {
         long payMoney = ((long) request.getCount() * updateDto.getPrice());
         if (buyer.getMoney() < payMoney) {
             // 원래는 에러마다 runtimeException 상속해서 커스텀 예외 만들어서 exceptionAdvice 에서 처리
-            throw new RuntimeException("[Error] You do not have enough money!");
+            throw new IllegalArgumentException("[ORDER] 잔액이 부족합니다.");
         }
         User seller = userMapper.selectUserById(request.getSellerId());
         User updatedBuyer = User.builder()
@@ -63,21 +67,37 @@ public class OrderService {
     private Product getUpdateInfo(createOrderDTO request) {
         Product purchasedProduct = productMapper.findById(request.getProductId());
         if (purchasedProduct.getCount() < request.getCount()) {
-            throw new RuntimeException("[Error] Product count is less than the requested product count");
+            throw new IllegalArgumentException("[ORDER] 수량보다 더 많이 구매하실 수 없습니다.");
         }
-        productMapper.updateProduct(Product.builder()
-                .productId(request.getProductId())
-                .count(purchasedProduct.getCount() - request.getCount())
-                .productStatus("sold_out")
-                .build());
+
+        if (purchasedProduct.getUserId().equals(request.getBuyerId())) {
+            throw new IllegalArgumentException("[ORDER] 자신이 등록한 상품은 구매할 수 없습니다.");
+        }
+        String status = "available";
 //        if (purchasedProduct.getCount().equals(request.getCount())) {
 //            return null;
 //        }
+        if (purchasedProduct.getCount() - request.getCount() == 0) {
+            status = "sold_out";
+        }
         return Product.builder()
                 .productId(request.getProductId())
                 .price(purchasedProduct.getPrice())
                 .count(purchasedProduct.getCount() - request.getCount())
-                .productStatus("sold_out")
+                .productStatus(status)
                 .build();
+    }
+
+    public List<OrderResponse.findOrderDTO> findBySellerId(int sellerId) {
+        return orderMapper.selectOrderBySellerId(sellerId);
+    }
+
+    public List<OrderResponse.findOrderDTO>  findByBuyerId(int buyerId) {
+        try {
+            return orderMapper.selectOrderByBuyerId(buyerId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error fetching order by buyerId", e);
+        }
     }
 }

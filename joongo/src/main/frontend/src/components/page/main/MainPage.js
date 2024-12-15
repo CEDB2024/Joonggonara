@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import ProductService from "../../../services/ProductService";
 import Layout from "../../../global/Layout";
 import "./MainPage.css";
@@ -8,6 +8,8 @@ const MainPage = () => {
     const [products, setProducts] = useState([]); // 상품 목록 상태 관리
     const [productError, setProductError] = useState(null); // 상품 에러 상태 관리
     const [searchParams, setSearchParams] = useSearchParams(); // 쿼리 파라미터 관리
+    const [searchInput, setSearchInput] = useState(""); // 검색 입력값
+    const navigate = useNavigate();
 
     // 고정된 카테고리 데이터
     const categories = [
@@ -45,6 +47,21 @@ const MainPage = () => {
         setSearchParams({ category: categoryId }); // 선택한 카테고리 ID를 쿼리 파라미터에 설정
     };
 
+    const handleSearch = async (e) => {
+        e.preventDefault(); // 폼 제출 기본 동작 방지
+        try {
+            if (searchInput.trim().length < 2) {
+                alert("검색어는 2글자 이상 입력해주세요.");
+                return;
+            }
+            const results = await ProductService.selectByTitle(searchInput);
+            navigate("/search", { state: { products: results } }); // 검색 결과를 `/select`로 전달
+        } catch (err) {
+            console.error("[Search Error]", err);
+            alert("검색 중 오류가 발생했습니다.");
+        }
+    };
+
     return (
         <Layout>
             <nav className="nav">
@@ -57,6 +74,18 @@ const MainPage = () => {
                         {category.name}
                     </button>
                 ))}
+                <form className="search-form" onSubmit={handleSearch}>
+                    <input
+                        type="text"
+                        placeholder="검색어 입력"
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        className="search-input"
+                    />
+                    <button type="submit" className="search-button">
+                        검색
+                    </button>
+                </form>
             </nav>
 
             <div className="container">
@@ -77,7 +106,7 @@ const MainPage = () => {
                         </div>
                     ))
                 ) : (
-                    <p className="loading-message">상품을 불러오는 중...</p>
+                    <p className="loading-message">상품이 없습니다 !</p>
                 )}
             </div>
         </Layout>

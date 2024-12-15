@@ -27,9 +27,9 @@ public class UserController {
     }
 
     // ID로 사용자 조회
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
-        User user = userService.getUserById(id);
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable("userId") int userId) {
+        User user = userService.getUserById(userId);
 
         return ResponseEntity.ok(user);
     }
@@ -56,29 +56,29 @@ public class UserController {
     }
 
     // 사용자 삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable int id) {
-        userService.deleteUserById(id);
-        return ResponseEntity.ok("User deleted successfully!");
+    @PostMapping("/{userId}/delete")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable("userId") int userId) {
+        boolean result = userService.deleteUserById(userId);
+        return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/{id}/products")
-    public ResponseEntity<List<Product>> getUserProducts(@PathVariable int id) {
-        List<Product> products = userService.getProductsByUserId(id);
+    @GetMapping("/{userId}/products")
+    public ResponseEntity<List<Product>> getUserProducts(@PathVariable("userId") int userId) {
+        List<Product> products = userService.getProductsByUserId(userId);
         return ResponseEntity.ok(products);
     }
 
-    @PutMapping("/{id}/charge")
-    public ResponseEntity<?> chargeMoney(@PathVariable int id, @RequestBody Map<String, Integer> requestBody) {
-        try {
-            int chargeAmount = requestBody.get("amount");
-            userService.chargeUserMoney(id, chargeAmount);
-            return ResponseEntity.ok("Money charged successfully!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("Error occurred during money charging.");
-        }
+    @PostMapping("/{userId}/charge")
+    public ResponseEntity<Long> chargeMoney(@PathVariable("userId") int userId,
+                                            @RequestBody Map<String, Integer> requestBody) {
+        int chargeAmount = requestBody.get("amount");
+
+        return ResponseEntity.ok(userService.chargeUserMoney(userId, chargeAmount));
+    }
+
+    @GetMapping("{userId}/role")
+    public ResponseEntity<String> getRoleByUserId(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(userService.getRoleByUserId(userId));
     }
 }
 

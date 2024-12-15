@@ -82,4 +82,35 @@ public class ProductRequest {
                     .build();
         }
     }
+
+    @Getter
+    @Builder
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class updateInfo {
+        private Integer productId;
+        private String title;
+        private String content;
+        private String location;
+        private Integer count;
+        private Integer price;
+        private Integer categoryId;
+        private Integer userId;
+        private MultipartFile productPicture;
+
+        public Product toEntity() {
+            return Product.builder()
+                    .productId(this.productId)
+                    .title(this.title)
+                    .content(this.content)
+                    .productStatus("available")
+                    .location(this.location)
+                    .count(this.count)
+                    .price(this.price)
+                    .categoryId(this.categoryId)
+                    .userId(this.userId)
+                    .build();
+        }
+    }
 }

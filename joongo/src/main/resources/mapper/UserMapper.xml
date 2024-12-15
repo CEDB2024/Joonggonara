@@ -27,6 +27,13 @@
     <!-- 모든 사용자 조회 -->
     <select id="selectAllUsers" resultType="com.dbProject.joongo.domain.User">
         SELECT * FROM USERS
+        WHERE user_status = 'active'
+    </select>
+
+    <!-- role 조회 -->
+    <select id="getRoleByUserId" resultType="string">
+        SELECT user_role FROM USERS
+        WHERE user_id = #{userId}
     </select>
 
     <!-- 사용자 수정 -->
@@ -70,7 +77,9 @@
     </select>
 
     <select id="selectProductsByUserId" parameterType="int" resultType="com.dbProject.joongo.domain.Product">
-        SELECT * FROM PRODUCTS WHERE user_id = #{userId}
+        SELECT * FROM PRODUCTS
+        WHERE user_id = #{userId}
+          AND product_status = 'available'
     </select>
 
     <update id="updateUserMoney">
@@ -78,5 +87,19 @@
         SET money = #{money}
         WHERE user_id = #{userId}
     </update>
+
+    <select id="selectUserRankByTransactionCount" resultType="com.dbProject.joongo.domain.User">
+        SELECT
+            user_id,
+            COUNT(*) AS transaction_count,
+            RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+        FROM (
+                 SELECT buyer_id AS user_id FROM ORDERS
+                 UNION ALL
+                 SELECT seller_id AS user_id FROM ORDERS
+             ) AS user_transactions
+        GROUP BY user_id
+        ORDER BY rank
+    </select>
 
 </mapper>

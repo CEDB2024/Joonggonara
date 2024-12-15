@@ -46,6 +46,8 @@ const ProductDetailPage = () => {
     const handlePurchase = async () => {
         if (!userId) {
             alert("로그인이 필요합니다.");
+            navigate("/login"); // 로그인 페이지로 이동
+
             return;
         }
 
@@ -62,7 +64,8 @@ const ProductDetailPage = () => {
             navigate("/main"); // 로그인 페이지로 이동
         } catch (err) {
             console.error("[Purchase Error]:", err);
-            alert("구매 중 오류가 발생했습니다.");
+            alert(err);
+
         }
     };
 
@@ -92,7 +95,7 @@ const ProductDetailPage = () => {
                     <div className="product-detail-content">
                         <h2 className="product-title">{product.title}</h2>
                         <p className="product-price">
-                            <strong>가격:</strong> ₩{product.price.toLocaleString()}
+                            <strong>가격:</strong> {product.price.toLocaleString()}원
                         </p>
                         <p className="product-description">
                             <strong>설명:</strong> {product.content || "설명이 없습니다."}

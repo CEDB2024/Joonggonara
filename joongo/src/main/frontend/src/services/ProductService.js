@@ -24,8 +24,12 @@ const sendRequest = async (method, endpoint, data = null, params = null) => {
         const response = await axios(config);
         return response.data;
     } catch (error) {
-        console.error(`[Axios Error]: ${error.response || error.message}`);
-        throw new Error("요청 처리 중 오류가 발생했습니다.");
+        // 서버 에러 메시지 확인 및 처리
+        const errorMessage = error.response?.data?.code || error.message; // 서버에서 보낸 code 또는 기본 에러 메시지
+        console.error(`[Axios Error]: ${errorMessage}`);
+
+        // 에러 메시지를 담은 Error 객체 생성 후 throw
+        throw new Error(errorMessage);
     }
 };
 
@@ -53,14 +57,29 @@ const getProductById = async (productId) => {
 const purchaseProduct = async (purchasedInfo) => {
     return await sendRequest("post", `orders/`, purchasedInfo);
 }
+
+const deleteProduct = async (productId) => {
+    return await sendRequest("post", `products/${productId}/delete`);
+}
+
+const selectByTitle = async (productName) => {
+    return await sendRequest("get", "products/title", null, {productName});
+};
+
+const editProduct = async (product) => {
+    return await sendRequest("post", "products/edit", product);
+};
 // ProductService 객체로 관리
 const ProductService = {
+    editProduct,
+    selectByTitle,
     purchaseProduct,
     getAllProducts,
     getAllProductsByCategories,
     addProduct,
     updateProduct,
     getProductById,
+    deleteProduct,
 };
 
 export default ProductService;

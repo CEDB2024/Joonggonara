@@ -33,15 +33,6 @@ const Header = () => {
                 </Link>
             </div>
             <div className="header-right">
-                {/* 검색 바 */}
-                <div className="search-bar">
-                    <input
-                        type="text"
-                        placeholder="검색어를 입력하세요"
-                        className="search-input"
-                    />
-                    <button className="search-button">검색</button>
-                </div>
 
                 {/* 상품 등록 */}
                 <div className="create-product">

@@ -17,6 +17,10 @@ public interface ProductMapper {
 
     List<Product> findAllByCategoryId(int categoryId);
 
+    List<Product> findAllByUserId(int userId);
+
+    List<Product> searchByTitle(String title);
+
     void updateProduct(Product product);
 
     void deleteProductById(int productId);

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import authService from "../services/AuthService";
+import UserService from "../services/UserService";
 import Layout from "../global/Layout";
 import './login.css';
 
@@ -25,7 +26,14 @@ function Login() {
         console.log(response);
         localStorage.setItem("userId", response.userId); // userId 저장
         localStorage.setItem("token", response.token); // 인증 토큰 저장
-        navigate("/main"); // 메인 페이지로 이동
+
+        // 역할 확인
+        const role = await UserService.getRole(response.userId);
+        if (role === "admin") {
+          navigate("/admin"); // admin 페이지로 이동
+        } else {
+          navigate("/main"); // 메인 페이지로 이동
+        }
       } else {
         setError("Invalid email or password");
       }

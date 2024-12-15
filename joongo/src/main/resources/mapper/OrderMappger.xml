@@ -9,4 +9,20 @@
         INSERT INTO ORDERS (product_id, buyer_id, count, seller_id, completed_at)
         VALUES (#{productId}, #{buyerId}, #{count}, #{sellerId}, NOW());
     </insert>
+
+    <!-- 판매자 ID로 주문 검색 (JOIN으로 title 포함) -->
+    <select id="selectOrderBySellerId" parameterType="int" resultType="map">
+        SELECT o.*, p.title
+        FROM ORDERS o
+                 JOIN PRODUCTS p ON o.product_id = p.product_id
+        WHERE o.seller_id = #{sellerId}
+    </select>
+
+    <!-- 구매자 ID로 주문 검색 (JOIN으로 title 포함) -->
+    <select id="selectOrderByBuyerId" parameterType="int" resultType="map">
+        SELECT o.*, p.title
+        FROM ORDERS o
+                 JOIN PRODUCTS p ON o.product_id = p.product_id
+        WHERE o.buyer_id = #{buyerId}
+    </select>
 </mapper>

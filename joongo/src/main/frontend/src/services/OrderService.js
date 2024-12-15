@@ -2,7 +2,7 @@ import axios from "axios";
 import getLocalStorage from "../global/LocalStorage";
 
 // 기본 API URL 설정
-const API_URL = "http://localhost:8080/api/users";
+const API_URL = "http://localhost:8080/api/orders";
 
 // 공통 Axios 요청 함수
 const sendRequest = async (method, endpoint, data = null, params = null) => {
@@ -30,34 +30,16 @@ const sendRequest = async (method, endpoint, data = null, params = null) => {
     }
 };
 
-// 이메일로 유저 정보 가져오기
-const getUserByEmail = async (email) => {
-    return await sendRequest("get", "/email", null, {email});
+const getOrderBySellerId = async (sellerId) => {
+    return await sendRequest("get", `/${sellerId}/seller`);
 };
 
-const getUserById = async (userId) => {
-    return await sendRequest("get", `/${userId}`);
-}
-
-const getAllUsers = async () => {
-    return await sendRequest("get", "");
-}
-
-const getRole = async (userId) => {
-    return await sendRequest("get", `/${userId}/role`);
-}
-const deleteUser = async (userId) => {
-    return await sendRequest("post", `/${userId}/delete`);
-}
-
-// UserService 객체로 관리
-const UserService = {
-    getRole,
-    deleteUser,
-    getUserByEmail,
-    getUserById,
-    getAllUsers
+const getOrderByBuyerId = async (buyerId) => {
+    return await sendRequest("get", `/${buyerId}/buyer`);
+};
+const OrderService = {
+    getOrderBySellerId,
+    getOrderByBuyerId
 };
 
-
-export default UserService;
+export default OrderService;

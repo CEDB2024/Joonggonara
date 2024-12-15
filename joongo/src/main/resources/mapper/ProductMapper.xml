@@ -18,15 +18,23 @@
         SELECT *
         FROM PRODUCTS
         WHERE product_id = #{productId}
+          AND product_status = 'available'
     </select>
 
     <!--모든 상품 조회-->
     <select id="findAll" resultType="com.dbProject.joongo.domain.Product">
         SELECT *
         FROM PRODUCTS
+        WHERE product_status = 'available'
     </select>
 
-    <!--모든 상품 조회-->
+    <select id="findAllByUserId" resultType="com.dbProject.joongo.domain.Product">
+        SELECT *
+        FROM PRODUCTS
+        WHERE user_id = #{userId}
+    </select>
+
+
     <select id="findUserIdById" resultType="com.dbProject.joongo.domain.Product">
         SELECT user_id
         FROM PRODUCTS
@@ -38,6 +46,7 @@
         SELECT *
         FROM PRODUCTS
         WHERE category_id = #{categoryId}
+          AND product_status = 'available'
     </select>
 
     <update id="updateProduct" parameterType="com.dbProject.joongo.domain.Product">
@@ -64,4 +73,19 @@
         WHERE product_id = #{productId}
     </delete>
 
+    <select id="searchByTitle" resultType="com.dbProject.joongo.domain.Product">
+        SELECT *
+        FROM PRODUCTS
+        WHERE product_status = 'available'
+        AND LENGTH(#{title}) >= 2
+        AND title LIKE CONCAT('%', #{title}, '%')
+        ORDER BY
+        CASE
+        WHEN title = #{title} THEN 1    <!-- 정확히 일치하는 항목 우선 -->
+        WHEN title LIKE CONCAT(#{title}, '%') THEN 2 <!-- 검색어로 시작하는 항목 -->
+        WHEN title LIKE CONCAT('%', #{title}, '%') THEN 3 <!-- 검색어가 포함된 항목 -->
+        ELSE 4
+        END,
+        updated_at DESC <!-- 동일한 조건일 경우 최신 업데이트 순으로 정렬 -->
+    </select>
 </mapper>

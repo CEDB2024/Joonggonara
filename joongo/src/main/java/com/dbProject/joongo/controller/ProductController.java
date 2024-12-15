@@ -1,5 +1,6 @@
 package com.dbProject.joongo.controller;
 
+import com.dbProject.joongo.domain.Product;
 import com.dbProject.joongo.dto.product.ProductRequest;
 import com.dbProject.joongo.dto.product.ProductRequest.ProductInfo;
 import com.dbProject.joongo.dto.product.ProductResponse;
@@ -57,11 +58,22 @@ public class ProductController {
         return ResponseEntity.ok(productInfos);
     }
 
-    @PatchMapping("/{productId}")
-    public ResponseEntity<ProductResponse.ProductInfo> updateProduct(@PathVariable("productId") Integer productId,
-                                                                     @RequestBody ProductRequest.ProductInfo request) {
-        ProductResponse.ProductInfo productInfo = productService.update(productId, request);
+    @GetMapping("/title")
+    public ResponseEntity<List<Product>> getAllProductByQuery(
+            @RequestParam("productName") String productName) {
+        return ResponseEntity.ok(productService.findAllByTitle(productName));
+    }
 
-        return ResponseEntity.ok(productInfo);
+    @PostMapping("/edit")
+    public ResponseEntity<Boolean> updateProduct(@ModelAttribute ProductRequest.updateInfo request) {
+        productService.updateProduct(request.toEntity());
+        return ResponseEntity.ok(true);
+    }
+
+    @PostMapping("/{productId}/delete")
+    public ResponseEntity<Boolean> deleteProduct(@PathVariable("productId") Integer productId) {
+        boolean result = productService.deleteProductById(productId);
+
+        return ResponseEntity.ok(result);
     }
 }

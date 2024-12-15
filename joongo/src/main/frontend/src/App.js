@@ -4,10 +4,13 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import PrivateRoute from "./components/PrivateRouter";
 import MainPage from "./components/page/main/MainPage";
-import MyPage from "./components/mypage/MyPage";
+import MyPage from "./components/page/mypage/MyPage";
 import ProductDetailPage from "./components/page/detail/DetailPage";
 import CreateProductPage from "./components/page/createProduct/CreateProductPage";
-
+import AdminPage from "./components/page/admin/AdminPage";
+import AdminCheckRouter from "./components/AdminCheckRouter";
+import SearchPage from "./components/page/search/SearchPage";
+import EditProductPage from "./components/page/edit/EditProductPage";
 function App() {
     return (
         <Router>
@@ -20,14 +23,15 @@ function App() {
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/product/:productId" element={<ProductDetailPage/>}/>
                 <Route path="/main" element={<MainPage/>}/>
-                       {/* 인증된 사용자만 접근 가능 */}
-                       {/*<Route*/}
-                       {/*    path="/main"*/}
-                       {/*    element={*/}
-                       {/*        <PrivateRoute>*/}
-                       {/*            <MainPage />*/}
-                       {/*        </PrivateRoute>*/}
-                       {/*    }*/}
+                <Route path="/search" element={<SearchPage/>}/>
+                <Route path="/edit" element={<EditProductPage/>}/>
+                <Route
+                    path="/admin"
+                    element={
+                        <AdminCheckRouter>
+                            <AdminPage/>
+                        </AdminCheckRouter>
+                    }
                 />
                 <Route
                     path="/mypage"

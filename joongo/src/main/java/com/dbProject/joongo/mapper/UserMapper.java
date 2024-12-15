@@ -22,6 +22,8 @@ public interface UserMapper {
 
     void deleteUserById(int userId);
 
+    String getRoleByUserId(int userId);
+
     User selectUserByEmail(String email);
 
     int getLastInsertId();

@@ -11,6 +11,7 @@ const PrivateRoute = ({ children }) => {
       const hasToken = authService.isAuthenticated(); // 로컬 스토리지에서 토큰 존재 여부 확인
 
       if (!hasToken) {
+        alert("로그인이 필요합니다."); // 메시지 표시
         setIsAuthenticated(false);
         setLoading(false);
         return;
@@ -18,6 +19,9 @@ const PrivateRoute = ({ children }) => {
 
       // 서버에서 토큰 유효성 검증
       const valid = await authService.verifyToken();
+      if (!valid) {
+        alert("로그인이 만료되었습니다."); // 메시지 표시
+      }
       setIsAuthenticated(valid);
       setLoading(false);
     };

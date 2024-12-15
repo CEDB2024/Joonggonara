@@ -20,7 +20,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorReason illegalExHandler(IllegalArgumentException ex) {
-        return new ErrorReason("ARG400", "잘못된 인자를 입력", false);
+        return new ErrorReason("ARG400", ex.getMessage(), false);
     }
 
     @ResponseStatus(HttpStatus.BAD_GATEWAY)
@@ -34,4 +34,6 @@ public class ExceptionAdvice {
     public ErrorReason loginExceptionHandler(Exception ex) {
         return new ErrorReason(ex.getMessage(), "서버 오류", false);
     }
+
+
 }
