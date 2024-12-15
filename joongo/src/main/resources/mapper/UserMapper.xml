@@ -8,9 +8,9 @@
         <result column="user_name" property="userName" />
         <result column="nickname" property="nickname" />
         <result column="email" property="email" />
+        <result column="phone_number" property="phoneNumber" javaType="java.lang.String" />
         <result column="location" property="location" />
         <result column="money" property="money" />
-        <result column="phone_number" property="phoneNumber" javaType="java.lang.String" />
     </resultMap>
 
     <select id="selectUserById" parameterType="int" resultMap="UserDTOResultMap">
@@ -19,10 +19,11 @@
             user_name,
             nickname,
             email,
+            CAST(CONCAT(COALESCE(tel_1, ''), '-', COALESCE(tel_2, '')) AS CHAR) AS phone_number,
             location,
-            money,
-            CAST(CONCAT(COALESCE(tel_1, ''), '-', COALESCE(tel_2, '')) AS CHAR) AS phone_number        FROM USERS
-        WHERE user_id = #{userId}
+            money
+        FROM USERS
+        WHERE user_id = #{userId};
     </select>
 
 
