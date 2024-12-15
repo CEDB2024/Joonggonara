@@ -91,23 +91,6 @@ const MyPage = () => {
         </div>
       </div>
 
-      {/* 내가 판매 중인 물품 */}
-      <div className="selling-section">
-        <h2>내가 판매 중인 물품</h2>
-        <div className="items">
-          {sellingItems.length > 0 ? (
-            sellingItems.map((item) => (
-              <div key={item.productId} className="item-card">
-                <h3>{item.title}</h3>
-                <p>₩{item.price.toLocaleString()}</p>
-              </div>
-            ))
-          ) : (
-            <p>판매 중인 물품이 없습니다.</p>
-          )}
-        </div>
-      </div>
-
       {/* 거래 내역 */}
       <div className="order-section">
         <h2>거래 내역</h2>
@@ -138,6 +121,23 @@ const MyPage = () => {
             <p>거래량 순위 정보가 없습니다.</p>
           )}
         </ul>
+      </div>
+
+      {/* 내가 판매 중인 물품 */}
+      <div className="selling-section">
+        <h2>내가 판매 중인 물품</h2>
+        <div className="items">
+          {sellingItems.length > 0 ? (
+            sellingItems.map((item) => (
+              <div key={item.productId} className="item-card">
+                <h3>{item.title}</h3>
+                <p>₩{item.price.toLocaleString()}</p>
+              </div>
+            ))
+          ) : (
+            <p>판매 중인 물품이 없습니다.</p>
+          )}
+        </div>
       </div>
     </div>
   );
