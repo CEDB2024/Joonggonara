@@ -108,7 +108,7 @@
 
     <update id="updateUserMoney">
         UPDATE USERS
-        SET money = #{money}
+        SET money = money #{money}
         WHERE user_id = #{userId}
     </update>
 

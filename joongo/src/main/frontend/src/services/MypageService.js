@@ -39,10 +39,16 @@ const chargeMoney = async (userId, amount) => {
   return await sendRequest("post", `${userId}/charge`, { amount });
 };
 
+// 사용자 정보 가져오기
+const getUserInfo = async (userId) => {
+  return await sendRequest("get", `${userId}/users/${userId}/info`);
+};
+
 // 서비스 객체로 export
 const mypageService = {
   getUserProducts,
   chargeMoney,
+  getUserInfo,
 };
 
 export default mypageService;

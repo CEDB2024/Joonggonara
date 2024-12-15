@@ -5,6 +5,12 @@ import "./MyPage.css";
 import mypageService from "../../../services/MypageService";
 import UserService from "../../../services/UserService";
 import OrderService from "../../../services/OrderService";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
+
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
 
 const MyPage = () => {
   const [money, setMoney] = useState(0); // 소지 금액
@@ -13,6 +19,7 @@ const MyPage = () => {
   const [buyOrders, setBuyOrders] = useState([]); // 구매 목록
   const [sellOrders, setSellOrders] = useState([]); // 판매 목록
   const [loading, setLoading] = useState(true); // 데이터 로딩 상태
+  const [userInfo, setUserInfo] = useState(null); // 사용자 정보
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +42,10 @@ const MyPage = () => {
 
         const sellOrders = await OrderService.getOrderBySellerId(userId);
         setSellOrders(sellOrders || []);
+
+        const user = await MypageService.getUserInfo(userId);
+        setUserInfo(user);
+
       } catch (error) {
         console.error("Error fetching data:", error);
         alert("데이터를 가져오는 데 실패했습니다.");
@@ -73,6 +84,23 @@ const MyPage = () => {
     }
   };
 
+    // 파이 차트 데이터 준비
+    const chartData = {
+      labels: ["판매 가능", "품절", "예약 중"],
+      datasets: [
+        {
+          data: [
+            productStatusData.available || 0,
+            productStatusData.sold_out || 0,
+            productStatusData.reserved || 0,
+          ],
+          backgroundColor: ["#4caf50", "#f44336", "#ff9800"],
+          hoverBackgroundColor: ["#66bb6a", "#e57373", "#ffb74d"],
+        },
+      ],
+    };
+  
+
   const handleEdit = (productId) => {
     navigate(`/edit`, { state: { productId } });
   };
@@ -102,6 +130,16 @@ const MyPage = () => {
         <div className="mypage">
           <h1>마이페이지</h1>
 
+          {/* 사용자 정보 */}
+          {userInfo && (
+            <div className="user-info">
+              <h2>회원 정보</h2>
+              <p>이름: {userInfo.userName}</p>
+              <p>이메일: {userInfo.email}</p>
+              <p>전화번호: {userInfo.phone}</p>
+              <p>지역: {userInfo.location}</p>
+            </div>
+          )}
           <div className="balance-section">
             <h2>현재 소지 금액</h2>
             <p className="money">{money ? money.toLocaleString() + "원" : ""}</p>
@@ -174,6 +212,12 @@ const MyPage = () => {
               )}
             </div>
           </div>
+
+          <div className="product-status-chart">
+            <h2>상품 상태 비율</h2>
+            <Pie data={chartData} />
+          </div>
+
         </div>
       </Layout>
   );

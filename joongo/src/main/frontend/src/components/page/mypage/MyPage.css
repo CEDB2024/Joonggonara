@@ -198,3 +198,36 @@
 button {
     cursor: pointer;
 }
+
+
+.product-status-chart {
+    width: 300px;
+    margin: 20px auto;
+}
+
+.user-info {
+    background-color: #2b2b2b;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.user-info p {
+    margin: 5px 0;
+}
+
+.user-info {
+    margin-bottom: 20px;
+    background-color: #999999;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .user-info h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .user-info p {
+    margin: 5px 0;
+    font-size: 16px;
+  }
