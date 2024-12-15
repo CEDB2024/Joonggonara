@@ -49,7 +49,7 @@ const verifyToken = async () => {
     );
     return response.data.valid; // 서버에서 유효성 반환
   } catch (err) {
-    console.error("Token verification failed", err);
+    alert("로그인 만료시간이 지났습니다.");
     return false;
   }
 };

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import ProductService from "../../../services/ProductService";
 import Layout from "../../../global/Layout";
 import getLocalStorage from "../../../global/LocalStorage";
+import { useNavigate } from "react-router-dom";
 import "./DetailPage.css";
 
 const ProductDetailPage = () => {
@@ -11,6 +12,7 @@ const ProductDetailPage = () => {
     const [selectedQuantity, setSelectedQuantity] = useState(1);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
 
     // 고정된 카테고리 데이터
     const categories = {
@@ -57,6 +59,7 @@ const ProductDetailPage = () => {
 
             await ProductService.purchaseProduct(orderData); // 서버로 주문 데이터 전송
             alert("구매가 완료되었습니다!");
+            navigate("/main"); // 로그인 페이지로 이동
         } catch (err) {
             console.error("[Purchase Error]:", err);
             alert("구매 중 오류가 발생했습니다.");
@@ -94,11 +97,11 @@ const ProductDetailPage = () => {
                         <p className="product-description">
                             <strong>설명:</strong> {product.content || "설명이 없습니다."}
                         </p>
-                        <p className="product-category">
+                        <p className="product-status">
                             <strong>카테고리:</strong> {categories[product.categoryId] || "카테고리 미지정"}
                         </p>
                         <p className="product-status">
-                            <strong>상태:</strong> {product.productStatus || "상태 미지정"}
+                            <strong>상태:</strong> {"구매 가능"}
                         </p>
                         <p className="product-location">
                             <strong>위치:</strong> {product.location || "위치 미지정"}
@@ -114,7 +117,7 @@ const ProductDetailPage = () => {
                                 value={selectedQuantity}
                                 onChange={(e) => setSelectedQuantity(Number(e.target.value))}
                             >
-                                {Array.from({ length: product.count }, (_, i) => i + 1).map((num) => (
+                                {Array.from({length: product.count}, (_, i) => i + 1).map((num) => (
                                     <option key={num} value={num}>
                                         {num}
                                     </option>

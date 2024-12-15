@@ -32,16 +32,18 @@
     <!-- 사용자 수정 -->
     <update id="updateUser" parameterType="com.dbProject.joongo.domain.User">
         UPDATE USERS
-        SET user_name = #{userName},
-            nickname = #{nickname},
-            user_password = #{userPassword},
-            email = #{email},
-            tel_1 = #{tel_1},
-            tel_2 = #{tel_2},
-            location = #{location},
-            user_role = #{userRole},
-            user_status = #{userStatus},
-            money = #{money}
+        <set>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="userPassword != null">user_password = #{userPassword},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="tel_1 != null">tel_1 = #{tel_1},</if>
+            <if test="tel_2 != null">tel_2 = #{tel_2},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="userRole != null">user_role = #{userRole},</if>
+            <if test="userStatus != null">user_status = #{userStatus},</if>
+            <if test="money != null">money = #{money},</if>
+        </set>
         WHERE user_id = #{userId}
     </update>
 

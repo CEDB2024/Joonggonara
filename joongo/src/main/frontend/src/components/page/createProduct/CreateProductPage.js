@@ -50,10 +50,10 @@ const CreateProductPage = () => {
 
         try {
             const response = await ProductService.addProduct(form);
-            console.log("Product created successfully:", response.data);
+            console.log("상품 등록 완료", response.data);
             navigate("/main");
         } catch (error) {
-            console.error("Failed to create product", error);
+            console.error("상품 등록 실패", error);
         }
     };
 

@@ -27,13 +27,6 @@ body {
     gap: 20px; /* 마이페이지와 검색창 사이 간격 */
 }
 
-
-
-.product-category {
-    color: inherit;
-}
-
-
 .header h1 {
     margin: 0;
     font-size: 24px;
@@ -185,6 +178,7 @@ body {
 .product-description,
 .product-status,
 .product-location,
+.product-category,
 .product-count {
     margin: 5px 0;
     font-size: 16px;
@@ -195,6 +189,7 @@ body {
 .product-description strong,
 .product-status strong,
 .product-location strong,
+.product-category,
 .product-count strong {
     color: #ffcc00;
     font-weight: bold;
