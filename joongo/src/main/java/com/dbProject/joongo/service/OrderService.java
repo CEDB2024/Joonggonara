@@ -44,6 +44,7 @@ public class OrderService {
         User buyer = userMapper.selectUserById(request.getBuyerId());
         long payMoney = ((long) request.getCount() * updateDto.getPrice());
         if (buyer.getMoney() < payMoney) {
+            // 원래는 에러마다 runtimeException 상속해서 커스텀 예외 만들어서 exceptionAdvice 에서 처리
             throw new RuntimeException("[Error] You do not have enough money!");
         }
         User seller = userMapper.selectUserById(request.getSellerId());

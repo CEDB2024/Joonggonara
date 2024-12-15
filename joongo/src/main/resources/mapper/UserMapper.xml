@@ -16,7 +16,7 @@
 
     <!-- 사용자 조회 (ID) -->
     <select id="selectUserById" parameterType="int" resultType="com.dbProject.joongo.domain.User">
-        SELECT * FROM USERS WHERE user_id = #{userId}
+        SELECT * FROM USERS WHERE user_id = #{userId} FOR UPDATE;
     </select>
 
     <!-- 데이터베이스 내 가장 큰 ID 조회 -->
