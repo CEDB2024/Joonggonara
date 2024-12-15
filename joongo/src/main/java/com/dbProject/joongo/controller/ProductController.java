@@ -66,7 +66,7 @@ public class ProductController {
 
     @PostMapping("/edit")
     public ResponseEntity<Boolean> updateProduct(@ModelAttribute ProductRequest.updateInfo request) {
-        productService.updateProduct(request.toEntity());
+        productService.updateProduct(request);
         return ResponseEntity.ok(true);
     }
 

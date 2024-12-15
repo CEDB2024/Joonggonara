@@ -22,6 +22,7 @@ public class ProductService {
 
     private final ProductMapper productMapper;
     private final AmazonS3Manager s3Manager;
+
     // image 필드가 pictureUrl 저장함
     // s3에 uuid 를 식별자로 단건 업로드 중
     public void create(ProductRequest.uploadInfo productInfo) {
@@ -68,22 +69,34 @@ public class ProductService {
         }
     }
 
-    public Product updateProduct(Product newProduct) {
+    public Product updateProduct(ProductRequest.updateInfo request) {
         try {
             // 기존 Product 조회
+            Product newProduct = request.toEntity();
             Product existingProduct = productMapper.findById(newProduct.getProductId());
-
+            String uuid = UUID.randomUUID().toString();
+            String pictureUrl = s3Manager.uploadFile(uuid,
+                    request.getProductPicture());
             // 기존 Product와 새로운 Product 비교
             Product updatedProduct = Product.builder()
                     .productId(existingProduct.getProductId()) // productId는 항상 유지
-                    .title(isDifferent(newProduct.getTitle(), existingProduct.getTitle()) ? newProduct.getTitle() : null)
-                    .content(isDifferent(newProduct.getContent(), existingProduct.getContent()) ? newProduct.getContent() : null)
-                    .image(isDifferent(newProduct.getImage(), existingProduct.getImage()) ? newProduct.getImage() : null)
-                    .price(isDifferent(newProduct.getPrice(), existingProduct.getPrice()) ? newProduct.getPrice() : null)
-                    .productStatus(isDifferent(newProduct.getProductStatus(), existingProduct.getProductStatus()) ? newProduct.getProductStatus() : null)
-                    .location(isDifferent(newProduct.getLocation(), existingProduct.getLocation()) ? newProduct.getLocation() : null)
-                    .categoryId(isDifferent(newProduct.getCategoryId(), existingProduct.getCategoryId()) ? newProduct.getCategoryId() : null)
-                    .count(isDifferent(newProduct.getCount(), existingProduct.getCount()) ? newProduct.getCount() : null)
+                    .title(isDifferent(newProduct.getTitle(), existingProduct.getTitle()) ? newProduct.getTitle()
+                            : null)
+                    .content(
+                            isDifferent(newProduct.getContent(), existingProduct.getContent()) ? newProduct.getContent()
+                                    : null)
+                    .image(isDifferent(pictureUrl, existingProduct.getImage()) ? pictureUrl
+                            : null)
+                    .price(isDifferent(newProduct.getPrice(), existingProduct.getPrice()) ? newProduct.getPrice()
+                            : null)
+                    .productStatus(isDifferent(newProduct.getProductStatus(), existingProduct.getProductStatus())
+                            ? newProduct.getProductStatus() : null)
+                    .location(isDifferent(newProduct.getLocation(), existingProduct.getLocation())
+                            ? newProduct.getLocation() : null)
+                    .categoryId(isDifferent(newProduct.getCategoryId(), existingProduct.getCategoryId())
+                            ? newProduct.getCategoryId() : null)
+                    .count(isDifferent(newProduct.getCount(), existingProduct.getCount()) ? newProduct.getCount()
+                            : null)
                     .build();
 
             // DB 업데이트
@@ -100,8 +113,12 @@ public class ProductService {
 
     // 두 값이 다른지 확인하는 메서드
     private boolean isDifferent(Object newValue, Object oldValue) {
-        if (newValue == null && oldValue == null) return false;
-        if (newValue == null || oldValue == null) return true;
+        if (newValue == null && oldValue == null) {
+            return false;
+        }
+        if (newValue == null || oldValue == null) {
+            return true;
+        }
         return !newValue.equals(oldValue);
     }
 
@@ -117,7 +134,10 @@ public class ProductService {
 
     public boolean deleteProductById(Integer productId) {
         try {
-            productMapper.deleteProductById(productId);
+            productMapper.updateProduct(Product.builder()
+                            .productId(productId)
+                            .productStatus("reserved")
+                    .build());
             return true;
         } catch (Exception e) {
             throw new RuntimeException("예상하지 못한 에러");
