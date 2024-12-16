@@ -1,0 +1,13 @@
+name: Joonggo CI/CD
+
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:  #(2). 수동 워크플로우 트리거 기능
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # (3).OS 환경
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'heehunjung'
+
+
