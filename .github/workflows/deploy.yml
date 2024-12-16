@@ -10,4 +10,55 @@ jobs:
     runs-on: ubuntu-latest # (3).OS 환경
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'heehunjung'
 
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    # name 은 그냥 해당 단계 이름임
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17 # 17버전 설치
+      distribution: 'adopt'
+
+    - name: Build with Gradle
+      run: ./gradlew clean build -x test
+      shell: bash # build 시작
+
+    - name: Get current time
+      uses: 1466587594/get-current-time@v2
+      id: current-time
+      with:
+        format: YYYY-MM-DDTHH-mm-ss
+        utcOffset: "+09:00" # .build시점의 시간확보
+
+    - name: Show Current Time
+      run: echo "CurrentTime=$"
+      shell: bash# (9).확보한 시간 보여주기
+    # 백엔드 빌드 끝
+    # 프론트 시작
+    - name: Grant execute permission for gradlew # for build springboot
+      run: chmod +x ./gradlew
+      shell: bash
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Node.js 16 버전 설치
+
+    - name: Install frontend dependencies
+      working-directory: ./src/main/frontend  # frontend 디렉토리로 이동
+      run: npm install
+
+    - name: Build frontend
+      working-directory: ./src/main/frontend
+      run: npm run build
+    #프론트 빌드 끝
+
+    - name: Generate deployment package
+      run: |
+        mkdir -p deploy
+        cp build/libs/*.jar deploy/application.jar
+        
+
 
