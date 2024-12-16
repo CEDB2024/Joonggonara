@@ -13,6 +13,8 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 // 허용할 오리진 지정
                 .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("http://localhost")
+                .allowedOrigins("http://54.180.53.177")
                 // 허용할 HTTP 메소드 지정
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 // 허용할 헤더 지정

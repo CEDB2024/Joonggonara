@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/auth"; // Spring Boot API 경로
+const API_URL = "http://54.180.53.177:8080/api/auth"; // Spring Boot API 경로
 
 // 로그인 요청
 const login = async (credentials) => {

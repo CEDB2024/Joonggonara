@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dbProject.joongo.mapper.UserMapper">
 
-
+    <!-- ResultMap 정의 -->
     <resultMap id="UserDTOResultMap" type="com.dbProject.joongo.dto.user.UserDTO">
         <id column="user_id" property="userId" />
         <result column="user_name" property="userName" />
@@ -14,7 +14,8 @@
         <result column="money" property="money" />
     </resultMap>
 
-    <select id="selectUserById" parameterType="int" resultMap="UserDTOResultMap">
+    <!-- 사용자 조회 (DTO) -->
+    <select id="selectUserByIdForDTO" parameterType="int" resultMap="UserDTOResultMap">
         SELECT
             user_id,
             user_name,
@@ -27,20 +28,20 @@
         WHERE user_id = #{userId};
     </select>
 
+    <!-- 사용자 조회 (Domain) -->
+    <select id="selectUserByIdForDomain" parameterType="int" resultType="com.dbProject.joongo.domain.User">
+        SELECT * FROM USERS WHERE user_id = #{userId} FOR UPDATE;
+    </select>
+
     <!-- 사용자 추가 -->
     <insert id="insertUser" parameterType="com.dbProject.joongo.domain.User" useGeneratedKeys="true">
         INSERT INTO USERS (user_name, nickname, user_password, email, tel_1, tel_2, location)
         VALUES (#{userName}, #{nickname}, #{userPassword}, #{email}, #{tel_1}, #{tel_2}, #{location});
     </insert>
 
-    <!-- 마지막 삽입 사용자 ID 조회 (ID) -->
+    <!-- 마지막 삽입 사용자 ID 조회 -->
     <select id="getLastInsertId" resultType="int">
         SELECT LAST_INSERT_ID();
-    </select>
-
-    <!-- 사용자 조회 (ID) -->
-    <select id="selectUserById" parameterType="int" resultType="com.dbProject.joongo.domain.User">
-        SELECT * FROM USERS WHERE user_id = #{userId} FOR UPDATE;
     </select>
 
     <!-- 데이터베이스 내 가장 큰 ID 조회 -->
@@ -54,7 +55,7 @@
         WHERE user_status = 'active'
     </select>
 
-    <!-- role 조회 -->
+    <!-- 사용자 Role 조회 -->
     <select id="getRoleByUserId" resultType="string">
         SELECT user_role FROM USERS
         WHERE user_id = #{userId}
@@ -84,11 +85,6 @@
     </delete>
 
     <!-- 이메일로 사용자 조회 -->
-    <!-- 베타락만 가능
-         공유락을 하면 select 는 여러 트랜잭션에서 같이 할 수 있기 때문에
-         email 검증이 모두 통과하게 됨
-         그 후 insert 에서 데드락이 발생 , 레코드 락 요청 시
-    -->
     <select id="selectUserByEmail" parameterType="string" resultType="com.dbProject.joongo.domain.User">
         SELECT * FROM USERS WHERE email = #{email} FOR UPDATE;
     </select>
@@ -100,18 +96,21 @@
         WHERE email = #{email} AND user_password = #{userPassword}
     </select>
 
+    <!-- 사용자별 상품 조회 -->
     <select id="selectProductsByUserId" parameterType="int" resultType="com.dbProject.joongo.domain.Product">
         SELECT * FROM PRODUCTS
         WHERE user_id = #{userId}
           AND product_status = 'available'
     </select>
 
+    <!-- 사용자 돈 업데이트 -->
     <update id="updateUserMoney">
         UPDATE USERS
         SET money = #{money}
         WHERE user_id = #{userId}
     </update>
 
+    <!-- 사용자 거래 순위 조회 -->
     <select id="selectUserRankByTransactionCount" resultType="com.dbProject.joongo.domain.User">
         SELECT
             user_id,

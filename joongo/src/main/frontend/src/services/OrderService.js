@@ -2,7 +2,7 @@ import axios from "axios";
 import getLocalStorage from "../global/LocalStorage";
 
 // 기본 API URL 설정
-const API_URL = "http://localhost:8080/api/orders";
+const API_URL = "http://54.180.53.177:8080/api/orders";
 
 // 공통 Axios 요청 함수
 const sendRequest = async (method, endpoint, data = null, params = null) => {
