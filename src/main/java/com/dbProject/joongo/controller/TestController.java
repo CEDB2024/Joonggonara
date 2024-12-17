@@ -19,9 +19,9 @@ public class TestController {
     private final UuidMapper uuidMapper;
     private final AmazonS3Manager s3Manager;
 
-    @GetMapping("/api/hello")
+    @GetMapping("/health")
     public String test() {
-        return "Hello, world!";
+        return "health check! ";
     }
 
     //upload test 컨트롤러
