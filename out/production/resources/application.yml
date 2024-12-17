@@ -16,7 +16,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+#todo : url 이제 배포했으니깐 rds 주소로
 jwt:
   secretKey: SuperSecureKeyThatIsAtLeast64CharactersLongForHS512Algorithmababababababab
 

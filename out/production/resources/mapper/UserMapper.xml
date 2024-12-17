@@ -14,8 +14,8 @@
         <result column="money" property="money" />
     </resultMap>
 
-    <!-- 사용자 ID로 상세 조회 -->
-    <select id="selectUserByIdWithDetails" parameterType="int" resultMap="UserDTOResultMap">
+    <!-- 사용자 조회 (DTO) -->
+    <select id="selectUserByIdForDTO" parameterType="int" resultMap="UserDTOResultMap">
         SELECT
             user_id,
             user_name,
@@ -28,8 +28,8 @@
         WHERE user_id = #{userId};
     </select>
 
-    <!-- 사용자 ID로 조회 -->
-    <select id="selectUserById" parameterType="int" resultType="com.dbProject.joongo.domain.User">
+    <!-- 사용자 조회 (Domain) -->
+    <select id="selectUserByIdForDomain" parameterType="int" resultType="com.dbProject.joongo.domain.User">
         SELECT * FROM USERS WHERE user_id = #{userId} FOR UPDATE;
     </select>
 
@@ -52,13 +52,13 @@
     <!-- 모든 사용자 조회 -->
     <select id="selectAllUsers" resultType="com.dbProject.joongo.domain.User">
         SELECT * FROM USERS
-        WHERE user_status = 'active';
+        WHERE user_status = 'active'
     </select>
 
-    <!-- role 조회 -->
+    <!-- 사용자 Role 조회 -->
     <select id="getRoleByUserId" resultType="string">
         SELECT user_role FROM USERS
-        WHERE user_id = #{userId};
+        WHERE user_id = #{userId}
     </select>
 
     <!-- 사용자 수정 -->
@@ -76,12 +76,12 @@
             <if test="userStatus != null">user_status = #{userStatus},</if>
             <if test="money != null">money = #{money},</if>
         </set>
-        WHERE user_id = #{userId};
+        WHERE user_id = #{userId}
     </update>
 
     <!-- 사용자 삭제 -->
     <delete id="deleteUserById" parameterType="int">
-        DELETE FROM USERS WHERE user_id = #{userId};
+        DELETE FROM USERS WHERE user_id = #{userId}
     </delete>
 
     <!-- 이메일로 사용자 조회 -->
@@ -93,24 +93,24 @@
     <select id="selectUserByEmailAndPassword" parameterType="map" resultType="com.dbProject.joongo.domain.User">
         SELECT *
         FROM USERS
-        WHERE email = #{email} AND user_password = #{userPassword};
+        WHERE email = #{email} AND user_password = #{userPassword}
     </select>
 
-    <!-- 사용자 ID로 상품 조회 -->
+    <!-- 사용자별 상품 조회 -->
     <select id="selectProductsByUserId" parameterType="int" resultType="com.dbProject.joongo.domain.Product">
         SELECT * FROM PRODUCTS
         WHERE user_id = #{userId}
-          AND product_status = 'available';
+          AND product_status = 'available'
     </select>
 
-    <!-- 사용자 금액 수정 -->
+    <!-- 사용자 돈 업데이트 -->
     <update id="updateUserMoney">
         UPDATE USERS
         SET money = #{money}
-        WHERE user_id = #{userId};
+        WHERE user_id = #{userId}
     </update>
 
-    <!-- 사용자 거래 횟수로 순위 조회 -->
+    <!-- 사용자 거래 순위 조회 -->
     <select id="selectUserRankByTransactionCount" resultType="com.dbProject.joongo.domain.User">
         SELECT
             user_id,
@@ -122,7 +122,7 @@
                  SELECT seller_id AS user_id FROM ORDERS
              ) AS user_transactions
         GROUP BY user_id
-        ORDER BY rank;
+        ORDER BY rank
     </select>
 
 </mapper>
