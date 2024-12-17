@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: joongo
+  datasource:
+    url: jdbc:mysql://localhost:13306/joonggo
+    username: root
+    password: ${AWS_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+jwt:
+  secretKey: SuperSecureKeyThatIsAtLeast64CharactersLongForHS512Algorithmababababababab
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    s3:
+      bucket: joonggodb-bucket
+      path:
+        product: products
+
+logging:
+  level:
+    org.apache.ibatis: DEBUG
+
+# Test Token
+#test-token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QG5hdmVyLmNvbSIsImlhdCI6MTczMzMyMTgyNCwiZXhwIjoxNzMzMzI1NDI0fQ.m9PMJsloMBXrDNQJ6obtcpY2MHTAcA4VRrOfrzm7-O52ws2rQRADZwEvJ27kCp3zktRtgzWddKf56a7IzJ_QmA

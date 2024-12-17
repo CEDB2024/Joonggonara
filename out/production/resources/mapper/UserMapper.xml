@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dbProject.joongo.mapper.UserMapper">
+
+    <!-- ResultMap 정의 -->
+    <resultMap id="UserDTOResultMap" type="com.dbProject.joongo.dto.user.UserDTO">
+        <id column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="nickname" property="nickname" />
+        <result column="email" property="email" />
+        <result column="phone_number" property="phoneNumber" javaType="java.lang.String" />
+        <result column="location" property="location" />
+        <result column="money" property="money" />
+    </resultMap>
+
+    <!-- 사용자 ID로 상세 조회 -->
+    <select id="selectUserByIdWithDetails" parameterType="int" resultMap="UserDTOResultMap">
+        SELECT
+            user_id,
+            user_name,
+            nickname,
+            email,
+            CAST(CONCAT(COALESCE(tel_1, ''), '-', COALESCE(tel_2, '')) AS CHAR) AS phone_number,
+            location,
+            money
+        FROM USERS
+        WHERE user_id = #{userId};
+    </select>
+
+    <!-- 사용자 ID로 조회 -->
+    <select id="selectUserById" parameterType="int" resultType="com.dbProject.joongo.domain.User">
+        SELECT * FROM USERS WHERE user_id = #{userId} FOR UPDATE;
+    </select>
+
+    <!-- 사용자 추가 -->
+    <insert id="insertUser" parameterType="com.dbProject.joongo.domain.User" useGeneratedKeys="true">
+        INSERT INTO USERS (user_name, nickname, user_password, email, tel_1, tel_2, location)
+        VALUES (#{userName}, #{nickname}, #{userPassword}, #{email}, #{tel_1}, #{tel_2}, #{location});
+    </insert>
+
+    <!-- 마지막 삽입 사용자 ID 조회 -->
+    <select id="getLastInsertId" resultType="int">
+        SELECT LAST_INSERT_ID();
+    </select>
+
+    <!-- 데이터베이스 내 가장 큰 ID 조회 -->
+    <select id="getLastIdInDatabase" resultType="int">
+        SELECT MAX(user_id) FROM USERS;
+    </select>
+
+    <!-- 모든 사용자 조회 -->
+    <select id="selectAllUsers" resultType="com.dbProject.joongo.domain.User">
+        SELECT * FROM USERS
+        WHERE user_status = 'active';
+    </select>
+
+    <!-- role 조회 -->
+    <select id="getRoleByUserId" resultType="string">
+        SELECT user_role FROM USERS
+        WHERE user_id = #{userId};
+    </select>
+
+    <!-- 사용자 수정 -->
+    <update id="updateUser" parameterType="com.dbProject.joongo.domain.User">
+        UPDATE USERS
+        <set>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="userPassword != null">user_password = #{userPassword},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="tel_1 != null">tel_1 = #{tel_1},</if>
+            <if test="tel_2 != null">tel_2 = #{tel_2},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="userRole != null">user_role = #{userRole},</if>
+            <if test="userStatus != null">user_status = #{userStatus},</if>
+            <if test="money != null">money = #{money},</if>
+        </set>
+        WHERE user_id = #{userId};
+    </update>
+
+    <!-- 사용자 삭제 -->
+    <delete id="deleteUserById" parameterType="int">
+        DELETE FROM USERS WHERE user_id = #{userId};
+    </delete>
+
+    <!-- 이메일로 사용자 조회 -->
+    <select id="selectUserByEmail" parameterType="string" resultType="com.dbProject.joongo.domain.User">
+        SELECT * FROM USERS WHERE email = #{email} FOR UPDATE;
+    </select>
+
+    <!-- 이메일과 비밀번호로 사용자 조회 -->
+    <select id="selectUserByEmailAndPassword" parameterType="map" resultType="com.dbProject.joongo.domain.User">
+        SELECT *
+        FROM USERS
+        WHERE email = #{email} AND user_password = #{userPassword};
+    </select>
+
+    <!-- 사용자 ID로 상품 조회 -->
+    <select id="selectProductsByUserId" parameterType="int" resultType="com.dbProject.joongo.domain.Product">
+        SELECT * FROM PRODUCTS
+        WHERE user_id = #{userId}
+          AND product_status = 'available';
+    </select>
+
+    <!-- 사용자 금액 수정 -->
+    <update id="updateUserMoney">
+        UPDATE USERS
+        SET money = #{money}
+        WHERE user_id = #{userId};
+    </update>
+
+    <!-- 사용자 거래 횟수로 순위 조회 -->
+    <select id="selectUserRankByTransactionCount" resultType="com.dbProject.joongo.domain.User">
+        SELECT
+            user_id,
+            COUNT(*) AS transaction_count,
+            RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+        FROM (
+                 SELECT buyer_id AS user_id FROM ORDERS
+                 UNION ALL
+                 SELECT seller_id AS user_id FROM ORDERS
+             ) AS user_transactions
+        GROUP BY user_id
+        ORDER BY rank;
+    </select>
+
+</mapper>

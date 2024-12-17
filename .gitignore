@@ -32,21 +32,27 @@ build/
 ### VS Code ###
 .vscode/
 
-#react node_module
-node_module
-build
-gradle
-.gradle
+# Node.js 및 React
+node_modules/
+**/node_modules/
 
-# IntelliJ IDEA
-/.idea
-/out/
+# React 빌드 결과물 예외 처리
+!src/main/frontend/build/
+
+# Gradle Wrapper 예외 처리
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+!gradlew
+!gradlew.bat
 
 # Maven
 /target/
 
 # Gradle
+/.gradle
 /build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 # 기타 빌드 출력 디렉토리
 /joongo/out/

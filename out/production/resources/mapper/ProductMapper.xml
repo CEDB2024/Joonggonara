@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dbProject.joongo.mapper.ProductMapper">
+
+    <!--상품 생성  -->
+    <insert id="insertProduct" parameterType="com.dbProject.joongo.domain.Product" useGeneratedKeys="true"
+            keyProperty="productId">
+        INSERT INTO PRODUCTS (user_id, title, content, image, price, product_status, location, category_id, count,
+                              created_at, updated_at)
+        VALUES (#{userId}, #{title}, #{content}, #{image}, #{price}, #{productStatus}, #{location}, #{categoryId},
+                #{count}, NOW(), NOW());
+    </insert>
+
+    <!--단일 상품 조회-->
+    <select id="findById" resultType="com.dbProject.joongo.domain.Product">
+        SELECT *
+        FROM PRODUCTS
+        WHERE product_id = #{productId}
+          AND product_status = 'available'
+    </select>
+
+    <!--모든 상품 조회-->
+    <select id="findAll" resultType="com.dbProject.joongo.domain.Product">
+        SELECT *
+        FROM PRODUCTS
+        WHERE product_status = 'available'
+    </select>
+
+    <select id="findAllByUserId" resultType="com.dbProject.joongo.domain.Product">
+        SELECT *
+        FROM PRODUCTS
+        WHERE user_id = #{userId}
+    </select>
+
+
+    <select id="findUserIdById" resultType="com.dbProject.joongo.domain.Product">
+        SELECT user_id
+        FROM PRODUCTS
+        WHERE product_id = #{productId}
+    </select>
+
+    <!--카테고리 별 상품 조회 -->
+    <select id="findAllByCategoryId" resultType="com.dbProject.joongo.domain.Product">
+        SELECT *
+        FROM PRODUCTS
+        WHERE category_id = #{categoryId}
+          AND product_status = 'available'
+    </select>
+
+    <update id="updateProduct" parameterType="com.dbProject.joongo.domain.Product">
+        UPDATE PRODUCTS
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="productStatus != null">product_status = #{productStatus},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="count != null">count = #{count},</if>
+            updated_at = NOW() <!-- 고정 필드를 SET 블록 안으로 이동 -->
+        </set>
+        WHERE product_id = #{productId}
+    </update>
+
+
+    <!-- 상품 삭제 -->
+    <delete id="deleteProductById" parameterType="int">
+        DELETE
+        FROM PRODUCTS
+        WHERE product_id = #{productId}
+    </delete>
+
+    <select id="searchByTitle" resultType="com.dbProject.joongo.domain.Product">
+        SELECT *
+        FROM PRODUCTS
+        WHERE product_status = 'available'
+        AND LENGTH(#{title}) >= 2
+        AND title LIKE CONCAT('%', #{title}, '%')
+        ORDER BY
+        CASE
+        WHEN title = #{title} THEN 1    <!-- 정확히 일치하는 항목 우선 -->
+        WHEN title LIKE CONCAT(#{title}, '%') THEN 2 <!-- 검색어로 시작하는 항목 -->
+        WHEN title LIKE CONCAT('%', #{title}, '%') THEN 3 <!-- 검색어가 포함된 항목 -->
+        ELSE 4
+        END,
+        updated_at DESC <!-- 동일한 조건일 경우 최신 업데이트 순으로 정렬 -->
+    </select>
+</mapper>

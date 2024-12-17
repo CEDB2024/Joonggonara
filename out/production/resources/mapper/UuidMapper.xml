@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dbProject.joongo.mapper.UuidMapper">
+
+    <!-- UUID 생성 (insert) -->
+    <insert id="createUuid" parameterType="com.dbProject.joongo.domain.Uuid" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO UUID (uuid)
+        VALUES (#{uuid})
+    </insert>
+
+    <!-- 모든 UUID 조회 -->
+    <select id="findAll" resultType="com.dbProject.joongo.domain.Uuid">
+        SELECT id, uuid
+        FROM UUID
+    </select>
+
+    <!-- ID로 UUID 조회 -->
+    <select id="findById" parameterType="long" resultType="com.dbProject.joongo.domain.Uuid">
+        SELECT id, uuid
+        FROM UUID
+        WHERE id = #{id}
+    </select>
+
+    <!-- UUID 업데이트 -->
+    <update id="updateUuid" parameterType="com.dbProject.joongo.domain.Uuid">
+        UPDATE UUID
+        SET uuid = #{uuid}
+        WHERE id = #{id}
+    </update>
+
+    <!-- UUID 삭제 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM UUID
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
