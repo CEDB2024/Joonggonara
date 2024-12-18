@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'heehunjung'
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
 
     steps:
       - name: Checkout
@@ -22,22 +22,23 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
-      #아 순서 ;;
+
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
-#      - name: Set up Node.js
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: '16'
+      # Uncomment if frontend build is required
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '16'
 
-#      - name: Install frontend dependencies
-#        working-directory: ./src/main/frontend
-#        run: npm install
-#
-#      - name: Build frontend
-#        working-directory: ./src/main/frontend
-#        run: CI=false npm run build
+      # - name: Install frontend dependencies
+      #   working-directory: ./src/main/frontend
+      #   run: npm install
+
+      # - name: Build frontend
+      #   working-directory: ./src/main/frontend
+      #   run: CI=false npm run build
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
@@ -52,13 +53,12 @@ jobs:
 
       - name: Generate deployment package
         run: |
-               mkdir -p deploy
-               cp build/libs/*.jar deploy/application.jar
-               cp Procfile deploy/Procfile
-               cp -r .ebextensions deploy/.ebextensions
-               cp -r .platform deploy/.platform
-#         cp -r src/main/frontend/build deploy/frontend
-               cd deploy && zip -r deploy.zip .
+          mkdir -p deploy
+          cp build/libs/*.jar deploy/application.jar
+          cp Procfile deploy/Procfile
+          cp -r .ebextensions deploy/.ebextensions
+          cp -r .platform deploy/.platform
+          cd deploy && zip -r deploy.zip .
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
@@ -72,13 +72,14 @@ jobs:
           deployment_package: deploy/deploy.zip
           wait_for_deployment: false
 
-#      - name: Upload frontend build to S3
-#        uses: jakejarvis/s3-sync-action@v0.5.1
-#        with:
-#          args: --acl public-read --follow-symlinks --delete
-#        env:
-#          AWS_S3_BUCKET: joonggodb-bucket
-#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          AWS_REGION: ap-northeast-2
-#          SOURCE_DIR: src/main/frontend/build
+      # Uncomment if S3 upload is required
+      # - name: Upload frontend build to S3
+      #   uses: jakejarvis/s3-sync-action@v0.5.1
+      #   with:
+      #     args: --acl public-read --follow-symlinks --delete
+      #   env:
+      #     AWS_S3_BUCKET: joonggodb-bucket
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_REGION: ap-northeast-2
+      #     SOURCE_DIR: src/main/frontend/build
