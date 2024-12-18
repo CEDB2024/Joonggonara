@@ -26,18 +26,18 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: '16'
 
-      - name: Install frontend dependencies
-        working-directory: ./src/main/frontend
-        run: npm install
-
-      - name: Build frontend
-        working-directory: ./src/main/frontend
-        run: CI=false npm run build
+#      - name: Install frontend dependencies
+#        working-directory: ./src/main/frontend
+#        run: npm install
+#
+#      - name: Build frontend
+#        working-directory: ./src/main/frontend
+#        run: CI=false npm run build
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
