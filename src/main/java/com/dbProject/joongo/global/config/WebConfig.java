@@ -20,6 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
 //                .excludePathPatterns("/api/categories/**")
                 .excludePathPatterns("/api/auth/**")
                 .excludePathPatterns("/health")
+                .excludePathPatterns("/favicon.ico")
                 .excludePathPatterns("/api/products/")
                 .excludePathPatterns("/api/products/{categoryId}")
                 .excludePathPatterns(
