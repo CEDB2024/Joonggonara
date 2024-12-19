@@ -24,6 +24,12 @@ public class TestController {
         return "health check! ";
     }
 
+
+    @GetMapping("/")
+    public String 저메추() {
+        return "저녁 메뉴 추천좀";
+    }
+
     //upload test 컨트롤러
     @PostMapping(value = "/api/products/test", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String testMultiPart(@RequestBody MultipartFile file) {
