@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginCheckInterceptor)
-                .addPathPatterns("/**")
+//                .addPathPatterns("/**")
 //                .excludePathPatterns("/api/users/**")
 //                .excludePathPatterns("/api/categories/**")
                 .excludePathPatterns("/api/auth/**")
