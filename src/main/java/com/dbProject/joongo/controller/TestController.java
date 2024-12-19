@@ -30,6 +30,10 @@ public class TestController {
         return "저녁 메뉴 추천좀";
     }
 
+    @GetMapping("/thanks")
+    public String 고마워() {
+        return "동현아 추천해줘서 고마워";
+    }
     //upload test 컨트롤러
     @PostMapping(value = "/api/products/test", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String testMultiPart(@RequestBody MultipartFile file) {
