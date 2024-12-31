@@ -38,6 +38,11 @@ build
 gradle
 .gradle
 
+# Gradle Wrapper 관련 파일 예외 처리
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+
 # IntelliJ IDEA
 /.idea
 /out/
