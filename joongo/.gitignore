@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.env
 
 ### STS ###
 .apt_generated
@@ -37,6 +38,11 @@ node_module
 build
 gradle
 .gradle
+
+# Gradle Wrapper 관련 파일 예외 처리
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
 
 # IntelliJ IDEA
 /.idea

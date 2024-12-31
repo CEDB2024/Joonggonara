@@ -30,7 +30,7 @@ cloud:
     stack:
       auto: false
     s3:
-      bucket: joonggodb-bucket
+      bucket: joonggo-bucket
       path:
         product: products
 
