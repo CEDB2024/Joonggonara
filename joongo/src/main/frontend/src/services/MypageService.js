@@ -1,7 +1,9 @@
 import axios from "axios";
 import getLocalStorage from "../global/LocalStorage";
 
-const API_URL = "http://localhost:8080/api/users";
+const apiUrl = process.env.REACT_APP_API_URL;
+
+const API_URL = `${apiUrl}/api/users`;
 
 // 공통 Axios 요청 함수
 const sendRequest = async (method, endpoint, data = null, params = null) => {

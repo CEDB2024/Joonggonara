@@ -1,7 +1,10 @@
 import axios from "axios";
 import getLocalStorage from "../global/LocalStorage";
+
+const apiUrl = process.env.REACT_APP_API_URL;
+
 // 기본 API URL 설정
-const API_URL = "http://localhost:8080/api/categories/";
+const API_URL = `${apiUrl}/api/categories/`;
 
 // 공통 Axios 요청 함수
 const sendRequest = async (method, endpoint, data = null, params = null) => {
