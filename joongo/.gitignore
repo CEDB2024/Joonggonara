@@ -59,3 +59,4 @@ gradle/
 
 # 기타 빌드 출력 디렉토리
 /joongo/out/
+.env
