@@ -43,7 +43,7 @@ const MyPage = () => {
         const sellOrders = await OrderService.getOrderBySellerId(userId);
         setSellOrders(sellOrders || []);
 
-        const user = await MypageService.getUserInfo(userId);
+        const user = await mypageService.getUserInfo(userId);
         setUserInfo(user);
 
       } catch (error) {
@@ -84,21 +84,6 @@ const MyPage = () => {
     }
   };
 
-    // 파이 차트 데이터 준비
-    const chartData = {
-      labels: ["판매 가능", "품절", "예약 중"],
-      datasets: [
-        {
-          data: [
-            productStatusData.available || 0,
-            productStatusData.sold_out || 0,
-            productStatusData.reserved || 0,
-          ],
-          backgroundColor: ["#4caf50", "#f44336", "#ff9800"],
-          hoverBackgroundColor: ["#66bb6a", "#e57373", "#ffb74d"],
-        },
-      ],
-    };
   
 
   const handleEdit = (productId) => {
@@ -211,11 +196,6 @@ const MyPage = () => {
                   <p className="no-items">판매한 상품이 없습니다.</p>
               )}
             </div>
-          </div>
-
-          <div className="product-status-chart">
-            <h2>상품 상태 비율</h2>
-            <Pie data={chartData} />
           </div>
 
         </div>

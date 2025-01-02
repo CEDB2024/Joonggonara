@@ -2,9 +2,9 @@ spring:
   application:
     name: joongo
   datasource:
-    url: jdbc:mysql://localhost:13306/joonggo
-    username: root
-    password: ${AWS_PASSWORD}
+    url: jdbc:mysql://localhost:3306/joonggo
+    username: ubuntu
+    password: ${AWS_DATABASE_KEY}
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
@@ -30,7 +30,7 @@ cloud:
     stack:
       auto: false
     s3:
-      bucket: joonggodb-bucket
+      bucket: joonggo-bucket
       path:
         product: products
 
