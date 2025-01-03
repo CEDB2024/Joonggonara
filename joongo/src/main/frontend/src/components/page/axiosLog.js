@@ -1,7 +1,7 @@
 import axios from 'axios';
 import 'dotenv'
 
-const apiUrl = process.env.baseURL;
+const apiUrl = process.env.BASE_URL;
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
   baseURL: apiUrl, // API 기본 URL
