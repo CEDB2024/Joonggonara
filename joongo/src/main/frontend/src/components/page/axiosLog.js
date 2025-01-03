@@ -1,8 +1,10 @@
 import axios from 'axios';
+import 'dotenv'
 
+const apiUrl = process.env.baseURL;
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
-  baseURL: '', // API 기본 URL
+  baseURL: apiUrl, // API 기본 URL
   timeout: 5000,                 // 요청 제한 시간 설정
 });
 
