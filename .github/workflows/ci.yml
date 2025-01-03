@@ -42,7 +42,7 @@ jobs:
         run: |
           cd joongo/src/main/frontend
           npm install
-          npm run build
+          CI='false' npm run build
 
       # 6. 프론트엔드 빌드 파일 이동
       - name: Move React Build to Backend
