@@ -46,6 +46,7 @@ jobs:
       # 6. 프론트엔드 빌드 파일 이동
       - name: Move React Build to Backend
         run: |
+      #   mkdir -p joongo/src/main/resources/static
           cp -r joongo/src/main/frontend/build/* joongo/src/main/resources/static/
 
       # 7. 프로젝트 압축
