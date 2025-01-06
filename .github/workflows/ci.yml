@@ -8,8 +8,8 @@ on:
 
 env:
   PROJECT_NAME: Joonggonara
-  CODE_DEPLOY_APP_NAME: joonggo
-  DEPLOYMENT_GROUP_NAME: joonggodb
+  CODE_DEPLOY_APP_NAME: joonggonara-app
+  DEPLOYMENT_GROUP_NAME: joonggonara-group
 
 jobs:
   build-and-deploy:
