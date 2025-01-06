@@ -12,6 +12,11 @@ LOCAL_FILE_PATH="/home/ubuntu/Joonggonara.zip" # 다운로드된 ZIP 파일 저�
 echo "Downloading ZIP file from S3..."
 aws s3 cp s3://$S3_BUCKET_NAME/$S3_FILE_KEY $LOCAL_FILE_PATH
 
+if [ ! -f "$LOCAL_FILE_PATH" ]; then
+    echo "Error: Failed to download ZIP file from S3"
+    exit 1
+fi
+
 # 배포를 위한 임시 디렉터리 생성
 TEMP_DIR="/home/ubuntu/temp_deployment"
 mkdir -p $TEMP_DIR
@@ -23,9 +28,20 @@ cd $TEMP_DIR || exit
 echo "Unzipping the downloaded file..."
 unzip -o $LOCAL_FILE_PATH
 
+# 압축 해제 확인
+echo "Listing contents of TEMP_DIR:"
+ls -al $TEMP_DIR
+echo "Checking build folder:"
+ls -al $TEMP_DIR/build
+
 # Joonggonara 디렉터리 업데이트 (필요 시)
-echo "Updating Joonggonara directory..."
-sudo cp -r * /home/ubuntu/Joonggonara/
+# echo "Updating Joonggonara directory..."
+# sudo cp -r * /home/ubuntu/Joonggonara/
+
+# 권한 설정
+echo "Setting permissions for /var/www/react..."
+sudo chown -R www-data:www-data /var/www/react
+sudo chmod -R 755 /var/www/react
 
 # 기존 React 빌드 파일 삭제
 echo "Removing old React build files..."
