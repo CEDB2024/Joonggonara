@@ -5,6 +5,7 @@ on:
     branches: 
       - main
 
+
 env:
   PROJECT_NAME: Joonggonara
   CODE_DEPLOY_APP_NAME: joonggo
