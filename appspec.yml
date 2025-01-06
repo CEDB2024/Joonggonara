@@ -1,12 +1,11 @@
 version: 0.0
 os: linux
-
 files:
   - source: /
-    destination: /var/www/react
+    destination: /home/ubuntu/deploy
     overwrite: yes
 permissions:
-  - object: /var/www/react
+  - object: /home/ubuntu/deploy
     owner: ubuntu
     group: ubuntu
     mode: 755
