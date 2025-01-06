@@ -4,7 +4,8 @@
 echo "Starting deployment..."
 
 # S3 버킷과 파일 경로 설정
-S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}        # S3 버킷 이름 (GitHub Secrets에서 가져옴)
+#S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}        # S3 버킷 이름 (GitHub Secrets에서 가져옴)
+S3_BUCKET_NAME="joonggo-bucket"
 S3_FILE_KEY="Joonggonara.zip"              # S3에 저장된 ZIP 파일 경로
 LOCAL_FILE_PATH="/home/ubuntu/Joonggonara.zip" # 다운로드된 ZIP 파일 저장 경로
 
@@ -35,8 +36,8 @@ echo "Checking build folder:"
 ls -al $TEMP_DIR/build
 
 # Joonggonara 디렉터리 업데이트 (필요 시)
-# echo "Updating Joonggonara directory..."
-# sudo cp -r * /home/ubuntu/Joonggonara/
+echo "Updating Joonggonara directory..."
+sudo cp -r * /home/ubuntu/Joonggonara/joongo/
 
 # 권한 설정
 echo "Setting permissions for /var/www/react..."
