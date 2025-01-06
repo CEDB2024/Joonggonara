@@ -45,6 +45,9 @@ dependencies {
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    //dotenv
+    implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+
     // Bcrypt
     implementation 'de.svenkubiak:jBCrypt:0.4'
 
