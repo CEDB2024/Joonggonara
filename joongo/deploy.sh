@@ -47,13 +47,13 @@ sudo chmod -R 755 /var/www/react
 - name: Check static folder contents
   run: ls -al joongo/src/main/resources/static/
 
-# 기존 React 빌드 파일 삭제
-echo "Removing old React build files..."
-sudo rm -rf /var/www/react/*
-
 # React 빌드 파일 이동
 echo "Deploying new React build files..."
 sudo cp -r joongo/src/main/resources/static/* /var/www/react/
+
+# 기존 React 빌드 파일 삭제
+echo "Removing old React build files..."
+sudo rm -rf /var/www/react/*
 
 # React 빌드 파일 삭제
 echo "Removing old React build files from static..."
