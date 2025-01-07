@@ -43,6 +43,10 @@ echo "Setting permissions for /var/www/react..."
 sudo chown -R www-data:www-data /var/www/react
 sudo chmod -R 755 /var/www/react
 
+# 스태틱 파일 하위 확인
+- name: Check static folder contents
+  run: ls -al joongo/src/main/resources/static/
+
 # 기존 React 빌드 파일 삭제
 echo "Removing old React build files..."
 sudo rm -rf /var/www/react/*

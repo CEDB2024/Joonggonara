@@ -9,6 +9,11 @@ permissions:
     owner: ubuntu
     group: ubuntu
     mode: 755
+  - object: /home/ubuntu/Joonggonara/joongo/deploy.sh
+    owner: ubuntu
+    group: ubuntu
+    mode: 755
+
 hooks:
   AfterInstall:
     - location: deploy.sh
