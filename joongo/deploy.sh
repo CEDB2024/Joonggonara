@@ -29,11 +29,10 @@ cd $TEMP_DIR || exit
 echo "Unzipping the downloaded file..."
 unzip -o $LOCAL_FILE_PATH
 
-# 압축 해제 확인
-echo "Listing contents of TEMP_DIR:"
-ls -al $TEMP_DIR
-echo "Checking build folder:"
-ls -al $TEMP_DIR/build
+# build 파일 확인 디버깅
+echo "Checking contents of static folder:"
+ls -al /home/ubuntu/Joonggonara/joongo/src/main/resources/static/
+
 
 # Joonggonara 디렉터리 업데이트 (필요 시)
 echo "Updating Joonggonara directory..."
@@ -50,7 +49,7 @@ sudo rm -rf /var/www/react/*
 
 # React 빌드 파일 이동
 echo "Deploying new React build files..."
-sudo cp -r joongo/src/main/resources/static/ /var/www/react/
+sudo cp -r joongo/src/main/resources/static/* /var/www/react/
 
 # React 빌드 파일 삭제
 echo "Removing old React build files from static..."
