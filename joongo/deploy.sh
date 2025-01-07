@@ -53,7 +53,7 @@ sudo rm -rf /var/www/react/*
 
 # React 빌드 파일 이동
 echo "Deploying new React build files..."
-sudo cp -r $TEMP_DIR/src/main/resources/static/ /var/www/react/
+sudo cp -r $TEMP_DIR/src/main/resources/static/* /var/www/react/
 
 # React 빌드 파일 삭제
 echo "Removing build files from static..."
