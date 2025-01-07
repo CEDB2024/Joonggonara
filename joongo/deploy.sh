@@ -50,7 +50,11 @@ sudo rm -rf /var/www/react/*
 
 # React 빌드 파일 이동
 echo "Deploying new React build files..."
-sudo cp -r $TEMP_DIR/build/* /var/www/react/
+sudo cp -r joongo/src/main/resources/static/ /var/www/react/
+
+# React 빌드 파일 삭제
+echo "Removing old React build files from static..."
+sudo rm -rf /home/ubuntu/Joonggonara/joongo/src/main/resources/static/*
 
 # 임시 디렉터리 삭제
 echo "Cleaning up temporary files..."
