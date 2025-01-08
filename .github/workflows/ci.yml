@@ -38,6 +38,8 @@ jobs:
 
       # 5. 프론트엔드 설치 및 빌드
       - name: Build React Frontend
+        env:
+          REACT_APP_BASE_URL: ${{ secrets.BASE_URL }}
         run: |
           cd joongo/src/main/frontend
           npm install

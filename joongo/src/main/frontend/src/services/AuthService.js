@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.BASE_URL;
 
 const API_URL = `${apiUrl}/api/auth`; // Spring Boot API 경로
 

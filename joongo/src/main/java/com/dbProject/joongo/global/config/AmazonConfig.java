@@ -60,7 +60,7 @@ public class AmazonConfig {
         if (accessKey == null || secretKey == null || region == null) {
             throw new IllegalStateException("AWS credentials or region not found in .env file");
         }
-        
+
         this.awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
     }
 
