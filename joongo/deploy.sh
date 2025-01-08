@@ -30,8 +30,8 @@ echo "Unzipping the downloaded file..."
 unzip -o $LOCAL_FILE_PATH
 
 # build 파일 확인 디버깅
-echo "Checking contents of static folder:"
-ls -al /home/ubuntu/Joonggonara/joongo/src/main/resources/static/
+# echo "Checking contents of static folder:"
+# ls -al /home/ubuntu/Joonggonara/joongo/src/main/resources/static/
 
 
 # Joonggonara 디렉터리 업데이트 (필요 시)
