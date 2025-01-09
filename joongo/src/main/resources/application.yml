@@ -3,8 +3,8 @@ spring:
     name: joongo
   datasource:
     url: jdbc:mysql://localhost:3306/cedb2024
-    username: ubuntu
-    password: ${AWS_DATABASE_KEY}
+    username: root
+    password: skdnjsgh99
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
@@ -27,6 +27,11 @@ cloud:
       secret-key: ${AWS_SECRET_ACCESS_KEY}
     region:
       static: ap-northeast-2
+    datasource:
+      url: jdbc:mysql://localhost:3306/cedb2024
+      username: ubuntu
+      password: ${AWS_DATABASE_KEY}
+      driver-class-name: com.mysql.cj.jdbc.Driver
     stack:
       auto: false
     s3:

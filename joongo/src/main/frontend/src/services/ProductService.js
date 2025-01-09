@@ -1,7 +1,7 @@
 import axios from "axios";
 import getLocalStorage from "../global/LocalStorage";
 
-const apiUrl = process.env.BASE_URL;
+const apiUrl = process.env.REACT_APP_BASE_URL;
 // 기본 API URL 설정
 const API_URL = `${apiUrl}/api`;
 
